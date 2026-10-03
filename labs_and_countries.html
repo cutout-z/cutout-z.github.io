@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labs and Countries</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <span class="text-faint">Model economics</span><span class="text-faint">/</span><span class="truncate font-medium text-ink">Labs and Countries</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 3 Oct 2026, 20:06 AWST. Ages and stale warnings on these pages are as of this build. Data: cutout-z/ai-dc-dashboard@b5ea6b8.">Built <time datetime="2026-10-03T12:06:58Z"><span class="hidden sm:inline">3 Oct 2026, 20:06 AWST</span><span class="sm:hidden">3 Oct 20:06</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main class="px-4 pb-16 pt-8 md:px-8">
+        
+<div class="mx-auto max-w-[1240px] space-y-12">
+  <div>
+    <header class="mb-8">
+  <div class="eyebrow mb-1.5">Model economics</div>
+  <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">Labs and Countries</h1>
+  <p class="mt-1.5 max-w-[70ch] text-[14px] text-muted">Who is leading, who is shipping the most, and how the balance of power is shifting.</p>
+</header>
+    <p class="-mt-5 text-[12px] text-muted">Data: committed ZeroEval snapshot · as-of 2026-10-02</p>
+  </div>
+
+  
+  <div class="grid grid-cols-1 items-start gap-4 xl:grid-cols-[1fr_1.7fr]">
+    <div class="card">
+      <div class="card-head"><div>
+        <h2 class="card-title">Cumulative Releases by Country</h2>
+        <div class="card-sub">Models released, all time · 398 dated models</div>
+      </div></div>
+      <div class="card-body"><div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;hovertemplate&#34;: &#34;%{y}: %{x} models&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#3987e5&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;text&#34;: [&#34;  1&#34;, &#34;  2&#34;, &#34;  2&#34;, &#34;  3&#34;, &#34;  5&#34;, &#34;  5&#34;, &#34;  33&#34;, &#34;  143&#34;, &#34;  204&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;outside&#34;, &#34;x&#34;: [1, 2, 2, 3, 5, 5, 33, 143, 204], &#34;y&#34;: [&#34;Japan&#34;, &#34;India&#34;, &#34;Israel&#34;, &#34;South Korea&#34;, &#34;Unknown&#34;, &#34;Canada&#34;, &#34;France&#34;, &#34;China&#34;, &#34;United States&#34;], &#34;type&#34;: &#34;bar&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 40, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 310, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.35, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;gridcolor&#34;: &#34;#262626&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;showgrid&#34;: false, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;  &#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;hovertemplate&#34;: &#34;%{y}: %{x} models&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;text&#34;: [&#34;  1&#34;, &#34;  2&#34;, &#34;  2&#34;, &#34;  3&#34;, &#34;  5&#34;, &#34;  5&#34;, &#34;  33&#34;, &#34;  143&#34;, &#34;  204&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;outside&#34;, &#34;x&#34;: [1, 2, 2, 3, 5, 5, 33, 143, 204], &#34;y&#34;: [&#34;Japan&#34;, &#34;India&#34;, &#34;Israel&#34;, &#34;South Korea&#34;, &#34;Unknown&#34;, &#34;Canada&#34;, &#34;France&#34;, &#34;China&#34;, &#34;United States&#34;], &#34;type&#34;: &#34;bar&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 40, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 310, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.35, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;gridcolor&#34;: &#34;#efefef&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;showgrid&#34;: false, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;  &#34;}}}}" class="h-[310px]"></div></div>
+      <div class="card-foot">Country of the releasing lab · 5 models have none recorded (Unknown)</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div>
+        <h2 class="card-title">Release Heatmap</h2>
+        <div class="card-sub">Models released per month</div>
+      </div></div>
+      <div class="card-body"><div class="overflow-x-auto">
+  <table class="w-full min-w-[520px] border-separate border-spacing-1 text-[12px]" data-phone-scroll="month grid: twelve months read across each year">
+    <caption class="sr-only">Model releases per month, by year</caption>
+    <thead><tr><th class="w-12"></th><th scope="col" class="pb-1 text-center font-medium text-faint">Jan</th><th scope="col" class="pb-1 text-center font-medium text-faint">Feb</th><th scope="col" class="pb-1 text-center font-medium text-faint">Mar</th><th scope="col" class="pb-1 text-center font-medium text-faint">Apr</th><th scope="col" class="pb-1 text-center font-medium text-faint">May</th><th scope="col" class="pb-1 text-center font-medium text-faint">Jun</th><th scope="col" class="pb-1 text-center font-medium text-faint">Jul</th><th scope="col" class="pb-1 text-center font-medium text-faint">Aug</th><th scope="col" class="pb-1 text-center font-medium text-faint">Sep</th><th scope="col" class="pb-1 text-center font-medium text-faint">Oct</th><th scope="col" class="pb-1 text-center font-medium text-faint">Nov</th><th scope="col" class="pb-1 text-center font-medium text-faint">Dec</th></tr></thead>
+    <tbody>
+      
+      <tr>
+        <th scope="row" class="pr-2 text-left font-mono font-normal text-muted">2023</th>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Jan 2023: 0 releases">0</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Feb 2023: 0 releases">0</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Mar 2023: 1 releases">1</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Apr 2023: 0 releases">0</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="May 2023: 0 releases">0</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Jun 2023: 1 releases">1</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Jul 2023: 0 releases">0</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Aug 2023: 0 releases">0</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Sep 2023: 0 releases">0</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Oct 2023: 1 releases">1</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Nov 2023: 0 releases">0</td>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Dec 2023: 0 releases">0</td>
+        
+      </tr>
+      
+      <tr>
+        <th scope="row" class="pr-2 text-left font-mono font-normal text-muted">2024</th>
+        
+        <td class="seq-0 num h-9 rounded-md text-center font-medium" title="Jan 2024: 0 releases">0</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Feb 2024: 3 releases">3</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Mar 2024: 3 releases">3</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Apr 2024: 2 releases">2</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="May 2024: 6 releases">6</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Jun 2024: 3 releases">3</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="Jul 2024: 8 releases">8</td>
+        
+        <td class="seq-3 num h-9 rounded-md text-center font-medium" title="Aug 2024: 11 releases">11</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Sep 2024: 14 releases">14</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="Oct 2024: 5 releases">5</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="Nov 2024: 5 releases">5</td>
+        
+        <td class="seq-3 num h-9 rounded-md text-center font-medium" title="Dec 2024: 11 releases">11</td>
+        
+      </tr>
+      
+      <tr>
+        <th scope="row" class="pr-2 text-left font-mono font-normal text-muted">2025</th>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Jan 2025: 18 releases">18</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="Feb 2025: 8 releases">8</td>
+        
+        <td class="seq-3 num h-9 rounded-md text-center font-medium" title="Mar 2025: 11 releases">11</td>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Apr 2025: 19 releases">19</td>
+        
+        <td class="seq-3 num h-9 rounded-md text-center font-medium" title="May 2025: 10 releases">10</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Jun 2025: 13 releases">13</td>
+        
+        <td class="seq-3 num h-9 rounded-md text-center font-medium" title="Jul 2025: 9 releases">9</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Aug 2025: 17 releases">17</td>
+        
+        <td class="seq-6 num h-9 rounded-md text-center font-medium" title="Sep 2025: 22 releases">22</td>
+        
+        <td class="seq-1 num h-9 rounded-md text-center font-medium" title="Oct 2025: 2 releases">2</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Nov 2025: 14 releases">14</td>
+        
+        <td class="seq-7 num h-9 rounded-md text-center font-medium" title="Dec 2025: 30 releases">30</td>
+        
+      </tr>
+      
+      <tr>
+        <th scope="row" class="pr-2 text-left font-mono font-normal text-muted">2026</th>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="Jan 2026: 6 releases">6</td>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Feb 2026: 19 releases">19</td>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Mar 2026: 20 releases">20</td>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Apr 2026: 21 releases">21</td>
+        
+        <td class="seq-2 num h-9 rounded-md text-center font-medium" title="May 2026: 8 releases">8</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Jun 2026: 15 releases">15</td>
+        
+        <td class="seq-4 num h-9 rounded-md text-center font-medium" title="Jul 2026: 16 releases">16</td>
+        
+        <td class="seq-7 num h-9 rounded-md text-center font-medium" title="Aug 2026: 28 releases">28</td>
+        
+        <td class="seq-5 num h-9 rounded-md text-center font-medium" title="Sep 2026: 18 releases">18</td>
+        
+        <td class="seq-none num h-9 rounded-md text-center font-medium" title="Oct 2026: not yet reached"></td>
+        
+        <td class="seq-none num h-9 rounded-md text-center font-medium" title="Nov 2026: not yet reached"></td>
+        
+        <td class="seq-none num h-9 rounded-md text-center font-medium" title="Dec 2026: not yet reached"></td>
+        
+      </tr>
+      
+    </tbody>
+  </table>
+  <div class="mt-3 flex items-center gap-2 text-[12px] text-faint">
+    <span class="num">0</span>
+    <span class="flex gap-0.5"><span class="seq-0 h-2.5 w-4 rounded-sm"></span><span class="seq-1 h-2.5 w-4 rounded-sm"></span><span class="seq-2 h-2.5 w-4 rounded-sm"></span><span class="seq-3 h-2.5 w-4 rounded-sm"></span><span class="seq-4 h-2.5 w-4 rounded-sm"></span><span class="seq-5 h-2.5 w-4 rounded-sm"></span><span class="seq-6 h-2.5 w-4 rounded-sm"></span><span class="seq-7 h-2.5 w-4 rounded-sm"></span></span>
+    <span class="num">30</span><span>releases</span>
+    <span class="ml-2 inline-flex items-center gap-1"><span class="seq-none h-2.5 w-4 rounded-sm"></span>not yet reached</span>
+  </div>
+</div></div>
+      <div class="card-foot">2 undated models are not counted · data to 2026-09</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div>
+      <h2 class="card-title">Model Releases by Country (% share)</h2>
+      <div class="card-sub">Share (%) of each quarter's releases, top five countries by count · the number above a bar is how many models it covers</div>
+    </div></div>
+    <div class="card-body">
+      <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #3987e5; --c-light: #2a78d6"></span>United States
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #d95926; --c-light: #eb6834"></span>China
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #199e70; --c-light: #1baf7a"></span>France
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #c98500; --c-light: #eda100"></span>Canada
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #6b6b6b; --c-light: #a3a3a3"></span>Unknown
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-bar" style="--c-dark: #6b6b6b; --c-light: #a3a3a3"></span>Other
+  </span>
+  
+</div></div>
+      <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[1, 1], [1, 1], [0, 1], [6, 6], [9, 11], [16, 33], [13, 21], [15, 37], [30, 42], [18, 48], [23, 46], [15, 45], [20, 44], [37, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 United States: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#3987e5&#34;}, &#34;name&#34;: &#34;United States&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [100.0, 100.0, 0.0, 100.0, 81.81818181818183, 48.484848484848484, 61.904761904761905, 40.54054054054054, 71.42857142857143, 37.5, 50.0, 33.33333333333333, 45.45454545454545, 59.67741935483871], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [1, 11], [9, 33], [6, 21], [18, 37], [8, 42], [27, 48], [9, 46], [27, 45], [20, 44], [18, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 China: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#d95926&#34;}, &#34;name&#34;: &#34;China&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 9.090909090909092, 27.27272727272727, 28.57142857142857, 48.64864864864865, 19.047619047619047, 56.25, 19.565217391304348, 60.0, 45.45454545454545, 29.03225806451613], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [1, 11], [4, 33], [2, 21], [4, 37], [3, 42], [3, 48], [13, 46], [1, 45], [1, 44], [1, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 France: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#199e70&#34;}, &#34;name&#34;: &#34;France&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 9.090909090909092, 12.121212121212121, 9.523809523809524, 10.81081081081081, 7.142857142857142, 6.25, 28.26086956521739, 2.2222222222222223, 2.272727272727273, 1.6129032258064515], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [0, 11], [1, 33], [0, 21], [0, 37], [0, 42], [0, 48], [0, 46], [0, 45], [2, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Canada: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#c98500&#34;}, &#34;name&#34;: &#34;Canada&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 0.0, 3.0303030303030303, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.545454545454546, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [1, 1], [0, 6], [0, 11], [1, 33], [0, 21], [0, 37], [1, 42], [0, 48], [0, 46], [0, 45], [0, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Unknown: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#6b6b6b&#34;, &#34;pattern&#34;: {&#34;fgcolor&#34;: &#34;#171717&#34;, &#34;fillmode&#34;: &#34;overlay&#34;, &#34;shape&#34;: &#34;/&#34;, &#34;size&#34;: 6, &#34;solidity&#34;: 0.3}}, &#34;name&#34;: &#34;Unknown&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 100.0, 0.0, 0.0, 3.0303030303030303, 0.0, 0.0, 2.380952380952381, 0.0, 0.0, 0.0, 0.0, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [0, 11], [2, 33], [0, 21], [0, 37], [0, 42], [0, 48], [1, 46], [2, 45], [1, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Other: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#6b6b6b&#34;}, &#34;name&#34;: &#34;Other&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 0.0, 6.0606060606060606, 0.0, 0.0, 0.0, 0.0, 2.1739130434782608, 4.444444444444445, 2.272727272727273, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;cliponaxis&#34;: false, &#34;hoverinfo&#34;: &#34;skip&#34;, &#34;mode&#34;: &#34;text&#34;, &#34;showlegend&#34;: false, &#34;text&#34;: [&#34;1&#34;, &#34;1&#34;, &#34;1&#34;, &#34;6&#34;, &#34;11&#34;, &#34;33&#34;, &#34;21&#34;, &#34;37&#34;, &#34;42&#34;, &#34;48&#34;, &#34;46&#34;, &#34;45&#34;, &#34;44&#34;, &#34;62&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;textposition&#34;: &#34;top center&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 22, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 300, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.3, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;category&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;%&#34;, &#34;range&#34;: [0, 100], &#34;dtick&#34;: 25}, &#34;barmode&#34;: &#34;stack&#34;}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[1, 1], [1, 1], [0, 1], [6, 6], [9, 11], [16, 33], [13, 21], [15, 37], [30, 42], [18, 48], [23, 46], [15, 45], [20, 44], [37, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 United States: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;}, &#34;name&#34;: &#34;United States&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [100.0, 100.0, 0.0, 100.0, 81.81818181818183, 48.484848484848484, 61.904761904761905, 40.54054054054054, 71.42857142857143, 37.5, 50.0, 33.33333333333333, 45.45454545454545, 59.67741935483871], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [1, 11], [9, 33], [6, 21], [18, 37], [8, 42], [27, 48], [9, 46], [27, 45], [20, 44], [18, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 China: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#eb6834&#34;}, &#34;name&#34;: &#34;China&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 9.090909090909092, 27.27272727272727, 28.57142857142857, 48.64864864864865, 19.047619047619047, 56.25, 19.565217391304348, 60.0, 45.45454545454545, 29.03225806451613], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [1, 11], [4, 33], [2, 21], [4, 37], [3, 42], [3, 48], [13, 46], [1, 45], [1, 44], [1, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 France: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;}, &#34;name&#34;: &#34;France&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 9.090909090909092, 12.121212121212121, 9.523809523809524, 10.81081081081081, 7.142857142857142, 6.25, 28.26086956521739, 2.2222222222222223, 2.272727272727273, 1.6129032258064515], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [0, 11], [1, 33], [0, 21], [0, 37], [0, 42], [0, 48], [0, 46], [0, 45], [2, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Canada: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#eda100&#34;}, &#34;name&#34;: &#34;Canada&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 0.0, 3.0303030303030303, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.545454545454546, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [1, 1], [0, 6], [0, 11], [1, 33], [0, 21], [0, 37], [1, 42], [0, 48], [0, 46], [0, 45], [0, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Unknown: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;pattern&#34;: {&#34;fgcolor&#34;: &#34;#ffffff&#34;, &#34;fillmode&#34;: &#34;overlay&#34;, &#34;shape&#34;: &#34;/&#34;, &#34;size&#34;: 6, &#34;solidity&#34;: 0.3}}, &#34;name&#34;: &#34;Unknown&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 100.0, 0.0, 0.0, 3.0303030303030303, 0.0, 0.0, 2.380952380952381, 0.0, 0.0, 0.0, 0.0, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;customdata&#34;: [[0, 1], [0, 1], [0, 1], [0, 6], [0, 11], [2, 33], [0, 21], [0, 37], [0, 42], [0, 48], [1, 46], [2, 45], [1, 44], [2, 62]], &#34;hovertemplate&#34;: &#34;%{x} \u00b7 Other: %{customdata[0]} of %{customdata[1]} (%{y:.1f}%)&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;name&#34;: &#34;Other&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [0.0, 0.0, 0.0, 0.0, 0.0, 6.0606060606060606, 0.0, 0.0, 0.0, 0.0, 2.1739130434782608, 4.444444444444445, 2.272727272727273, 3.225806451612903], &#34;type&#34;: &#34;bar&#34;}, {&#34;cliponaxis&#34;: false, &#34;hoverinfo&#34;: &#34;skip&#34;, &#34;mode&#34;: &#34;text&#34;, &#34;showlegend&#34;: false, &#34;text&#34;: [&#34;1&#34;, &#34;1&#34;, &#34;1&#34;, &#34;6&#34;, &#34;11&#34;, &#34;33&#34;, &#34;21&#34;, &#34;37&#34;, &#34;42&#34;, &#34;48&#34;, &#34;46&#34;, &#34;45&#34;, &#34;44&#34;, &#34;62&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;textposition&#34;: &#34;top center&#34;, &#34;x&#34;: [&#34;2023 Q1&#34;, &#34;2023 Q2&#34;, &#34;2023 Q4&#34;, &#34;2024 Q1&#34;, &#34;2024 Q2&#34;, &#34;2024 Q3&#34;, &#34;2024 Q4&#34;, &#34;2025 Q1&#34;, &#34;2025 Q2&#34;, &#34;2025 Q3&#34;, &#34;2025 Q4&#34;, &#34;2026 Q1&#34;, &#34;2026 Q2&#34;, &#34;2026 Q3&#34;], &#34;y&#34;: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 22, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 300, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.3, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;category&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;%&#34;, &#34;range&#34;: [0, 100], &#34;dtick&#34;: 25}, &#34;barmode&#34;: &#34;stack&#34;}}}" class="h-[300px]"></div>
+    </div>
+    <div class="card-foot">Unknown (hatched) = no country recorded, not a country · the latest quarter is partial</div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div>
+      <h2 class="card-title">Cumulative Releases by Lab (% of total)</h2>
+      <div class="card-sub">Cumulative Share (%) of all 398 dated models · the eight labs with the most releases, together 70%</div>
+    </div></div>
+    <div class="card-body">
+      <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #3987e5; --c-light: #2a78d6"></span>Google
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #d95926; --c-light: #eb6834"></span>Anthropic
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #199e70; --c-light: #1baf7a"></span>OpenAI
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #c98500; --c-light: #eda100"></span>xAI
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #d55181; --c-light: #e87ba4"></span>DeepSeek
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #008300; --c-light: #008300"></span>Mistral AI
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #9085e9; --c-light: #4a3aa7"></span>Meta
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #e66767; --c-light: #e34948"></span>Alibaba Cloud / Qwen Team
+  </span>
+  
+</div></div>
+      <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[2, &#34;2024 Q1&#34;], [6, &#34;2024 Q2&#34;], [6, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [13, &#34;2025 Q1&#34;], [25, &#34;2025 Q2&#34;], [25, &#34;2025 Q3&#34;], [27, &#34;2025 Q4&#34;], [29, &#34;2026 Q1&#34;], [36, &#34;2026 Q2&#34;], [42, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Google&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#3987e5&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Google&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.5025125628140703, 1.507537688442211, 1.507537688442211, 1.7587939698492463, 3.2663316582914574, 6.281407035175879, 6.281407035175879, 6.78391959798995, 7.2864321608040195, 9.045226130653267, 10.552763819095476], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[3, &#34;2024 Q1&#34;], [4, &#34;2024 Q2&#34;], [4, &#34;2024 Q3&#34;], [6, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [9, &#34;2025 Q2&#34;], [11, &#34;2025 Q3&#34;], [13, &#34;2025 Q4&#34;], [15, &#34;2026 Q1&#34;], [19, &#34;2026 Q2&#34;], [24, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.7537688442211055, 1.0050251256281406, 1.0050251256281406, 1.507537688442211, 1.7587939698492463, 2.261306532663317, 2.763819095477387, 3.2663316582914574, 3.7688442211055273, 4.773869346733668, 6.030150753768844], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2023 Q1&#34;], [2, &#34;2023 Q2&#34;], [2, &#34;2023 Q4&#34;], [2, &#34;2024 Q1&#34;], [5, &#34;2024 Q2&#34;], [9, &#34;2024 Q3&#34;], [11, &#34;2024 Q4&#34;], [13, &#34;2025 Q1&#34;], [19, &#34;2025 Q2&#34;], [29, &#34;2025 Q3&#34;], [39, &#34;2025 Q4&#34;], [45, &#34;2026 Q1&#34;], [48, &#34;2026 Q2&#34;], [56, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2023-04-01&#34;, &#34;2023-10-01&#34;, &#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.5025125628140703, 0.5025125628140703, 0.5025125628140703, 1.256281407035176, 2.261306532663317, 2.763819095477387, 3.2663316582914574, 4.773869346733668, 7.2864321608040195, 9.798994974874372, 11.306532663316583, 12.060301507537687, 14.07035175879397], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q1&#34;], [2, &#34;2024 Q2&#34;], [4, &#34;2024 Q3&#34;], [5, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [7, &#34;2025 Q2&#34;], [12, &#34;2025 Q3&#34;], [16, &#34;2025 Q4&#34;], [19, &#34;2026 Q1&#34;], [20, &#34;2026 Q2&#34;], [23, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;xAI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#c98500&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;xAI&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.5025125628140703, 1.0050251256281406, 1.256281407035176, 1.7587939698492463, 1.7587939698492463, 3.015075376884422, 4.0201005025125625, 4.773869346733668, 5.025125628140704, 5.778894472361809], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q2&#34;], [1, &#34;2024 Q3&#34;], [5, &#34;2024 Q4&#34;], [15, &#34;2025 Q1&#34;], [16, &#34;2025 Q2&#34;], [17, &#34;2025 Q3&#34;], [21, &#34;2025 Q4&#34;], [21, &#34;2026 Q1&#34;], [24, &#34;2026 Q2&#34;], [28, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;DeepSeek&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#d55181&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;DeepSeek&#34;, &#34;x&#34;: [&#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.25125628140703515, 1.256281407035176, 3.7688442211055273, 4.0201005025125625, 4.271356783919598, 5.276381909547738, 5.276381909547738, 6.030150753768844, 7.035175879396985], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q2&#34;], [5, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [11, &#34;2025 Q1&#34;], [14, &#34;2025 Q2&#34;], [17, &#34;2025 Q3&#34;], [30, &#34;2025 Q4&#34;], [31, &#34;2026 Q1&#34;], [32, &#34;2026 Q2&#34;], [33, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Mistral AI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#008300&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Mistral AI&#34;, &#34;x&#34;: [&#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 1.256281407035176, 1.7587939698492463, 2.763819095477387, 3.5175879396984926, 4.271356783919598, 7.537688442211055, 7.788944723618091, 8.040201005025125, 8.291457286432161], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[6, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [10, &#34;2025 Q2&#34;], [10, &#34;2025 Q3&#34;], [10, &#34;2025 Q4&#34;], [10, &#34;2026 Q1&#34;], [11, &#34;2026 Q2&#34;], [15, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Meta&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#9085e9&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Meta&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [1.507537688442211, 1.7587939698492463, 1.7587939698492463, 2.512562814070352, 2.512562814070352, 2.512562814070352, 2.512562814070352, 2.763819095477387, 3.7688442211055273], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[9, &#34;2024 Q3&#34;], [11, &#34;2024 Q4&#34;], [18, &#34;2025 Q1&#34;], [22, &#34;2025 Q2&#34;], [37, &#34;2025 Q3&#34;], [38, &#34;2025 Q4&#34;], [48, &#34;2026 Q1&#34;], [52, &#34;2026 Q2&#34;], [57, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Alibaba Cloud / Qwen Team&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#e66767&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Alibaba Cloud / Qwen Team&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [2.261306532663317, 2.763819095477387, 4.522613065326634, 5.527638190954774, 9.296482412060302, 9.547738693467336, 12.060301507537687, 13.06532663316583, 14.321608040201006], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 320, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;%&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[2, &#34;2024 Q1&#34;], [6, &#34;2024 Q2&#34;], [6, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [13, &#34;2025 Q1&#34;], [25, &#34;2025 Q2&#34;], [25, &#34;2025 Q3&#34;], [27, &#34;2025 Q4&#34;], [29, &#34;2026 Q1&#34;], [36, &#34;2026 Q2&#34;], [42, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Google&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Google&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.5025125628140703, 1.507537688442211, 1.507537688442211, 1.7587939698492463, 3.2663316582914574, 6.281407035175879, 6.281407035175879, 6.78391959798995, 7.2864321608040195, 9.045226130653267, 10.552763819095476], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[3, &#34;2024 Q1&#34;], [4, &#34;2024 Q2&#34;], [4, &#34;2024 Q3&#34;], [6, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [9, &#34;2025 Q2&#34;], [11, &#34;2025 Q3&#34;], [13, &#34;2025 Q4&#34;], [15, &#34;2026 Q1&#34;], [19, &#34;2026 Q2&#34;], [24, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.7537688442211055, 1.0050251256281406, 1.0050251256281406, 1.507537688442211, 1.7587939698492463, 2.261306532663317, 2.763819095477387, 3.2663316582914574, 3.7688442211055273, 4.773869346733668, 6.030150753768844], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2023 Q1&#34;], [2, &#34;2023 Q2&#34;], [2, &#34;2023 Q4&#34;], [2, &#34;2024 Q1&#34;], [5, &#34;2024 Q2&#34;], [9, &#34;2024 Q3&#34;], [11, &#34;2024 Q4&#34;], [13, &#34;2025 Q1&#34;], [19, &#34;2025 Q2&#34;], [29, &#34;2025 Q3&#34;], [39, &#34;2025 Q4&#34;], [45, &#34;2026 Q1&#34;], [48, &#34;2026 Q2&#34;], [56, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2023-04-01&#34;, &#34;2023-10-01&#34;, &#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.5025125628140703, 0.5025125628140703, 0.5025125628140703, 1.256281407035176, 2.261306532663317, 2.763819095477387, 3.2663316582914574, 4.773869346733668, 7.2864321608040195, 9.798994974874372, 11.306532663316583, 12.060301507537687, 14.07035175879397], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q1&#34;], [2, &#34;2024 Q2&#34;], [4, &#34;2024 Q3&#34;], [5, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [7, &#34;2025 Q2&#34;], [12, &#34;2025 Q3&#34;], [16, &#34;2025 Q4&#34;], [19, &#34;2026 Q1&#34;], [20, &#34;2026 Q2&#34;], [23, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;xAI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eda100&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;xAI&#34;, &#34;x&#34;: [&#34;2024-01-01&#34;, &#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.5025125628140703, 1.0050251256281406, 1.256281407035176, 1.7587939698492463, 1.7587939698492463, 3.015075376884422, 4.0201005025125625, 4.773869346733668, 5.025125628140704, 5.778894472361809], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q2&#34;], [1, &#34;2024 Q3&#34;], [5, &#34;2024 Q4&#34;], [15, &#34;2025 Q1&#34;], [16, &#34;2025 Q2&#34;], [17, &#34;2025 Q3&#34;], [21, &#34;2025 Q4&#34;], [21, &#34;2026 Q1&#34;], [24, &#34;2026 Q2&#34;], [28, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;DeepSeek&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#e87ba4&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;DeepSeek&#34;, &#34;x&#34;: [&#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 0.25125628140703515, 1.256281407035176, 3.7688442211055273, 4.0201005025125625, 4.271356783919598, 5.276381909547738, 5.276381909547738, 6.030150753768844, 7.035175879396985], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[1, &#34;2024 Q2&#34;], [5, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [11, &#34;2025 Q1&#34;], [14, &#34;2025 Q2&#34;], [17, &#34;2025 Q3&#34;], [30, &#34;2025 Q4&#34;], [31, &#34;2026 Q1&#34;], [32, &#34;2026 Q2&#34;], [33, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Mistral AI&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#008300&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Mistral AI&#34;, &#34;x&#34;: [&#34;2024-04-01&#34;, &#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [0.25125628140703515, 1.256281407035176, 1.7587939698492463, 2.763819095477387, 3.5175879396984926, 4.271356783919598, 7.537688442211055, 7.788944723618091, 8.040201005025125, 8.291457286432161], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[6, &#34;2024 Q3&#34;], [7, &#34;2024 Q4&#34;], [7, &#34;2025 Q1&#34;], [10, &#34;2025 Q2&#34;], [10, &#34;2025 Q3&#34;], [10, &#34;2025 Q4&#34;], [10, &#34;2026 Q1&#34;], [11, &#34;2026 Q2&#34;], [15, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Meta&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#4a3aa7&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Meta&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [1.507537688442211, 1.7587939698492463, 1.7587939698492463, 2.512562814070352, 2.512562814070352, 2.512562814070352, 2.512562814070352, 2.763819095477387, 3.7688442211055273], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[9, &#34;2024 Q3&#34;], [11, &#34;2024 Q4&#34;], [18, &#34;2025 Q1&#34;], [22, &#34;2025 Q2&#34;], [37, &#34;2025 Q3&#34;], [38, &#34;2025 Q4&#34;], [48, &#34;2026 Q1&#34;], [52, &#34;2026 Q2&#34;], [57, &#34;2026 Q3&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Alibaba Cloud / Qwen Team&lt;/b&gt; \u00b7 %{customdata[1]}&lt;br&gt;%{customdata[0]} models \u00b7 %{y:.1f}% of all&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#e34948&#34;, &#34;shape&#34;: &#34;hv&#34;, &#34;width&#34;: 2}, &#34;mode&#34;: &#34;lines&#34;, &#34;name&#34;: &#34;Alibaba Cloud / Qwen Team&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-04-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2026-01-01&#34;, &#34;2026-04-01&#34;, &#34;2026-07-01&#34;], &#34;y&#34;: [2.261306532663317, 2.763819095477387, 4.522613065326634, 5.527638190954774, 9.296482412060302, 9.547738693467336, 12.060301507537687, 13.06532663316583, 14.321608040201006], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 320, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;ticksuffix&#34;: &#34;%&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}}" class="h-[320px]"></div>
+    </div>
+    <div class="card-foot">Lines step up in quarters a lab released a model and stay flat otherwise</div>
+  </div>
+
+  <p class="text-[12px] text-muted">Data: <a href="https://llm-stats.com" target="_blank" rel="noopener noreferrer">LLM Stats</a> · <a href="https://api.zeroeval.com" target="_blank" rel="noopener noreferrer">api.zeroeval.com</a></p>
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>

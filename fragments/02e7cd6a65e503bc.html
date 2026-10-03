@@ -1,0 +1,181 @@
+<section id="lb-index" aria-labelledby="idx-h" class="card">
+  <div class="card-head flex-col items-stretch gap-3">
+    <div>
+      <h2 id="idx-h" class="card-title">Performance Index</h2>
+      <div class="card-sub">Composite TrueSkill ratings across published benchmarks, paired with each model&#39;s blended price (8 input : 1 output) per 1M tokens.</div>
+    </div>
+    <div class="-mx-1 overflow-x-auto pb-1">
+      <div class="seg w-max" role="tablist" aria-label="Index category">
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=reasoning" hx-target="#lb-index" hx-swap="outerHTML">Reasoning</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=code" hx-target="#lb-index" hx-swap="outerHTML">Coding</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=math" hx-target="#lb-index" hx-swap="outerHTML">Math</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=vision" hx-target="#lb-index" hx-swap="outerHTML">Vision</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=writing" hx-target="#lb-index" hx-swap="outerHTML">Writing</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=agents" hx-target="#lb-index" hx-swap="outerHTML">Agents</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=tool_calling" hx-target="#lb-index" hx-swap="outerHTML">Tool use</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=long_context" hx-target="#lb-index" hx-swap="outerHTML">Long context</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=search" hx-target="#lb-index" hx-swap="outerHTML">Search</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=multimodal" hx-target="#lb-index" hx-swap="outerHTML">Multimodal</button>
+        
+        <button type="button" role="tab" aria-selected="true"
+                class="seg-item seg-item-active"
+                hx-get="/partials/lb-index?cat=frontend_development" hx-target="#lb-index" hx-swap="outerHTML">Frontend</button>
+        
+        <button type="button" role="tab" aria-selected="false"
+                class="seg-item "
+                hx-get="/partials/lb-index?cat=factuality" hx-target="#lb-index" hx-swap="outerHTML">Factuality</button>
+        
+      </div>
+    </div>
+  </div>
+  <div class="card-body" role="tabpanel">
+    <div class="prose mb-4 max-w-[110ch] text-[12px] text-muted"><p><strong>Tests ability to build and interact with web UIs — generating HTML/CSS/JS and navigating web pages.</strong> Benchmarks: SWE-Bench Verified, MM-Mind2Web. Score is the TrueSkill conservative rating (mu − 3σ) — a Bayesian skill estimate that requires benchmark evidence to rise.</p></div>
+    
+    <div class="grid grid-cols-[2rem_minmax(0,1fr)_3rem] items-center gap-x-3 gap-y-2 text-[13px] md:grid-cols-[2rem_minmax(10rem,16rem)_minmax(0,1fr)_3rem_minmax(0,0.7fr)_4rem]">
+      <div></div>
+      <div class="text-[11px] font-medium uppercase tracking-[0.08em] text-faint">Frontend index</div>
+      <div class="hidden text-[11px] font-medium uppercase tracking-[0.08em] text-faint md:block">Score (TrueSkill, from 0)</div>
+      <div class="text-right text-[11px] font-medium uppercase tracking-[0.08em] text-faint">Score</div>
+      <div class="hidden text-[11px] font-medium uppercase tracking-[0.08em] text-faint md:block">Price · 8:1 blend</div>
+      <div class="hidden text-right text-[11px] font-medium uppercase tracking-[0.08em] text-faint md:block">$ / 1M</div>
+      
+      <div class="num text-right text-[12px] text-faint">01</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Fable 5">Claude Fable 5</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · $14.44</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 100.0%"></div></div>
+      <div class="num text-right font-semibold text-ink">35.4</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 100.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$14.44</div>
+      
+      <div class="num text-right text-[12px] text-faint">02</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Mythos Preview">Claude Mythos Preview</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · —</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 96.6%"></div></div>
+      <div class="num text-right font-semibold text-ink">34.2</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 0.0%"></div></div>
+      <div class="num hidden text-right md:block text-faint">—</div>
+      
+      <div class="num text-right text-[12px] text-faint">03</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Opus 4.8">Claude Opus 4.8</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · $7.22</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 93.5%"></div></div>
+      <div class="num text-right font-semibold text-ink">33.1</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 50.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$7.22</div>
+      
+      <div class="num text-right text-[12px] text-faint">04</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Opus 4.7">Claude Opus 4.7</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · $7.22</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 90.9%"></div></div>
+      <div class="num text-right font-semibold text-ink">32.2</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 50.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$7.22</div>
+      
+      <div class="num text-right text-[12px] text-faint">05</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Sonnet 5">Claude Sonnet 5</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · $2.89</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 88.6%"></div></div>
+      <div class="num text-right font-semibold text-ink">31.4</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 20.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$2.89</div>
+      
+      <div class="num text-right text-[12px] text-faint">06</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Opus 4.5">Claude Opus 4.5</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · —</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 86.5%"></div></div>
+      <div class="num text-right font-semibold text-ink">30.6</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 0.0%"></div></div>
+      <div class="num hidden text-right md:block text-faint">—</div>
+      
+      <div class="num text-right text-[12px] text-faint">07</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Claude Opus 4.6">Claude Opus 4.6</div><div class="truncate text-[11px] text-muted md:hidden">Anthropic · $7.22</div><div class="hidden truncate text-[11px] text-muted md:block">Anthropic</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 84.5%"></div></div>
+      <div class="num text-right font-semibold text-ink">29.9</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 50.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$7.22</div>
+      
+      <div class="num text-right text-[12px] text-faint">08</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Gemini 3.1 Pro">Gemini 3.1 Pro</div><div class="truncate text-[11px] text-muted md:hidden">Google · $3.11</div><div class="hidden truncate text-[11px] text-muted md:block">Google</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 83.0%"></div></div>
+      <div class="num text-right font-semibold text-ink">29.4</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 21.5%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$3.11</div>
+      
+      <div class="num text-right text-[12px] text-faint">09</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="DeepSeek-V4-Pro-Max">DeepSeek-V4-Pro-Max</div><div class="truncate text-[11px] text-muted md:hidden">DeepSeek · $1.44</div><div class="hidden truncate text-[11px] text-muted md:block">DeepSeek</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 82.7%"></div></div>
+      <div class="num text-right font-semibold text-ink">29.3</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 10.0%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$1.44</div>
+      
+      <div class="num text-right text-[12px] text-faint">10</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="MiniMax M3">MiniMax M3</div><div class="truncate text-[11px] text-muted md:hidden">MiniMax · $0.37</div><div class="hidden truncate text-[11px] text-muted md:block">MiniMax</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 81.3%"></div></div>
+      <div class="num text-right font-semibold text-ink">28.8</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 2.6%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$0.37</div>
+      
+      <div class="num text-right text-[12px] text-faint">11</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Qwen3.7 Max">Qwen3.7 Max</div><div class="truncate text-[11px] text-muted md:hidden">Alibaba Cloud / Qwen Team · $1.53</div><div class="hidden truncate text-[11px] text-muted md:block">Alibaba Cloud / Qwen Team</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 79.6%"></div></div>
+      <div class="num text-right font-semibold text-ink">28.2</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 10.6%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$1.53</div>
+      
+      <div class="num text-right text-[12px] text-faint">12</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="MiniMax M2.5">MiniMax M2.5</div><div class="truncate text-[11px] text-muted md:hidden">MiniMax · $0.40</div><div class="hidden truncate text-[11px] text-muted md:block">MiniMax</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 78.7%"></div></div>
+      <div class="num text-right font-semibold text-ink">27.9</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 2.8%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$0.40</div>
+      
+      <div class="num text-right text-[12px] text-faint">13</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Kimi K2.6">Kimi K2.6</div><div class="truncate text-[11px] text-muted md:hidden">Moonshot AI · $1.06</div><div class="hidden truncate text-[11px] text-muted md:block">Moonshot AI</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 78.4%"></div></div>
+      <div class="num text-right font-semibold text-ink">27.7</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 7.3%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$1.06</div>
+      
+      <div class="num text-right text-[12px] text-faint">14</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="Inkling-Small">Inkling-Small</div><div class="truncate text-[11px] text-muted md:hidden">Thinking Machines Lab · $0.40</div><div class="hidden truncate text-[11px] text-muted md:block">Thinking Machines Lab</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 78.1%"></div></div>
+      <div class="num text-right font-semibold text-ink">27.6</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 2.8%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$0.40</div>
+      
+      <div class="num text-right text-[12px] text-faint">15</div>
+      <div class="min-w-0"><div class="truncate font-medium text-ink" title="GPT-5.2">GPT-5.2</div><div class="truncate text-[11px] text-muted md:hidden">OpenAI · $3.11</div><div class="hidden truncate text-[11px] text-muted md:block">OpenAI</div></div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-score h-full rounded-[3px]" style="width: 77.3%"></div></div>
+      <div class="num text-right font-semibold text-ink">27.3</div>
+      <div class="hidden h-2.5 overflow-hidden rounded-[3px] bg-surface-3 md:block"><div class="bar-price h-full rounded-[3px]" style="width: 21.5%"></div></div>
+      <div class="num hidden text-right md:block text-ink">$3.11</div>
+      
+    </div>
+    
+  </div>
+  <div class="card-foot">Top 15 of the category's published ratings · price = (8 × input + output) ÷ 9, blank where the snapshot has none (2 here)</div>
+</section>

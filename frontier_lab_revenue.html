@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frontier Lab Revenue &amp; Valuations</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <span class="text-faint">Frontier labs</span><span class="text-faint">/</span><span class="truncate font-medium text-ink">Frontier Lab Revenue &amp; Valuations</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 3 Oct 2026, 20:06 AWST. Ages and stale warnings on these pages are as of this build. Data: cutout-z/ai-dc-dashboard@b5ea6b8.">Built <time datetime="2026-10-03T12:06:58Z"><span class="hidden sm:inline">3 Oct 2026, 20:06 AWST</span><span class="sm:hidden">3 Oct 20:06</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main class="px-4 pb-16 pt-8 md:px-8">
+        
+<div class="mx-auto max-w-[1240px] space-y-12">
+  <div>
+    <header class="mb-8">
+  <div class="eyebrow mb-1.5">Frontier labs</div>
+  <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">Frontier Lab Revenue &amp; Valuations</h1>
+  <p class="mt-1.5 max-w-[70ch] text-[14px] text-muted">Frontier labs are consuming the majority of AI CAPEX but are private. Funding round valuations and reported ARR are the only public signals. Implied EV/Revenue multiples of 15–30× represent the &#39;AI premium&#39; the market is pricing in — the key question is whether revenue acceleration justifies the multiple expansion.</p>
+</header>
+    
+    <p class="-mt-5 text-[12px] text-muted">Press-reported figures · newest row <span class="num text-ink">Oct 2026</span></p>
+    
+  </div>
+
+  
+  <section aria-labelledby="val-h" class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+    <div class="card">
+      <div class="card-head"><div>
+        <h2 id="val-h" class="card-title">Valuation Trajectory</h2>
+        <div class="card-sub">Valuation ($B), log scale · each point is a reported round</div>
+      </div></div>
+      <div class="card-body">
+        <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #d95926; --c-light: #eb6834"></span>Anthropic
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #199e70; --c-light: #1baf7a"></span>OpenAI
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #c98500; --c-light: #eda100"></span>xAI
+  </span>
+  
+</div></div>
+        <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$4B&#34;, &#34;TechCrunch&#34;, &#34;Google-led $300M round&#34;], [&#34;$18B&#34;, &#34;WSJ&#34;, &#34;Google + Amazon investment round&#34;], [&#34;$18B&#34;, &#34;Reuters&#34;, &#34;Maintained from Oct 2023 round&#34;], [&#34;$60B&#34;, &#34;WSJ&#34;, &#34;Amazon-led round at $60B&#34;], [&#34;$62B&#34;, &#34;Bloomberg&#34;, &#34;$3.5B Amazon investment&#34;], [&#34;$183B&#34;, &#34;Anthropic&#34;, &#34;Series F at $183B post-money&#34;], [&#34;$380B&#34;, &#34;CNBC&#34;, &#34;$30B round at $380B post-money&#34;], [&#34;$965B&#34;, &#34;Anthropic (Series H)&#34;, &#34;Series H at $965bn post-money (Reuters 2026-05-28); ahead of OpenAI&#39;s $852bn March post-money&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  Anthropic $965B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-04-01&#34;, &#34;2023-10-01&#34;, &#34;2024-06-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2026-02-01&#34;, &#34;2026-05-28&#34;], &#34;y&#34;: [4.1, 18.4, 18.4, 60.0, 61.5, 183.0, 380.0, 965.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$29B&#34;, &#34;WSJ&#34;, &#34;Tender offer at $29B&#34;], [&#34;$86B&#34;, &#34;Bloomberg&#34;, &#34;Tender offer \u2014 3x in 12 months&#34;], [&#34;$157B&#34;, &#34;FT&#34;, &#34;$6.6B raise at $157B \u2014 largest private tech round&#34;], [&#34;$300B&#34;, &#34;WSJ&#34;, &#34;$40B round at $300B \u2014 nearly doubled in 6 months&#34;], [&#34;$852B&#34;, &#34;Bloomberg&#34;, &#34;$122B round closed Mar 31 \u2014 $852B post-money&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  OpenAI $852B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2024-02-01&#34;, &#34;2024-09-01&#34;, &#34;2025-03-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [29.0, 86.0, 157.0, 300.0, 852.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$24B&#34;, &#34;Bloomberg&#34;, &#34;$6B Series B round&#34;], [&#34;$50B&#34;, &#34;Bloomberg&#34;, &#34;$6B round at $50B \u2014 doubled in 5 months&#34;], [&#34;$75B&#34;, &#34;CNBC&#34;, &#34;$10B round at $75B&#34;], [&#34;$200B&#34;, &#34;Bloomberg&#34;, &#34;$10B raise at $200B valuation&#34;], [&#34;$230B&#34;, &#34;Bloomberg&#34;, &#34;$20B Series E at $230B&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;xAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#c98500&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#c98500&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;xAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  xAI $230B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2026-01-01&#34;], &#34;y&#34;: [24.0, 50.0, 75.0, 200.0, 230.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 132, &#34;t&#34;: 8, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;type&#34;: &#34;log&#34;, &#34;tickvals&#34;: [2, 5, 10, 20, 50, 100, 200, 500, 1000], &#34;ticktext&#34;: [&#34;$2B&#34;, &#34;$5B&#34;, &#34;$10B&#34;, &#34;$20B&#34;, &#34;$50B&#34;, &#34;$100B&#34;, &#34;$200B&#34;, &#34;$500B&#34;, &#34;$1,000B&#34;]}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$4B&#34;, &#34;TechCrunch&#34;, &#34;Google-led $300M round&#34;], [&#34;$18B&#34;, &#34;WSJ&#34;, &#34;Google + Amazon investment round&#34;], [&#34;$18B&#34;, &#34;Reuters&#34;, &#34;Maintained from Oct 2023 round&#34;], [&#34;$60B&#34;, &#34;WSJ&#34;, &#34;Amazon-led round at $60B&#34;], [&#34;$62B&#34;, &#34;Bloomberg&#34;, &#34;$3.5B Amazon investment&#34;], [&#34;$183B&#34;, &#34;Anthropic&#34;, &#34;Series F at $183B post-money&#34;], [&#34;$380B&#34;, &#34;CNBC&#34;, &#34;$30B round at $380B post-money&#34;], [&#34;$965B&#34;, &#34;Anthropic (Series H)&#34;, &#34;Series H at $965bn post-money (Reuters 2026-05-28); ahead of OpenAI&#39;s $852bn March post-money&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  Anthropic $965B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-04-01&#34;, &#34;2023-10-01&#34;, &#34;2024-06-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2026-02-01&#34;, &#34;2026-05-28&#34;], &#34;y&#34;: [4.1, 18.4, 18.4, 60.0, 61.5, 183.0, 380.0, 965.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$29B&#34;, &#34;WSJ&#34;, &#34;Tender offer at $29B&#34;], [&#34;$86B&#34;, &#34;Bloomberg&#34;, &#34;Tender offer \u2014 3x in 12 months&#34;], [&#34;$157B&#34;, &#34;FT&#34;, &#34;$6.6B raise at $157B \u2014 largest private tech round&#34;], [&#34;$300B&#34;, &#34;WSJ&#34;, &#34;$40B round at $300B \u2014 nearly doubled in 6 months&#34;], [&#34;$852B&#34;, &#34;Bloomberg&#34;, &#34;$122B round closed Mar 31 \u2014 $852B post-money&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  OpenAI $852B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2024-02-01&#34;, &#34;2024-09-01&#34;, &#34;2025-03-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [29.0, 86.0, 157.0, 300.0, 852.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$24B&#34;, &#34;Bloomberg&#34;, &#34;$6B Series B round&#34;], [&#34;$50B&#34;, &#34;Bloomberg&#34;, &#34;$6B round at $50B \u2014 doubled in 5 months&#34;], [&#34;$75B&#34;, &#34;CNBC&#34;, &#34;$10B round at $75B&#34;], [&#34;$200B&#34;, &#34;Bloomberg&#34;, &#34;$10B raise at $200B valuation&#34;], [&#34;$230B&#34;, &#34;Bloomberg&#34;, &#34;$20B Series E at $230B&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;xAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eda100&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#eda100&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;xAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  xAI $230B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2024-07-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2026-01-01&#34;], &#34;y&#34;: [24.0, 50.0, 75.0, 200.0, 230.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 132, &#34;t&#34;: 8, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;type&#34;: &#34;log&#34;, &#34;tickvals&#34;: [2, 5, 10, 20, 50, 100, 200, 500, 1000], &#34;ticktext&#34;: [&#34;$2B&#34;, &#34;$5B&#34;, &#34;$10B&#34;, &#34;$20B&#34;, &#34;$50B&#34;, &#34;$100B&#34;, &#34;$200B&#34;, &#34;$500B&#34;, &#34;$1,000B&#34;]}}}}" class="h-[380px]"></div>
+      </div>
+      <div class="card-foot">Latest: Anthropic May 2026 · OpenAI Mar 2026 · xAI Jan 2026 · hover a point for its source</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div>
+        <h2 class="card-title">Revenue Run Rate (ARR)</h2>
+        <div class="card-sub">ARR ($B), linear · as reported, not restated</div>
+      </div></div>
+      <div class="card-body">
+        <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #d95926; --c-light: #eb6834"></span>Anthropic
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #199e70; --c-light: #1baf7a"></span>OpenAI
+  </span>
+  
+</div></div>
+        <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$1.0B&#34;, &#34;The Information&#34;, &#34;Estimated ARR reaching $1B&#34;], [&#34;$2.0B&#34;, &#34;The Information&#34;, &#34;ARR doubled from Oct 2024&#34;], [&#34;$2.4B&#34;, &#34;The Information&#34;, &#34;Run rate accelerating&#34;], [&#34;$3.0B&#34;, &#34;CNBC&#34;, &#34;ARR $3B \u2014 accelerating business demand&#34;], [&#34;$5.0B&#34;, &#34;Bloomberg/Anthropic&#34;, &#34;ARR $5B \u2014 confirmed by Anthropic Series F&#34;], [&#34;$7.0B&#34;, &#34;Anthropic/Reuters&#34;, &#34;ARR approaching $7B \u2014 confirmed by Amodei&#34;], [&#34;$9.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR $9B at year end&#34;], [&#34;$14.0B&#34;, &#34;Anthropic&#34;, &#34;ARR $14B \u2014 disclosed at funding round&#34;], [&#34;$19.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR $19B \u2014 surging growth&#34;], [&#34;$30.0B&#34;, &#34;Anthropic&#34;, &#34;ARR $30B \u2014 surpassed OpenAI&#34;], [&#34;$47.0B&#34;, &#34;CNBC (2026-08-17 recap)&#34;, &#34;run rate topped $47bn in May, disclosed at the Series H (as_of month-end, day not published)&#34;], [&#34;$65.0B&#34;, &#34;CNBC (2026-08-17)&#34;, &#34;run rate at end of July $65bn (dated at the period end the source quantifies), reported/confirmed 2026-08-17; Q2-2026 revenue ~$11.5bn (14x y/y)&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  Anthropic $65.0B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-05-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2025-12-01&#34;, &#34;2026-02-01&#34;, &#34;2026-03-01&#34;, &#34;2026-04-01&#34;, &#34;2026-05-31&#34;, &#34;2026-07-31&#34;], &#34;y&#34;: [1.0, 2.0, 2.4, 3.0, 5.0, 7.0, 9.0, 14.0, 19.0, 30.0, 47.0, 65.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$1.0B&#34;, &#34;The Information&#34;, &#34;Estimated ARR ~$1B&#34;], [&#34;$1.3B&#34;, &#34;The Information&#34;, &#34;Growing post-GPT-4 launch&#34;], [&#34;$3.4B&#34;, &#34;The Information&#34;, &#34;ARR tripled from year prior&#34;], [&#34;$5.0B&#34;, &#34;NYT&#34;, &#34;Continued acceleration&#34;], [&#34;$10.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR approaching $10B \u2014 doubled in 4 months&#34;], [&#34;$16.0B&#34;, &#34;The Information&#34;, &#34;ARR $16B \u2014 60% growth in 3 months&#34;], [&#34;$12.0B&#34;, &#34;CNBC/The Information&#34;, &#34;ARR $12B \u2014 first $1B revenue month&#34;], [&#34;$13.0B&#34;, &#34;NYT&#34;, &#34;ARR $13B reported&#34;], [&#34;$21.4B&#34;, &#34;The Information&#34;, &#34;ARR $21.4B at year end&#34;], [&#34;$25.0B&#34;, &#34;The Information&#34;, &#34;ARR $25B&#34;], [&#34;$40.0B&#34;, &#34;Bloomberg (2026-08-13)&#34;, &#34;annualised revenue above $40bn, people familiar; ~2x the end-2025 run rate; ahead of IPO&#34;], [&#34;$70.0B&#34;, &#34;Reuters (2026-09-29, citing Axios)&#34;, &#34;ARR nears $70bn, enterprise sales more than doubling since July; single source (Axios via Reuters), &#39;nears&#39; wording, T1-sensitive&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  OpenAI $70.0B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2023-10-01&#34;, &#34;2024-03-01&#34;, &#34;2024-08-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2025-08-01&#34;, &#34;2025-12-01&#34;, &#34;2026-02-01&#34;, &#34;2026-08-13&#34;, &#34;2026-09-29&#34;], &#34;y&#34;: [1.0, 1.3, 3.4, 5.0, 10.0, 16.0, 12.0, 13.0, 21.4, 25.0, 40.0, 70.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 132, &#34;t&#34;: 8, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;ticksuffix&#34;: &#34;B&#34;, &#34;tickformat&#34;: &#34;,.0f&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$1.0B&#34;, &#34;The Information&#34;, &#34;Estimated ARR reaching $1B&#34;], [&#34;$2.0B&#34;, &#34;The Information&#34;, &#34;ARR doubled from Oct 2024&#34;], [&#34;$2.4B&#34;, &#34;The Information&#34;, &#34;Run rate accelerating&#34;], [&#34;$3.0B&#34;, &#34;CNBC&#34;, &#34;ARR $3B \u2014 accelerating business demand&#34;], [&#34;$5.0B&#34;, &#34;Bloomberg/Anthropic&#34;, &#34;ARR $5B \u2014 confirmed by Anthropic Series F&#34;], [&#34;$7.0B&#34;, &#34;Anthropic/Reuters&#34;, &#34;ARR approaching $7B \u2014 confirmed by Amodei&#34;], [&#34;$9.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR $9B at year end&#34;], [&#34;$14.0B&#34;, &#34;Anthropic&#34;, &#34;ARR $14B \u2014 disclosed at funding round&#34;], [&#34;$19.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR $19B \u2014 surging growth&#34;], [&#34;$30.0B&#34;, &#34;Anthropic&#34;, &#34;ARR $30B \u2014 surpassed OpenAI&#34;], [&#34;$47.0B&#34;, &#34;CNBC (2026-08-17 recap)&#34;, &#34;run rate topped $47bn in May, disclosed at the Series H (as_of month-end, day not published)&#34;], [&#34;$65.0B&#34;, &#34;CNBC (2026-08-17)&#34;, &#34;run rate at end of July $65bn (dated at the period end the source quantifies), reported/confirmed 2026-08-17; Q2-2026 revenue ~$11.5bn (14x y/y)&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Anthropic&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;Anthropic&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  Anthropic $65.0B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2024-10-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-05-01&#34;, &#34;2025-07-01&#34;, &#34;2025-10-01&#34;, &#34;2025-12-01&#34;, &#34;2026-02-01&#34;, &#34;2026-03-01&#34;, &#34;2026-04-01&#34;, &#34;2026-05-31&#34;, &#34;2026-07-31&#34;], &#34;y&#34;: [1.0, 2.0, 2.4, 3.0, 5.0, 7.0, 9.0, 14.0, 19.0, 30.0, 47.0, 65.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;$1.0B&#34;, &#34;The Information&#34;, &#34;Estimated ARR ~$1B&#34;], [&#34;$1.3B&#34;, &#34;The Information&#34;, &#34;Growing post-GPT-4 launch&#34;], [&#34;$3.4B&#34;, &#34;The Information&#34;, &#34;ARR tripled from year prior&#34;], [&#34;$5.0B&#34;, &#34;NYT&#34;, &#34;Continued acceleration&#34;], [&#34;$10.0B&#34;, &#34;Bloomberg&#34;, &#34;ARR approaching $10B \u2014 doubled in 4 months&#34;], [&#34;$16.0B&#34;, &#34;The Information&#34;, &#34;ARR $16B \u2014 60% growth in 3 months&#34;], [&#34;$12.0B&#34;, &#34;CNBC/The Information&#34;, &#34;ARR $12B \u2014 first $1B revenue month&#34;], [&#34;$13.0B&#34;, &#34;NYT&#34;, &#34;ARR $13B reported&#34;], [&#34;$21.4B&#34;, &#34;The Information&#34;, &#34;ARR $21.4B at year end&#34;], [&#34;$25.0B&#34;, &#34;The Information&#34;, &#34;ARR $25B&#34;], [&#34;$40.0B&#34;, &#34;Bloomberg (2026-08-13)&#34;, &#34;annualised revenue above $40bn, people familiar; ~2x the end-2025 run rate; ahead of IPO&#34;], [&#34;$70.0B&#34;, &#34;Reuters (2026-09-29, citing Axios)&#34;, &#34;ARR nears $70bn, enterprise sales more than doubling since July; single source (Axios via Reuters), &#39;nears&#39; wording, T1-sensitive&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;OpenAI&lt;/b&gt; \u00b7 %{x|%b %Y}&lt;br&gt;%{customdata[0]}&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[1]} \u00b7 %{customdata[2]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}, &#34;size&#34;: 8}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;name&#34;: &#34;OpenAI&#34;, &#34;text&#34;: [&#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;&#34;, &#34;  OpenAI $70.0B&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;size&#34;: 12}, &#34;textposition&#34;: &#34;middle right&#34;, &#34;x&#34;: [&#34;2023-01-01&#34;, &#34;2023-10-01&#34;, &#34;2024-03-01&#34;, &#34;2024-08-01&#34;, &#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-07-01&#34;, &#34;2025-08-01&#34;, &#34;2025-12-01&#34;, &#34;2026-02-01&#34;, &#34;2026-08-13&#34;, &#34;2026-09-29&#34;], &#34;y&#34;: [1.0, 1.3, 3.4, 5.0, 10.0, 16.0, 12.0, 13.0, 21.4, 25.0, 40.0, 70.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 132, &#34;t&#34;: 8, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;ticksuffix&#34;: &#34;B&#34;, &#34;tickformat&#34;: &#34;,.0f&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}}" class="h-[380px]"></div>
+      </div>
+      <div class="card-foot">Latest: Anthropic Jul 2026 · OpenAI Sep 2026 · no ARR reported for xAI</div>
+    </div>
+  </section>
+
+  <section aria-labelledby="mult-h" class="space-y-4">
+    <div>
+      <h2 id="mult-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">Implied Revenue Multiple</h2>
+      <p class="mt-1 max-w-[90ch] text-[13px] text-muted">Latest reported valuation ÷ latest reported ARR. The two figures can come from different months; both dates are shown.</p>
+    </div>
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+      
+      <div class="card">
+        <div class="flex items-start justify-between gap-4 px-5 pb-4 pt-4">
+          <div>
+            <div class="flex items-center gap-2 text-[13px] text-muted"><span class="swatch" style="--c-dark: #199e70; --c-light: #1baf7a"></span>OpenAI · EV/Revenue</div>
+            <div class="mt-2 text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">12x</div>
+          </div>
+          <span class="badge">6 months apart</span>
+        </div>
+        <dl class="grid grid-cols-2 border-t border-line text-[13px]">
+          <div class="border-r border-line px-5 py-3"><dt class="text-muted">Latest Valuation</dt><dd class="num mt-0.5 text-ink">$852B <span class="text-faint">· Mar 2026</span></dd></div>
+          <div class="px-5 py-3"><dt class="text-muted">Latest ARR</dt><dd class="num mt-0.5 text-ink">$70.0B <span class="text-faint">· Sep 2026</span></dd></div>
+        </dl>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-start justify-between gap-4 px-5 pb-4 pt-4">
+          <div>
+            <div class="flex items-center gap-2 text-[13px] text-muted"><span class="swatch" style="--c-dark: #d95926; --c-light: #eb6834"></span>Anthropic · EV/Revenue</div>
+            <div class="mt-2 text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">15x</div>
+          </div>
+          <span class="badge">2 months apart</span>
+        </div>
+        <dl class="grid grid-cols-2 border-t border-line text-[13px]">
+          <div class="border-r border-line px-5 py-3"><dt class="text-muted">Latest Valuation</dt><dd class="num mt-0.5 text-ink">$965B <span class="text-faint">· May 2026</span></dd></div>
+          <div class="px-5 py-3"><dt class="text-muted">Latest ARR</dt><dd class="num mt-0.5 text-ink">$65.0B <span class="text-faint">· Jul 2026</span></dd></div>
+        </dl>
+      </div>
+      
+    </div>
+  </section>
+
+  <details class="disclosure" >
+  <summary><span class="flex items-center gap-2">Full Announcement Timeline<span class="font-normal text-faint">55 rows</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><form id="t-flr_timeline-form" hx-get="/partials/t/flr_timeline" hx-target="#t-flr_timeline"  onsubmit="return false" class="hidden"></form>
+<div id="t-flr_timeline" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-flr_timeline-form">
+<input type="hidden" name="direction" value="asc" form="t-flr_timeline-form"><div class="max-h-[640px] overflow-auto" tabindex="0" role="region" aria-label="Full Announcement Timeline, scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack ">
+  <colgroup><col class="w-[9%]"><col class="w-[11%]"><col class="w-[9%]"><col class="w-[10%]"><col class="w-[16%]"><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th     pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "date", "direction": "asc", "page": "1"}'>
+        date<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "company", "direction": "asc", "page": "1"}'>
+        company<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "metric", "direction": "asc", "page": "1"}'>
+        metric<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "value_fmt", "direction": "asc", "page": "1"}'>
+        Value<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "source", "direction": "asc", "page": "1"}'>
+        source<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline"
+              hx-vals='{"sort": "notes", "direction": "asc", "page": "1"}'>
+        notes<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-10</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$305.2B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic IPO prospectus</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Google/Broadcom TPUs, $125.2bn five-year lease commitment (partnership announced 2026-04-06; the amount was disclosed in the IPO prospectus reported 2026-10-01)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-09</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$70.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Reuters (2026-09-29, citing Axios)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR nears $70bn, enterprise sales more than doubling since July; single source (Axios via Reuters), &#39;nears&#39; wording, T1-sensitive</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-09</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Mistral AI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">valuation</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$24.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Reuters (2026-09-08)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Series D at EUR21bn+ (~US$24bn) post-money</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-08</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$40.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Bloomberg (2026-08-13)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">annualised revenue above $40bn, people familiar; ~2x the end-2025 run rate; ahead of IPO</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-07</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$65.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">CNBC (2026-08-17)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">run rate at end of July $65bn (dated at the period end the source quantifies), reported/confirmed 2026-08-17; Q2-2026 revenue ~$11.5bn (14x y/y)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-07</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$708.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">WSJ (2026-07-22)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Georgia &#39;Project Camellia&#39;, $20bn own-build with Georgia Power near Savannah (3.2 GW, phases 2028-2032; signed with Effingham County&#39;s development authority) - running total 688 + 20. WSJ&#39;s ~$750bn planned compute spend through 2030 is a broader aggregate including planned, unsigned items and is not a series row; an Nvidia-backed Ohio data-centre lease (WSJ) remains unitemised behind the paywall.</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-05</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$47.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">CNBC (2026-08-17 recap)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">run rate topped $47bn in May, disclosed at the Series H (as_of month-end, day not published)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-05</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">valuation</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$965.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic (Series H)</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Series H at $965bn post-money (Reuters 2026-05-28); ahead of OpenAI&#39;s $852bn March post-money</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-04</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$180.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">AWS, more than $100bn over 10 years (Trainium/Graviton, up to 5GW)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-04</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$30.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $30B — surpassed OpenAI</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-03</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Mistral</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$2.3B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Reuters</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Paris data centre, $830m debt to buy 13,800 NVIDIA GB300 GPUs (7-bank consortium)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-03</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$19.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Bloomberg</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $19B — surging growth</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-03</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">valuation</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$852.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Bloomberg</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">$122B round closed Mar 31 — $852B post-money</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-02</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$688.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI (amazon-partnership); CNBC 2026-02-27</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">AWS agreement expanded by $100bn over eight years (38 -&gt; 138 total), announced with the $110bn round and Amazon&#39;s $50bn stake</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-02</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Mistral</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$1.4B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Reuters</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">EcoDataCenter Sweden, EUR1.2bn (~$1.43bn) own data-centre investment</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-02</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$14.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $14B — disclosed at funding round</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-02</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">valuation</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$380.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">CNBC</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">$30B round at $380B post-money</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-02</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$25.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">The Information</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $25B</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2026-01</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">xAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">valuation</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$230.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Bloomberg</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">$20B Series E at $230B</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-12</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$9.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Bloomberg</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $9B at year end</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-12</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">arr</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$21.4B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">The Information</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">ARR $21.4B at year end</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-11</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$80.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Microsoft blog</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Microsoft Azure, $30bn of Azure compute capacity committed</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-11</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$50.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Anthropic</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Fluidstack (own US data-centre build), $50bn</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-11</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$588.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">AWS, $38bn over 7 years</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="date" data-kind="mono" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  font-mono text-[12px] font-medium text-ink">2025-10</td>
+    
+    
+    <td data-label="company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">OpenAI</td>
+    
+    
+    <td data-label="metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">compute_commitments</td>
+    
+    
+    <td data-label="Value" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   num text-right text-ink">$550.0B</td>
+    
+    
+    <td data-label="source" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   text-ink">Microsoft blog</td>
+    
+    
+    <td data-label="notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 leading-relaxed text-muted">Microsoft Azure, incremental $250bn contracted on top of the Oracle deal (announced with the recapitalisation)</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">55 announcements · page 1 of 3</span>
+  
+  <div class="flex items-center gap-1">
+    <button type="button" class="btn btn-icon h-7 w-7 disabled:opacity-40" aria-label="Previous page" disabled
+            hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline" hx-vals='{"page": "0"}'>
+      <span class="rotate-180"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></span></button>
+    <button type="button" class="btn btn-icon h-7 w-7 disabled:opacity-40" aria-label="Next page" 
+            hx-get="/partials/t/flr_timeline" hx-include="#t-flr_timeline-form" hx-target="#t-flr_timeline" hx-vals='{"page": "2"}'>
+      <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></button>
+  </div>
+  
+</div></div></div>
+</details>
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>

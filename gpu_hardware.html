@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPU Hardware &amp; Pricing</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint">11</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/prospecting" title="AI stock screener built from CHAT, AIQ, BOTZ and ROBT ETF holdings, filterable by AI tier, region and sector, with market caps." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prospecting</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <span class="text-faint">Hardware &amp; facility</span><span class="text-faint">/</span><span class="truncate font-medium text-ink">GPU Hardware &amp; Pricing</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 3 Oct 2026, 20:06 AWST. Ages and stale warnings on these pages are as of this build. Data: cutout-z/ai-dc-dashboard@b5ea6b8.">Built <time datetime="2026-10-03T12:06:58Z"><span class="hidden sm:inline">3 Oct 2026, 20:06 AWST</span><span class="sm:hidden">3 Oct 20:06</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main class="px-4 pb-16 pt-8 md:px-8">
+        
+<div class="mx-auto max-w-[1240px] space-y-14">
+  <header class="mb-8">
+  <div class="eyebrow mb-1.5">Hardware &amp; facility</div>
+  <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">GPU Hardware &amp; Pricing</h1>
+  
+</header>
+
+  <section aria-labelledby="lease-h" class="-mt-6 space-y-4">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h2 id="lease-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">GPU Lease Prices</h2>
+      <div class="flex items-center gap-2 text-[12px] text-muted">Newest price <span class="num text-ink">Mar 2026</span><span class="pill pill-warn"><span class="badge-dot"></span>stale · 216 days old</span></div>
+    </div>
+    <div class="prose max-w-[110ch] text-[13px] text-muted"><p><strong>What this measures</strong>: Spot lease prices reflect the marginal clearing price for excess supply — a <strong>stranded asset pricing signal</strong>, not a direct obsolescence measure. H100 is not technically obsolete; the price decline reflects hyperscaler over-provisioning as Blackwell pulls workloads up-stack. <strong>Key watch</strong>: H100 spot <em>re-inflating</em> would be the more concerning bubble signal — it would mean demand is accelerating faster than Blackwell can absorb it. ⚠️ VAST.ai is a thin peer-to-peer market — treat spot prices as directional, not precise.</p></div>
+    
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"><div class="card flex min-w-0 flex-col">
+  <div class="flex-1 px-5 pb-4 pt-4">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-1 text-[13px] text-muted">H100 Spot (VAST.ai)</div>
+      <span class="badge num shrink-0">-62% from peak</span>
+    </div>
+    <div class="mt-2 flex items-baseline gap-1.5">
+      <span class="text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">$0.75</span>
+      <span class="text-[13px] text-muted">/hr</span>
+    </div>
+    <div class="mt-2 text-[12px] leading-snug text-muted">Peak $1.99 in Jun 2024 · latest Mar 2026</div>
+  </div>
+  
+</div><div class="card flex min-w-0 flex-col">
+  <div class="flex-1 px-5 pb-4 pt-4">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-1 text-[13px] text-muted">H100 On-Demand (Lambda)</div>
+      
+    </div>
+    <div class="mt-2 flex items-baseline gap-1.5">
+      <span class="text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">$1.49</span>
+      <span class="text-[13px] text-muted">/hr</span>
+    </div>
+    <div class="mt-2 text-[12px] leading-snug text-muted">Lambda Labs · Mar 2026</div>
+  </div>
+  
+</div><div class="card flex min-w-0 flex-col">
+  <div class="flex-1 px-5 pb-4 pt-4">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-1 text-[13px] text-muted">Generation Gap<span class="tip" tabindex="0" role="note" aria-label="B200 on-demand ÷ H100 spot — compute-per-dollar migration pressure"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg><span class="tip-body" aria-hidden="true">B200 on-demand ÷ H100 spot — compute-per-dollar migration pressure</span></span></div>
+      
+    </div>
+    <div class="mt-2 flex items-baseline gap-1.5">
+      <span class="text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">4.7x</span>
+      
+    </div>
+    <div class="mt-2 text-[12px] leading-snug text-muted">B200 $3.49 (Lambda Labs) ÷ H100 spot $0.75</div>
+  </div>
+  
+</div><div class="card flex min-w-0 flex-col">
+  <div class="flex-1 px-5 pb-4 pt-4">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-1 text-[13px] text-muted">Structured/Spot Spread<span class="tip" tabindex="0" role="note" aria-label="Lambda on-demand ÷ VAST spot — widening = structured buyers not paying up = stronger stranded asset signal"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg><span class="tip-body" aria-hidden="true">Lambda on-demand ÷ VAST spot — widening = structured buyers not paying up = stronger stranded asset signal</span></span></div>
+      
+    </div>
+    <div class="mt-2 flex items-baseline gap-1.5">
+      <span class="text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink">2.0x</span>
+      
+    </div>
+    <div class="mt-2 text-[12px] leading-snug text-muted">Lambda Labs on-demand ÷ VAST.ai spot</div>
+  </div>
+  
+</div></div>
+    <div class="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
+      <div class="card">
+        <div class="card-head"><div>
+          <h3 class="card-title">H100 Price History</h3>
+          <div class="card-sub">Spot (VAST.ai) vs on-demand (Lambda/CoreWeave) — spread between them is the structured buyer signal</div>
+        </div></div>
+        <div class="card-body">
+          <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line" style="--c-dark: #3987e5; --c-light: #2a78d6"></span>Lambda Labs · on-demand
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line" style="--c-dark: #199e70; --c-light: #1baf7a"></span>CoreWeave · on-demand
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line swatch-line-dot" style="--c-dark: #3987e5; --c-light: #2a78d6"></span>Lambda Labs · 1-year reserved
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line swatch-line-dot" style="--c-dark: #d95926; --c-light: #eb6834"></span>VAST.ai · spot
+  </span>
+  
+</div></div>
+          <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;Lambda Cloud at H100 launch&#34;], [&#34;Stable high demand&#34;], [&#34;Slight softening as supply increased&#34;], [&#34;H200 announcement pressure&#34;], [&#34;Year-end pricing&#34;], [&#34;Continued softening&#34;], [&#34;H100 pricing stabilizing lower&#34;], [&#34;Continued decline as Blackwell ramps&#34;], [&#34;Stabilizing at lower level&#34;], [&#34;Further decline&#34;], [&#34;H100 fully commoditized&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Lambda Labs&lt;/b&gt; \u00b7 on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#3987e5&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#3987e5&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;Lambda Labs \u00b7 on-demand&#34;, &#34;x&#34;: [&#34;2023-06-01&#34;, &#34;2024-03-01&#34;, &#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [3.29, 3.49, 2.99, 2.85, 2.49, 2.29, 1.99, 1.89, 1.79, 1.59, 1.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Peak demand pricing&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;CoreWeave&lt;/b&gt; \u00b7 on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;CoreWeave \u00b7 on-demand&#34;, &#34;x&#34;: [&#34;2023-12-01&#34;], &#34;y&#34;: [3.89], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Reserved discount ~29%&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Lambda Labs&lt;/b&gt; \u00b7 1-year reserved \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#3987e5&#34;, &#34;dash&#34;: &#34;dot&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#3987e5&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;Lambda Labs \u00b7 1-year reserved&#34;, &#34;x&#34;: [&#34;2024-03-01&#34;], &#34;y&#34;: [2.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Secondary market spot \u2014 highly variable&#34;], [&#34;Secondary market declining&#34;], [&#34;Secondary market softening&#34;], [&#34;Significant secondary market decline&#34;], [&#34;Secondary market floor \u2014 oversupply of older H100s&#34;], [&#34;Secondary market continuing to drop&#34;], [&#34;Oversupply persists \u2014 mass Blackwell migration&#34;], [&#34;Near all-time lows&#34;], [&#34;All-time low&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;VAST.ai&lt;/b&gt; \u00b7 spot \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#a3a3a3&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;dash&#34;: &#34;dash&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#d95926&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;VAST.ai \u00b7 spot&#34;, &#34;x&#34;: [&#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [1.99, 1.79, 1.49, 1.29, 0.99, 0.89, 0.79, 0.75, 0.75], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;Lambda Cloud at H100 launch&#34;], [&#34;Stable high demand&#34;], [&#34;Slight softening as supply increased&#34;], [&#34;H200 announcement pressure&#34;], [&#34;Year-end pricing&#34;], [&#34;Continued softening&#34;], [&#34;H100 pricing stabilizing lower&#34;], [&#34;Continued decline as Blackwell ramps&#34;], [&#34;Stabilizing at lower level&#34;], [&#34;Further decline&#34;], [&#34;H100 fully commoditized&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Lambda Labs&lt;/b&gt; \u00b7 on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;Lambda Labs \u00b7 on-demand&#34;, &#34;x&#34;: [&#34;2023-06-01&#34;, &#34;2024-03-01&#34;, &#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [3.29, 3.49, 2.99, 2.85, 2.49, 2.29, 1.99, 1.89, 1.79, 1.59, 1.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Peak demand pricing&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;CoreWeave&lt;/b&gt; \u00b7 on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;CoreWeave \u00b7 on-demand&#34;, &#34;x&#34;: [&#34;2023-12-01&#34;], &#34;y&#34;: [3.89], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Reserved discount ~29%&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;Lambda Labs&lt;/b&gt; \u00b7 1-year reserved \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;dash&#34;: &#34;dot&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;Lambda Labs \u00b7 1-year reserved&#34;, &#34;x&#34;: [&#34;2024-03-01&#34;], &#34;y&#34;: [2.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;Secondary market spot \u2014 highly variable&#34;], [&#34;Secondary market declining&#34;], [&#34;Secondary market softening&#34;], [&#34;Significant secondary market decline&#34;], [&#34;Secondary market floor \u2014 oversupply of older H100s&#34;], [&#34;Secondary market continuing to drop&#34;], [&#34;Oversupply persists \u2014 mass Blackwell migration&#34;], [&#34;Near all-time lows&#34;], [&#34;All-time low&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;VAST.ai&lt;/b&gt; \u00b7 spot \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr&lt;br&gt;&lt;span style=&#39;color:#525252&#39;&gt;%{customdata[0]}&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;dash&#34;: &#34;dash&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#eb6834&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;VAST.ai \u00b7 spot&#34;, &#34;x&#34;: [&#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [1.99, 1.79, 1.49, 1.29, 0.99, 0.89, 0.79, 0.75, 0.75], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}}" class="h-[340px]"></div>
+        </div>
+        <div class="card-foot">$/hr · colour = provider, dashed = spot, dotted = reserved</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div>
+          <h3 class="card-title">Generation Gap</h3>
+          <div class="card-sub">H100 spot vs H100/H200/B200 on-demand — the spread is the compute-per-dollar cost of not upgrading to Blackwell</div>
+        </div></div>
+        <div class="card-body">
+          <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line" style="--c-dark: #1c5cab; --c-light: #86b6ef"></span>H100 80GB (on-demand)
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line swatch-line-dot" style="--c-dark: #1c5cab; --c-light: #86b6ef"></span>H100 80GB (spot)
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line" style="--c-dark: #5598e7; --c-light: #2a78d6"></span>H200 (on-demand)
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch-line" style="--c-dark: #b7d3f6; --c-light: #0d366b"></span>B200 (on-demand)
+  </span>
+  
+</div></div>
+          <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;Lambda Labs&#34;], [&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H100 80GB&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H100 80GB (on-demand)&#34;, &#34;x&#34;: [&#34;2023-06-01&#34;, &#34;2023-12-01&#34;, &#34;2024-03-01&#34;, &#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [3.29, 3.89, 3.49, 2.99, 2.85, 2.49, 2.29, 1.99, 1.89, 1.79, 1.59, 1.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H100 80GB&lt;/b&gt; spot \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;dash&#34;: &#34;dash&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H100 80GB (spot)&#34;, &#34;x&#34;: [&#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [1.99, 1.79, 1.49, 1.29, 0.99, 0.89, 0.79, 0.75, 0.75], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H200&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#5598e7&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#5598e7&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H200 (on-demand)&#34;, &#34;x&#34;: [&#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-12-01&#34;], &#34;y&#34;: [3.99, 3.49, 2.99], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;B200&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#b7d3f6&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#b7d3f6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;B200 (on-demand)&#34;, &#34;x&#34;: [&#34;2025-03-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [4.99, 4.49, 3.99, 3.49], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;Lambda Labs&#34;], [&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H100 80GB&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H100 80GB (on-demand)&#34;, &#34;x&#34;: [&#34;2023-06-01&#34;, &#34;2023-12-01&#34;, &#34;2024-03-01&#34;, &#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [3.29, 3.89, 3.49, 2.99, 2.85, 2.49, 2.29, 1.99, 1.89, 1.79, 1.59, 1.49], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;], [&#34;VAST.ai&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H100 80GB&lt;/b&gt; spot \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;dash&#34;: &#34;dash&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H100 80GB (spot)&#34;, &#34;x&#34;: [&#34;2024-06-01&#34;, &#34;2024-09-01&#34;, &#34;2024-12-01&#34;, &#34;2025-01-01&#34;, &#34;2025-03-01&#34;, &#34;2025-06-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [1.99, 1.79, 1.49, 1.29, 0.99, 0.89, 0.79, 0.75, 0.75], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;H200&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;H200 (on-demand)&#34;, &#34;x&#34;: [&#34;2024-12-01&#34;, &#34;2025-03-01&#34;, &#34;2025-12-01&#34;], &#34;y&#34;: [3.99, 3.49, 2.99], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;CoreWeave&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;], [&#34;Lambda Labs&#34;]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;B200&lt;/b&gt; on-demand \u00b7 %{x|%b %Y}&lt;br&gt;$%{y:.2f}/hr \u00b7 %{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#0d366b&#34;, &#34;dash&#34;: &#34;solid&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#0d366b&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 7}, &#34;mode&#34;: &#34;lines+markers&#34;, &#34;name&#34;: &#34;B200 (on-demand)&#34;, &#34;x&#34;: [&#34;2025-03-01&#34;, &#34;2025-09-01&#34;, &#34;2025-12-01&#34;, &#34;2026-03-01&#34;], &#34;y&#34;: [4.99, 4.49, 3.99, 3.49], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;tickprefix&#34;: &#34;$&#34;, &#34;rangemode&#34;: &#34;tozero&#34;}}}}" class="h-[340px]"></div>
+        </div>
+        <div class="card-foot">Newer generations in stronger blue · a line can join more than one provider; hover names each point's</div>
+      </div>
+    </div>
+    <p class="text-[13px] text-ink">H100 spot: $1.99/hr → $0.75/hr (-62% since Jun 2024). For a more robust series, see Epoch AI and SemiAnalysis compute price indices.</p>
+    <p class="text-[12px] text-muted">Sources, as recorded per row: CoreWeave pricing page · Lambda Labs pricing page · VAST.ai marketplace (no URL or retrieval date is stored)</p>
+    
+  </section>
+
+  <section aria-labelledby="hw-h" class="space-y-4">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h2 id="hw-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">Compute &amp; Hardware</h2>
+      <div class="flex items-center gap-2 text-[12px] text-muted">Epoch dataset last modified <span class="num text-ink">2026-03-31</span><span class="pill pill-warn"><span class="badge-dot"></span>stale · 186 days old</span></div>
+    </div>
+    
+    <div class="grid grid-cols-1 items-start gap-4 xl:grid-cols-[1.4fr_1fr]">
+      <div class="card">
+        <div class="card-head"><div>
+          <h3 class="card-title">NVIDIA Data-Centre GPU Performance</h3>
+          <div class="card-sub">Tensor-FP16/BF16 Performance (TFLOPS), log scale · 25 SKUs</div>
+        </div></div>
+        <div class="card-body">
+          <div class="mb-2"><div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #1c5cab; --c-light: #86b6ef"></span>Volta
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #2a78d6; --c-light: #5598e7"></span>Ampere
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #5598e7; --c-light: #2a78d6"></span>Ada Lovelace
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #86b6ef; --c-light: #1c5cab"></span>Hopper
+  </span>
+  
+  <span class="inline-flex items-center gap-1.5 text-[12px] text-muted"><span class="swatch" style="--c-dark: #b7d3f6; --c-light: #0d366b"></span>Blackwell
+  </span>
+  
+</div></div>
+          <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA V100&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 897 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 SXM2 16 GB&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 897 GB/s&#34;, 2], [&#34;&lt;b&gt;NVIDIA Tesla V100 PCIe 16 GB&lt;/b&gt; \u00b7 250 W \u00b7 16 GB HBM \u00b7 897 GB/s \u00b7 $10,664 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA Tesla V100 SXM2&lt;/b&gt; \u00b7 300 W \u00b7 16 GB HBM \u00b7 897 GB/s \u00b7 $11,500 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA Tesla V100 SXM2 32 GB&lt;/b&gt; \u00b7 300 W \u00b7 32 GB HBM \u00b7 898 GB/s \u00b7 $11,458 at release&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 SXM3 32 GB&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 898 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 DGXS 32 GB&lt;/b&gt; \u00b7 250 W \u00b7 32 GB HBM \u00b7 897 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 DGXS 16 GB&lt;/b&gt; \u00b7 250 W \u00b7 16 GB HBM \u00b7 897 GB/s&#34;, 4], [&#34;&lt;b&gt;NVIDIA Tesla V100 PCIe 32 GB&lt;/b&gt; \u00b7 250 W \u00b7 32 GB HBM \u00b7 897 GB/s \u00b7 $11,458 at release&#34;, 1]], &#34;hovertemplate&#34;: &#34;Volta \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [12, 10, 10, 16, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Volta&#34;, &#34;x&#34;: [&#34;2017-06-21&#34;, &#34;2017-06-21&#34;, &#34;2017-07-01&#34;, &#34;2018-03-27&#34;, &#34;2018-03-27&#34;], &#34;y&#34;: [125.0, 112.0, 125.0, 125.0, 112.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA A100&lt;/b&gt; \u00b7 400 W \u00b7 40 GB HBM \u00b7 1,560 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 SXM4 40 GB&lt;/b&gt; \u00b7 400 W \u00b7 40 GB HBM \u00b7 1,560 GB/s \u00b7 $15,000 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 PCIe&lt;/b&gt; \u00b7 300 W \u00b7 40 GB HBM \u00b7 1,940 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 SXM4 80 GB&lt;/b&gt; \u00b7 400 W \u00b7 80 GB HBM \u00b7 2,039 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Ampere \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Ampere&#34;, &#34;x&#34;: [&#34;2020-03-01&#34;, &#34;2020-05-14&#34;, &#34;2020-06-22&#34;, &#34;2020-11-16&#34;], &#34;y&#34;: [312.0, 312.0, 312.0, 312.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA L40&lt;/b&gt; \u00b7 300 W \u00b7 48 GB HBM \u00b7 864 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Ada Lovelace \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#5598e7&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Ada Lovelace&#34;, &#34;x&#34;: [&#34;2022-10-13&#34;], &#34;y&#34;: [181.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA H100 PCIe&lt;/b&gt; \u00b7 350 W \u00b7 80 GB HBM \u00b7 2,040 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H100 SXM5 80GB&lt;/b&gt; \u00b7 700 W \u00b7 80 GB HBM \u00b7 3,350 GB/s \u00b7 $33,600 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA GH100&lt;/b&gt; \u00b7 700 W \u00b7 HBM \u2014 \u00b7 3,072 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H800 SXM5&lt;/b&gt; \u00b7 700 W \u00b7 80 GB HBM \u00b7 3,360 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA GH200&lt;/b&gt; \u00b7 700 W \u00b7 HBM \u2014 \u00b7 4,900 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H200 SXM&lt;/b&gt; \u00b7 700 W \u00b7 141 GB HBM \u00b7 4,800 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Hopper \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Hopper&#34;, &#34;x&#34;: [&#34;2022-09-20&#34;, &#34;2022-09-20&#34;, &#34;2023-03-21&#34;, &#34;2023-03-21&#34;, &#34;2023-08-08&#34;, &#34;2024-11-18&#34;], &#34;y&#34;: [756.0, 989.4, 989.5, 989.0, 989.5, 989.5], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA B200&lt;/b&gt; \u00b7 1,000 W \u00b7 180 GB HBM \u00b7 7,700 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA B100&lt;/b&gt; \u00b7 700 W \u00b7 192 GB HBM \u00b7 8,000 GB/s \u00b7 $35,000 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA GB200&lt;/b&gt; \u00b7 1,200 W \u00b7 186 GB HBM \u00b7 8,000 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA B300 (Blackwell Ultra)&lt;/b&gt; \u00b7 1,100 W \u00b7 270 GB HBM \u00b7 7,700 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA GB300 (Blackwell Ultra)&lt;/b&gt; \u00b7 1,400 W \u00b7 288 GB HBM \u00b7 8,000 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Blackwell \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#b7d3f6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Blackwell&#34;, &#34;x&#34;: [&#34;2024-11-15&#34;, &#34;2024-11-15&#34;, &#34;2025-02-15&#34;, &#34;2025-08-22&#34;, &#34;2025-08-22&#34;], &#34;y&#34;: [2250.0, 1750.0, 2500.0, 2250.0, 2500.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;annotations&#34;: [{&#34;font&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Volta&#34;, &#34;x&#34;: &#34;2018-03-27&#34;, &#34;y&#34;: 2.0969100130080562, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Ampere&#34;, &#34;x&#34;: &#34;2020-11-16&#34;, &#34;y&#34;: 2.494154594018443, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Ada Lovelace&#34;, &#34;x&#34;: &#34;2022-10-13&#34;, &#34;y&#34;: 2.2576785748691846, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Hopper&#34;, &#34;x&#34;: &#34;2024-11-18&#34;, &#34;y&#34;: 2.9954157985424152, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Blackwell&#34;, &#34;x&#34;: &#34;2025-08-22&#34;, &#34;y&#34;: 3.3979400086720375, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}], &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;type&#34;: &#34;log&#34;, &#34;tickvals&#34;: [100, 200, 500, 1000, 2000, 5000], &#34;ticktext&#34;: [&#34;100&#34;, &#34;200&#34;, &#34;500&#34;, &#34;1,000&#34;, &#34;2,000&#34;, &#34;5,000&#34;], &#34;range&#34;: [1.95, 3.6]}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA V100&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 897 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 SXM2 16 GB&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 897 GB/s&#34;, 2], [&#34;&lt;b&gt;NVIDIA Tesla V100 PCIe 16 GB&lt;/b&gt; \u00b7 250 W \u00b7 16 GB HBM \u00b7 897 GB/s \u00b7 $10,664 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA Tesla V100 SXM2&lt;/b&gt; \u00b7 300 W \u00b7 16 GB HBM \u00b7 897 GB/s \u00b7 $11,500 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA Tesla V100 SXM2 32 GB&lt;/b&gt; \u00b7 300 W \u00b7 32 GB HBM \u00b7 898 GB/s \u00b7 $11,458 at release&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 SXM3 32 GB&lt;/b&gt; \u00b7 300 W \u00b7 HBM \u2014 \u00b7 898 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 DGXS 32 GB&lt;/b&gt; \u00b7 250 W \u00b7 32 GB HBM \u00b7 897 GB/s&lt;br&gt;&lt;b&gt;NVIDIA Tesla V100 DGXS 16 GB&lt;/b&gt; \u00b7 250 W \u00b7 16 GB HBM \u00b7 897 GB/s&#34;, 4], [&#34;&lt;b&gt;NVIDIA Tesla V100 PCIe 32 GB&lt;/b&gt; \u00b7 250 W \u00b7 32 GB HBM \u00b7 897 GB/s \u00b7 $11,458 at release&#34;, 1]], &#34;hovertemplate&#34;: &#34;Volta \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#86b6ef&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [12, 10, 10, 16, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Volta&#34;, &#34;x&#34;: [&#34;2017-06-21&#34;, &#34;2017-06-21&#34;, &#34;2017-07-01&#34;, &#34;2018-03-27&#34;, &#34;2018-03-27&#34;], &#34;y&#34;: [125.0, 112.0, 125.0, 125.0, 112.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA A100&lt;/b&gt; \u00b7 400 W \u00b7 40 GB HBM \u00b7 1,560 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 SXM4 40 GB&lt;/b&gt; \u00b7 400 W \u00b7 40 GB HBM \u00b7 1,560 GB/s \u00b7 $15,000 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 PCIe&lt;/b&gt; \u00b7 300 W \u00b7 40 GB HBM \u00b7 1,940 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA A100 SXM4 80 GB&lt;/b&gt; \u00b7 400 W \u00b7 80 GB HBM \u00b7 2,039 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Ampere \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#5598e7&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Ampere&#34;, &#34;x&#34;: [&#34;2020-03-01&#34;, &#34;2020-05-14&#34;, &#34;2020-06-22&#34;, &#34;2020-11-16&#34;], &#34;y&#34;: [312.0, 312.0, 312.0, 312.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA L40&lt;/b&gt; \u00b7 300 W \u00b7 48 GB HBM \u00b7 864 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Ada Lovelace \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#2a78d6&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Ada Lovelace&#34;, &#34;x&#34;: [&#34;2022-10-13&#34;], &#34;y&#34;: [181.0], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA H100 PCIe&lt;/b&gt; \u00b7 350 W \u00b7 80 GB HBM \u00b7 2,040 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H100 SXM5 80GB&lt;/b&gt; \u00b7 700 W \u00b7 80 GB HBM \u00b7 3,350 GB/s \u00b7 $33,600 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA GH100&lt;/b&gt; \u00b7 700 W \u00b7 HBM \u2014 \u00b7 3,072 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H800 SXM5&lt;/b&gt; \u00b7 700 W \u00b7 80 GB HBM \u00b7 3,360 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA GH200&lt;/b&gt; \u00b7 700 W \u00b7 HBM \u2014 \u00b7 4,900 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA H200 SXM&lt;/b&gt; \u00b7 700 W \u00b7 141 GB HBM \u00b7 4,800 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Hopper \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#1c5cab&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Hopper&#34;, &#34;x&#34;: [&#34;2022-09-20&#34;, &#34;2022-09-20&#34;, &#34;2023-03-21&#34;, &#34;2023-03-21&#34;, &#34;2023-08-08&#34;, &#34;2024-11-18&#34;], &#34;y&#34;: [756.0, 989.4, 989.5, 989.0, 989.5, 989.5], &#34;type&#34;: &#34;scatter&#34;}, {&#34;customdata&#34;: [[&#34;&lt;b&gt;NVIDIA B200&lt;/b&gt; \u00b7 1,000 W \u00b7 180 GB HBM \u00b7 7,700 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA B100&lt;/b&gt; \u00b7 700 W \u00b7 192 GB HBM \u00b7 8,000 GB/s \u00b7 $35,000 at release&#34;, 1], [&#34;&lt;b&gt;NVIDIA GB200&lt;/b&gt; \u00b7 1,200 W \u00b7 186 GB HBM \u00b7 8,000 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA B300 (Blackwell Ultra)&lt;/b&gt; \u00b7 1,100 W \u00b7 270 GB HBM \u00b7 7,700 GB/s&#34;, 1], [&#34;&lt;b&gt;NVIDIA GB300 (Blackwell Ultra)&lt;/b&gt; \u00b7 1,400 W \u00b7 288 GB HBM \u00b7 8,000 GB/s&#34;, 1]], &#34;hovertemplate&#34;: &#34;Blackwell \u00b7 %{x|%b %Y} \u00b7 %{y:,.0f} TFLOPS&lt;br&gt;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;marker&#34;: {&#34;color&#34;: &#34;#0d366b&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: [10, 10, 10, 10, 10]}, &#34;mode&#34;: &#34;markers&#34;, &#34;name&#34;: &#34;Blackwell&#34;, &#34;x&#34;: [&#34;2024-11-15&#34;, &#34;2024-11-15&#34;, &#34;2025-02-15&#34;, &#34;2025-08-22&#34;, &#34;2025-08-22&#34;], &#34;y&#34;: [2250.0, 1750.0, 2500.0, 2250.0, 2500.0], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;annotations&#34;: [{&#34;font&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Volta&#34;, &#34;x&#34;: &#34;2018-03-27&#34;, &#34;y&#34;: 2.0969100130080562, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Ampere&#34;, &#34;x&#34;: &#34;2020-11-16&#34;, &#34;y&#34;: 2.494154594018443, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Ada Lovelace&#34;, &#34;x&#34;: &#34;2022-10-13&#34;, &#34;y&#34;: 2.2576785748691846, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Hopper&#34;, &#34;x&#34;: &#34;2024-11-18&#34;, &#34;y&#34;: 2.9954157985424152, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}, {&#34;font&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;Blackwell&#34;, &#34;x&#34;: &#34;2025-08-22&#34;, &#34;y&#34;: 3.3979400086720375, &#34;yref&#34;: &#34;y&#34;, &#34;yshift&#34;: 16}], &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 380, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;type&#34;: &#34;log&#34;, &#34;tickvals&#34;: [100, 200, 500, 1000, 2000, 5000], &#34;ticktext&#34;: [&#34;100&#34;, &#34;200&#34;, &#34;500&#34;, &#34;1,000&#34;, &#34;2,000&#34;, &#34;5,000&#34;], &#34;range&#34;: [1.95, 3.6]}}}}" class="h-[380px]"></div>
+          <div class="mt-3"><details class="disclosure" >
+  <summary><span class="flex items-center gap-2">About this chart</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="prose"><p><strong>What it shows.</strong> Peak dense Tensor-FP16/BF16 throughput for each NVIDIA data-centre GPU SKU, plotted against release date. Log scale. Coloured by architecture family (Volta → Ampere → Hopper → Blackwell).</p><p><strong>Why it matters.</strong> Training FLOPS per chip has grown ~20× in 8 years (125 TFLOPS V100 → 2500 TFLOPS GB300). Combined with cluster scaling, this is what enables each new frontier-model generation.</p><p><strong>Source.</strong> Epoch AI — <em>Machine Learning Hardware</em> dataset (epoch.ai/data/machine-learning-hardware), CC-BY licence.</p></div></div>
+</details></div>
+        </div>
+        <div class="card-foot">SKUs with the same release date and TFLOPS share one (larger) point: 21 points for 25 SKUs · only SKUs the Streamlit rules classify appear</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div>
+          <h3 class="card-title">Performance per Watt — Flagship Line</h3>
+          <div class="card-sub">Tensor FP16 TFLOPS per Watt, from zero</div>
+        </div></div>
+        <div class="card-body">
+          <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;NVIDIA Tesla V100 SXM2 16 GB&#34;, 125.0, 300.0], [&#34;NVIDIA A100 SXM4 80 GB&#34;, 312.0, 400.0], [&#34;NVIDIA L40&#34;, 181.0, 300.0], [&#34;NVIDIA H200 SXM&#34;, 989.5, 700.0], [&#34;NVIDIA GB300 (Blackwell Ultra)&#34;, 2500.0, 1400.0]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;%{customdata[0]}&lt;/b&gt;&lt;br&gt;%{customdata[1]:,.0f} TFLOPS \u00f7 %{customdata[2]:,.0f} W = %{y:.2f} TFLOPS/W&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#199e70&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 9}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;text&#34;: [&#34;Volta&#34;, &#34;Ampere&#34;, &#34;Ada Lovelace&#34;, &#34;Hopper&#34;, &#34;Blackwell&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#a3a3a3&#34;, &#34;size&#34;: 11}, &#34;textposition&#34;: &#34;top center&#34;, &#34;x&#34;: [&#34;2017-06-21&#34;, &#34;2020-11-16&#34;, &#34;2022-10-13&#34;, &#34;2024-11-18&#34;, &#34;2025-08-22&#34;], &#34;y&#34;: [0.4166666666666667, 0.78, 0.6033333333333334, 1.4135714285714285, 1.7857142857142858], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 8, &#34;t&#34;: 24, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;rangemode&#34;: &#34;tozero&#34;, &#34;tickformat&#34;: &#34;.1f&#34;}}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;cliponaxis&#34;: false, &#34;customdata&#34;: [[&#34;NVIDIA Tesla V100 SXM2 16 GB&#34;, 125.0, 300.0], [&#34;NVIDIA A100 SXM4 80 GB&#34;, 312.0, 400.0], [&#34;NVIDIA L40&#34;, 181.0, 300.0], [&#34;NVIDIA H200 SXM&#34;, 989.5, 700.0], [&#34;NVIDIA GB300 (Blackwell Ultra)&#34;, 2500.0, 1400.0]], &#34;hovertemplate&#34;: &#34;&lt;b&gt;%{customdata[0]}&lt;/b&gt;&lt;br&gt;%{customdata[1]:,.0f} TFLOPS \u00f7 %{customdata[2]:,.0f} W = %{y:.2f} TFLOPS/W&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;width&#34;: 2}, &#34;marker&#34;: {&#34;color&#34;: &#34;#1baf7a&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 1.5}, &#34;size&#34;: 9}, &#34;mode&#34;: &#34;lines+markers+text&#34;, &#34;text&#34;: [&#34;Volta&#34;, &#34;Ampere&#34;, &#34;Ada Lovelace&#34;, &#34;Hopper&#34;, &#34;Blackwell&#34;], &#34;textfont&#34;: {&#34;color&#34;: &#34;#525252&#34;, &#34;size&#34;: 11}, &#34;textposition&#34;: &#34;top center&#34;, &#34;x&#34;: [&#34;2017-06-21&#34;, &#34;2020-11-16&#34;, &#34;2022-10-13&#34;, &#34;2024-11-18&#34;, &#34;2025-08-22&#34;], &#34;y&#34;: [0.4166666666666667, 0.78, 0.6033333333333334, 1.4135714285714285, 1.7857142857142858], &#34;type&#34;: &#34;scatter&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 8, &#34;t&#34;: 24, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 340, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;showspikes&#34;: false, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;, &#34;type&#34;: &#34;date&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true, &#34;rangemode&#34;: &#34;tozero&#34;, &#34;tickformat&#34;: &#34;.1f&#34;}}}}" class="h-[340px]"></div>
+          <table class="mt-3 w-full text-[12px]"><thead><tr class="text-left text-faint">
+            <th class="py-1 pr-3 font-medium">Flagship</th><th class="py-1 pr-3 text-right font-medium">TFLOPS</th>
+            <th class="py-1 pr-3 text-right font-medium">TDP</th><th class="py-1 text-right font-medium">per W</th></tr></thead>
+            <tbody>
+            <tr class="border-t border-line-soft"><td class="py-1.5 pr-3 text-ink">NVIDIA GB300 (Blackwell Ultra)</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">2,500</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">1,400 W</td>
+              <td class="num py-1.5 text-right text-ink">1.79</td></tr>
+            <tr class="border-t border-line-soft"><td class="py-1.5 pr-3 text-ink">NVIDIA H200 SXM</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">990</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">700 W</td>
+              <td class="num py-1.5 text-right text-ink">1.41</td></tr>
+            <tr class="border-t border-line-soft"><td class="py-1.5 pr-3 text-ink">NVIDIA L40</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">181</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">300 W</td>
+              <td class="num py-1.5 text-right text-ink">0.60</td></tr>
+            <tr class="border-t border-line-soft"><td class="py-1.5 pr-3 text-ink">NVIDIA A100 SXM4 80 GB</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">312</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">400 W</td>
+              <td class="num py-1.5 text-right text-ink">0.78</td></tr>
+            <tr class="border-t border-line-soft"><td class="py-1.5 pr-3 text-ink">NVIDIA Tesla V100 SXM2 16 GB</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">125</td>
+              <td class="num py-1.5 pr-3 text-right text-muted">300 W</td>
+              <td class="num py-1.5 text-right text-ink">0.42</td></tr></tbody>
+          </table>
+          <div class="mt-3"><details class="disclosure" >
+  <summary><span class="flex items-center gap-2">About this chart</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="prose"><p><strong>What it shows.</strong> Tensor-FP16 TFLOPS divided by TDP (W) for the flagship SKU of each NVIDIA data-centre generation.</p><p><strong>Why it matters.</strong> Power (not silicon) is the binding constraint on hyperscale training clusters. Perf-per-watt determines whether the next cluster can be built inside a given power envelope.</p><p><strong>Source.</strong> Derived from Epoch AI ML Hardware dataset.</p></div></div>
+</details></div>
+        </div>
+        <div class="card-foot">Flagship = the highest-TFLOPS SKU of each family; where several tie, the pick follows the Streamlit page</div>
+      </div>
+    </div>
+    
+  </section>
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>
