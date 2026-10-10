@@ -1,0 +1,54 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-5"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-09-30</span>
+        <span class="badge hidden sm:inline-flex">Personal investing</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/not_ellington/status/2104744202290536695?s=12" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@not_ellington</div>
+      <h3 id="note-title-5" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">One of the main reasons we see hardware leaning towards &#39;shorter&#39; HBM stacks (i.e. Nvidia dropping… [datacenter, gpu, infrastructure, llm]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>One of the main reasons we see hardware leaning towards 'shorter' HBM stacks (i.e. Nvidia dropping…</h1>
+<p>One of the main reasons we see hardware leaning towards 'shorter' HBM stacks (i.e. Nvidia dropping Rubin from 12Hi to 8Hi) is because HBM -&gt; SRAM bandwidth is invariant to stack height.</p>
+<p>Imagine your goal is to get as much water out of an upside-down water bottle as fast as possible. Increasing the radius of the opening would help; making the water bottle taller would not (even though it can hold more water).</p>
+<p>In decode, models are not memory <em>footprint</em> constrained, they are predominantly memory <em>bandwidth</em> constrained. Adding more die layers of HBM (going from 8Hi to 12Hi) increases your memory footprint, but does not help your overall bandwidth as all data still must flow through the same number of I/O lanes, same base die, and same interconnect that has a constant signaling rate.</p>
+<p>Because of this, you actually get diminishing returns by stacking HBM higher and higher. One 8Hi HBM3e die has 24Gbs of capacity at a ~1.2TB/s bandwidth giving you ~50GB/s per GB of bandwidth. Comparing this to a 12Hi HBM3e die with 36GBs of capacity and the same 1.2TB/s of bandwidth, you only get ~33GB/s per GB of bandwidth.</p>
+<p>So stacking additional dies is not very attractive given the bandwidth is fixed and the fact that DDR offload is becoming an increasingly viable option for less latency-sensitive parts of model memory. This is likely why Nvidia decided to pursue 8Hi HBM for Rubin instead of the initially planned 12/16Hi because performance asymptotes but BOM doesn't (especially as HBM/DRAM prices skyrocket).</p>
+<p>Shoutout Dylan for the diagrams</p>
+<p>!_attachments/threads/@not_ellington - One of the main reasons we see hardware leaning towards 'shorter' HBM stacks (i.e. Nvidia dropping…/01.jpg</p>
+<p>!_attachments/threads/@not_ellington - One of the main reasons we see hardware leaning towards 'shorter' HBM stacks (i.e. Nvidia dropping…/02.jpg</p></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">AI/DC</span><span class="badge">Supply chain</span><span class="badge">Macro</span><span class="badge">Market structure</span><span class="badge">Company / security</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">NVIDIA</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @not_ellington on <span class="num">2026-09-30</span>; its frontmatter is not shown. <a href="https://x.com/not_ellington/status/2104744202290536695?s=12" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>

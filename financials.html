@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Statements (key players)</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+<a href="#main" class="skip-link">Skip to content</a>
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <span class="text-faint">Hyperscalers</span><span class="text-faint">/</span><span class="truncate font-medium text-ink">Financial (key players)</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 10 Oct 2026, 18:10 AWST. Signal ages and stale marks are counted to today when the page opens; every other date is as of this build. Data: cutout-z/ai-dc-dashboard@bef749e.">Built <time datetime="2026-10-10T10:10:03Z"><span class="hidden sm:inline">10 Oct 2026, 18:10 AWST</span><span class="sm:hidden">10 Oct 18:10</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main id="main" tabindex="-1" class="px-4 pb-16 pt-8 focus:outline-none md:px-8">
+        <div data-snapshot-banner class="callout callout-warn mb-6 hidden items-start" role="status">
+          <svg class="callout-icon text-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17h.01"/>
+</svg>
+          <p class="min-w-0 flex-1">This snapshot was built <span data-snapshot-days></span> ago (<span class="whitespace-nowrap">10 Oct 2026</span>). <span data-snapshot-ages>Ages and stale marks below are counted to today.</span></p>
+          <button type="button" class="btn btn-ghost -my-1 h-7 px-2 text-[12px]" data-snapshot-dismiss>Dismiss</button>
+        </div>
+        
+<div class="mx-auto max-w-[1240px] space-y-10">
+  <header class="mb-8">
+  <div class="eyebrow mb-1.5">Hyperscalers</div>
+  <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">Financial Statements (key players)</h1>
+  
+</header>
+
+  <div class="-mt-6">
+    <div class="card overflow-clip">
+  <form id="t-fn_supplement-form" hx-get="/partials/t/fn_supplement" hx-target="#t-fn_supplement" 
+        hx-trigger="input changed delay:200ms from:find input[type=search], search from:find input[type=search], change"
+        class="flex flex-wrap items-center justify-between gap-3 px-5 py-4" onsubmit="return false">
+    <div class="min-w-0">
+      <div class="card-title">AI Revenue Proxy &amp; Disclosure Quality</div>
+      <div class="card-sub">AI revenue is not a GAAP line item. Figures represent management disclosures, analyst estimates, or the closest revenue proxy available. Not directly comparable across companies.</div>
+    </div>
+    <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+    
+    
+    </div>
+  </form>
+  <div id="t-fn_supplement" class="border-t border-line"><input type="hidden" name="sort" value="" form="t-fn_supplement-form">
+<input type="hidden" name="direction" value="asc" form="t-fn_supplement-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label="AI Revenue Proxy &amp; Disclosure Quality, scrollable"><table class="w-full  border-collapse dt-stack dt-stack-labels">
+  
+  <thead><tr>
+    
+    
+    
+    <th class="th left-0 z-[12]    pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "Company", "direction": "asc", "page": "1"}'>
+        Company<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "Metric", "direction": "asc", "page": "1"}'>
+        Metric<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "Unit", "direction": "asc", "page": "1"}'>
+        Unit<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button><span class="ml-0.5 inline-flex align-middle"><span class="tip" tabindex="0" role="note" aria-label="Not stated in the file. Dollar rows are USD millions: each row&#39;s note gives the same figure in $B (Azure AI ARR $13B = 13,000). % rows are shares of the company&#39;s total revenue."><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg><span class="tip-body" aria-hidden="true">Not stated in the file. Dollar rows are USD millions: each row's note gives the same figure in $B (Azure AI ARR $13B = 13,000). % rows are shares of the company's total revenue.</span></span></span>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "FY2024A", "direction": "asc", "page": "1"}'>
+        FY2024A<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "FY2025E", "direction": "asc", "page": "1"}'>
+        FY2025E<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "FY2026E", "direction": "asc", "page": "1"}'>
+        FY2026E<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "FY2027E", "direction": "asc", "page": "1"}'>
+        FY2027E<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "Disclosure Quality", "direction": "asc", "page": "1"}'>
+        Disclosure Quality<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/fn_supplement" hx-include="#t-fn_supplement-form" hx-target="#t-fn_supplement"
+              hx-vals='{"sort": "Source / Notes", "direction": "asc", "page": "1"}'>
+        Source / Notes<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">MSFT</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">Azure AI Services</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">USD m</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">5,000</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">13,000</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">20,000</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">30,000</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-warn"><span class="badge-dot"></span>B — Partial</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Q3 FY25: AI drove 16pts of 33% Azure growth; ARR $13B as of Q2 FY25 (Dec 2024). Excludes M365 Copilot.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">MSFT</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">AI % of Total Revenue</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">% of total revenue</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~2.0%</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~4.7%</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~6.3%</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~8.2%</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-warn"><span class="badge-dot"></span>B</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Estimated from Azure AI ARR vs total Microsoft revenue. Understates AI-enhanced products.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">AMZN</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">AWS AI (incl. chips)</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">USD m</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">&gt;10,000</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-bad"><span class="badge-dot"></span>C — Not Disclosed</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Jassy: &#39;multi-billion ARR, triple-digit growth&#39;; Graviton+Trainium chips alone &gt;$10B ARR. Bedrock is growing but unquantified.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">AMZN</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">AI % of Total Revenue</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">% of total revenue</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">&lt;2%</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-bad"><span class="badge-dot"></span>C</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">AWS is ~24% of total revenue. AI is subset of AWS. Company has not disclosed AI-specific revenue.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">GOOGL</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">Google Cloud</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">USD m</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">33,175</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">58,000</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">85,000</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">110,000</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-warn"><span class="badge-dot"></span>B — Proxy Only</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Google Cloud +48% YoY in Q4 2025. Full-year 2025 ~$58B. AI drives Cloud growth but is not separately broken out within Cloud.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">GOOGL</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">AI % of Total Revenue</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">% of total revenue</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">9.5%</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">14.4%</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">19.7%</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">23.0%</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-bad"><span class="badge-dot"></span>C</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">AI is also embedded in Search (AI Overviews), YouTube, and Ads optimization — none separately quantified.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">META</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">Family of Apps (Ads)</td>
+    
+    
+    <td data-label="Unit" data-kind="text" data-empty class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="text-faint">—</span></td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">N/D</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-bad"><span class="badge-dot"></span>C — Not Disclosed</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">98.7% of revenue is advertising. AI improves targeting/engagement (Reels, ranking). Analyst attribution: AI drove ~26% YoY ad growth in Q3 2025. Not a disclosed line item.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">META</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">Meta AI / WhatsApp Biz</td>
+    
+    
+    <td data-label="Unit" data-kind="text" data-empty class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="text-faint">—</span></td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">Immaterial</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">Immaterial</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">Emerging</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">Emerging</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-bad"><span class="badge-dot"></span>C</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Meta AI as consumer product; WhatsApp Business messaging. Both are growing but remain immaterial vs $116B+ total revenue.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">ORCL</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">OCI IaaS (Cloud Infrastructure)</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">USD m</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">3,000</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">16,400</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">27,000</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">38,000</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-good"><span class="badge-dot"></span>A — Most Disclosed</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Q2 FY26: $4.1B/qtr (+68% YoY). FY26 cloud infra guided &gt;70% growth. RPO surged 359% to $455B (OpenAI/Stargate). FY25 OCI annualized ~$16B.</div></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Company" data-kind="mono" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  whitespace-nowrap sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] font-mono text-[12px] font-medium text-ink">ORCL</td>
+    
+    
+    <td data-label="Metric" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">OCI % of Total Revenue</td>
+    
+    
+    <td data-label="Unit" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink">% of total revenue</td>
+    
+    
+    <td data-label="FY2024A" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~7.1%</td>
+    
+    
+    <td data-label="FY2025E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~28.8%</td>
+    
+    
+    <td data-label="FY2026E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~42.2%</td>
+    
+    
+    <td data-label="FY2027E" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap num text-right text-ink">~53.5%</td>
+    
+    
+    <td data-label="Disclosure Quality" data-kind="grade" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   whitespace-nowrap text-ink"><span class="pill pill-good"><span class="badge-dot"></span>A</span></td>
+    
+    
+    <td data-label="Source / Notes" data-kind="long" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 leading-relaxed text-muted"><div class="dt-long w-[400px]">Fastest-growing segment. Non-AI OCI workloads also included — pure AI-only OCI not separately broken out within IaaS.</div></td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">10 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+  <div class="card-foot">data/reference/ai_supplement.csv · hand-curated; the file states no date and no units (USD m is read from each dollar row&#39;s own note)</div>
+</div>
+  </div>
+
+  <section aria-labelledby="fn-co-h" class="space-y-4 border-t border-line pt-8">
+    <form id="fn-company" hx-get="/partials/financials" hx-target="#fn-company-body" hx-swap="outerHTML" hx-trigger="change"
+          onsubmit="return false" class="flex flex-wrap items-center gap-3">
+      <h2 id="fn-co-h" class="sr-only">Company</h2>
+      <label class="flex w-full min-w-0 items-center gap-2 text-[12px] text-muted sm:w-auto">Company
+        <select name="ticker" class="input h-8 min-w-0 flex-1 py-0 pr-7 sm:w-auto sm:flex-none">
+          <option value="AAPL" selected>Apple (AAPL)  —  Mag 7</option><option value="MSFT" >Microsoft (MSFT)  —  Mag 7</option><option value="GOOGL" >Alphabet (GOOGL)  —  Mag 7</option><option value="AMZN" >Amazon (AMZN)  —  Mag 7</option><option value="NVDA" >NVIDIA (NVDA)  —  Mag 7</option><option value="META" >Meta (META)  —  Mag 7</option><option value="TSLA" >Tesla (TSLA)  —  Mag 7</option><option value="ORCL" >Oracle (ORCL)  —  AI Infra</option><option value="AMD" >AMD (AMD)  —  AI Infra</option><option value="TSM" >TSMC (TSM)  —  AI Infra</option><option value="PLTR" >Palantir (PLTR)  —  AI Infra</option><option value="EQIX" >Equinix (EQIX)  —  DC Operators</option><option value="DLR" >Digital Realty (DLR)  —  DC Operators</option><option value="AMT" >American Tower (AMT)  —  DC Operators</option>
+        </select>
+      </label>
+    </form>
+
+    <div id="fn-company-body" class="space-y-4">
+  
+  <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-muted">
+    yfinance annual · FY2022–FY2025 actuals + consensus estimates (FY2026E, FY2027E: revenue from Yahoo Finance, net income from FMP) · US$ billions · fetched 2026-10-09 23:52 UTC
+  </p>
+  <div class="space-y-4">
+    
+    <section class="card min-w-0" aria-label="Income Statement">
+      <div class="card-head"><div><h3 class="card-title">Income Statement</h3></div></div>
+      
+      <div class="scroll-cue" data-scroll-cue><div class="overflow-x-auto" data-scroll-x>
+        <table class="w-full border-collapse text-[13px]" data-phone-scroll="statement: fiscal years compared across each row">
+          <thead><tr>
+            <th class="th sticky left-0 z-[2] bg-surface pl-5"></th>
+            <th class="th whitespace-nowrap text-right  " >FY2022</th><th class="th whitespace-nowrap text-right  " >FY2023</th><th class="th whitespace-nowrap text-right  " >FY2024</th><th class="th whitespace-nowrap text-right  " >FY2025</th><th class="th whitespace-nowrap text-right text-faint italic " title="Consensus estimate">FY2026E</th><th class="th whitespace-nowrap text-right text-faint italic pr-5" title="Consensus estimate">FY2027E</th>
+          </tr></thead>
+          <tbody>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Revenue</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$394.3B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$383.3B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$391.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$416.2B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 ">$477.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5">$528.2B</td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Gross Profit</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$170.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$169.1B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$180.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$195.2B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">EBITDA</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$130.5B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$125.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$134.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$144.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Operating Income</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$119.4B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$114.3B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$123.2B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$133.1B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Net Income</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$99.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$97.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$93.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$112.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good bg-surface-2/40 ">$137.6B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good bg-surface-2/40 pr-5">$153.0B</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div></div>
+      
+    </section>
+    
+    <section class="card min-w-0" aria-label="Balance Sheet">
+      <div class="card-head"><div><h3 class="card-title">Balance Sheet</h3></div></div>
+      
+      <div class="scroll-cue" data-scroll-cue><div class="overflow-x-auto" data-scroll-x>
+        <table class="w-full border-collapse text-[13px]" data-phone-scroll="statement: fiscal years compared across each row">
+          <thead><tr>
+            <th class="th sticky left-0 z-[2] bg-surface pl-5"></th>
+            <th class="th whitespace-nowrap text-right  " >FY2022</th><th class="th whitespace-nowrap text-right  " >FY2023</th><th class="th whitespace-nowrap text-right  " >FY2024</th><th class="th whitespace-nowrap text-right  " >FY2025</th><th class="th whitespace-nowrap text-right text-faint italic " title="Consensus estimate">FY2026E</th><th class="th whitespace-nowrap text-right text-faint italic pr-5" title="Consensus estimate">FY2027E</th>
+          </tr></thead>
+          <tbody>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Cash &amp; Equiv.</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$23.6B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$30.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$29.9B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$35.9B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Total Assets</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$352.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$352.6B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$365.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$359.2B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Total Debt</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$132.5B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$111.1B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$106.6B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$98.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Lease Oblig.</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$12.4B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$12.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Net Debt</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-bad  ">$108.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-bad  ">$81.1B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-bad  ">$76.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-bad  ">$62.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Total Equity</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$50.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$62.1B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$57.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$73.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div></div>
+      
+    </section>
+    
+    <section class="card min-w-0" aria-label="Cash Flow Statement">
+      <div class="card-head"><div><h3 class="card-title">Cash Flow Statement</h3></div></div>
+      
+      <div class="scroll-cue" data-scroll-cue><div class="overflow-x-auto" data-scroll-x>
+        <table class="w-full border-collapse text-[13px]" data-phone-scroll="statement: fiscal years compared across each row">
+          <thead><tr>
+            <th class="th sticky left-0 z-[2] bg-surface pl-5"></th>
+            <th class="th whitespace-nowrap text-right  " >FY2022</th><th class="th whitespace-nowrap text-right  " >FY2023</th><th class="th whitespace-nowrap text-right  " >FY2024</th><th class="th whitespace-nowrap text-right  " >FY2025</th><th class="th whitespace-nowrap text-right text-faint italic " title="Consensus estimate">FY2026E</th><th class="th whitespace-nowrap text-right text-faint italic pr-5" title="Consensus estimate">FY2027E</th>
+          </tr></thead>
+          <tbody>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Operating CF</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$122.2B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$110.5B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$118.3B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$111.5B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">CapEx</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$10.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$11.0B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$9.4B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">$12.7B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Free CF</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$111.4B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$99.6B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$108.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">$98.8B</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div></div>
+      
+    </section>
+    
+    <section class="card min-w-0" aria-label="Key Ratios">
+      <div class="card-head"><div><h3 class="card-title">Key Ratios</h3></div></div>
+      
+      <div class="scroll-cue" data-scroll-cue><div class="overflow-x-auto" data-scroll-x>
+        <table class="w-full border-collapse text-[13px]" data-phone-scroll="statement: fiscal years compared across each row">
+          <thead><tr>
+            <th class="th sticky left-0 z-[2] bg-surface pl-5"></th>
+            <th class="th whitespace-nowrap text-right  " >FY2022</th><th class="th whitespace-nowrap text-right  " >FY2023</th><th class="th whitespace-nowrap text-right  " >FY2024</th><th class="th whitespace-nowrap text-right  " >FY2025</th><th class="th whitespace-nowrap text-right text-faint italic " title="Consensus estimate">FY2026E</th><th class="th whitespace-nowrap text-right text-faint italic pr-5" title="Consensus estimate">FY2027E</th>
+          </tr></thead>
+          <tbody>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Gross Margin %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">43.3%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">44.1%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">46.2%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">46.9%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Operating Margin %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">30.3%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">29.8%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">31.5%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">32.0%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Net Margin %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">25.3%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">25.3%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">24.0%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">26.9%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good bg-surface-2/40 ">28.8%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good bg-surface-2/40 pr-5">29.0%</td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">FCF Margin %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">28.3%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">26.0%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">27.8%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-good  ">23.7%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">CapEx / Revenue %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">2.7%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">2.9%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">2.4%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">3.1%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">CapEx / OpCF %</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">8.8%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">9.9%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">8.0%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">11.4%</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+            <tr class="hover:bg-surface-2">
+              <th scope="row" class="sticky left-0 z-[1] whitespace-nowrap border-b border-line-soft bg-surface py-2 pl-5 pr-3 text-left font-normal text-muted">Net Debt / EBITDA</th>
+              <td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">0.8x</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">0.6x</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">0.6x</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink  ">0.4x</td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 "><span class="text-faint">—</span></td><td class="num whitespace-nowrap border-b border-line-soft px-3 py-2 text-right text-ink bg-surface-2/40 pr-5"><span class="text-faint">—</span></td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div></div>
+      
+    </section>
+    
+  </div>
+  <p class="text-[12px] text-muted">Lease Oblig. = GAAP-reported capital/operating lease liabilities (ASC 842 / IFRS 16). Net Debt / EBITDA: negative = net cash. CapEx / Revenue flags capital intensity. CapEx / OpCF shows what share of operating cash flow is consumed by capex.</p>
+  <p class="text-[12px] text-faint">Estimate columns (italic) carry consensus revenue and net income only, labelled the two fiscal years after the last reported one; every other cell there is blank. Green/red follow the sign (net debt: green when net cash).</p>
+  
+
+  <section id="fn-consensus" aria-labelledby="fn-cons-h" class="card">
+  <div class="card-head"><div>
+    <h2 id="fn-cons-h" class="card-title">Analyst Consensus</h2>
+    <div class="card-sub flex flex-wrap items-center gap-x-2 gap-y-1">Yahoo Finance consensus · updated <span class="num text-ink">2026-10-09</span></div>
+  </div></div>
+  <div class="card-body">
+    
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      
+      <div class="min-w-0">
+        <div class="mb-3 text-[13px] font-semibold text-ink">Revenue Estimates</div>
+        <dl class="space-y-3">
+          
+          <div>
+            <dt class="text-[12px] text-muted">Current FY</dt>
+            <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+              <span class="num text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">$477.8B</span>
+              
+            </dd>
+            <dd class="num mt-0.5 text-[12px] text-muted">Range: $471.8B – $484.0B</dd>
+          </div>
+          
+          <div>
+            <dt class="text-[12px] text-muted">Next FY</dt>
+            <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+              <span class="num text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">$528.2B</span>
+              <span class="num text-[12px] font-medium text-good">▲ +10.5% YoY</span>
+            </dd>
+            <dd class="num mt-0.5 text-[12px] text-muted">Range: $497.9B – $594.9B</dd>
+          </div>
+          
+        </dl>
+        <p class="mt-3 text-[12px] text-faint">40 analysts</p>
+      </div>
+      
+      <div class="min-w-0">
+        <div class="mb-3 text-[13px] font-semibold text-ink">EPS Estimates</div>
+        <dl class="space-y-3">
+          
+          <div>
+            <dt class="text-[12px] text-muted">Current FY</dt>
+            <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+              <span class="num text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">$8.82</span>
+              
+            </dd>
+            
+          </div>
+          
+          <div>
+            <dt class="text-[12px] text-muted">Next FY</dt>
+            <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+              <span class="num text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">$9.58</span>
+              
+            </dd>
+            
+          </div>
+          
+        </dl>
+        <p class="mt-3 text-[12px] text-faint">39 analysts</p>
+      </div>
+      
+      <div class="min-w-0">
+        <div class="mb-3 text-[13px] font-semibold text-ink">Price Target</div>
+        <dl class="space-y-3">
+          
+          <div>
+            <dt class="text-[12px] text-muted">Mean</dt>
+            <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-2">
+              <span class="num text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink">$328.09</span>
+              
+            </dd>
+            <dd class="num mt-0.5 text-[12px] text-muted">Range: $215.00 – $405.00</dd>
+          </div>
+          
+        </dl>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  <div class="card-foot">Estimates for the company's current and next fiscal year: revenue and EPS estimates and price targets from Yahoo Finance · source file: “estimates, price targets and ratings from yfinance; EBITDA and net-income estimates from FMP (one call per company)”</div>
+</section>
+</div>
+  </section>
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  // A chart is one image to a screen reader, named by its own aria-label if the template gave one,
+  // else by the nearest heading that owns it (its card's title). tests/test_chart_names.py checks
+  // the same rule on every page, so no chart is left unnamed.
+  function chartName(el) {
+    if (el.getAttribute("aria-label")) return el.getAttribute("aria-label");
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const h = a.querySelector("h1, h2, h3, h4, .card-title");
+      if (!h) continue;
+      const c = h.cloneNode(true);   // the title's own words: not a help tip's text inside it
+      c.querySelectorAll(".tip, [aria-hidden=true]").forEach(x => x.remove());
+      const t = c.textContent.trim().replace(/\s+/g, " ");
+      if (t) return t + ", chart";
+    }
+    return "Chart";
+  }
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", chartName(el));
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Scroll cue: a [data-scroll-cue] wraps a sideways-scrolling box ([data-scroll-x]). While columns
+  // are hidden to its right it carries data-more-right (CSS draws a fade) and un-hides any
+  // [data-scroll-hint] in the same table, so a clipped table is never silent about it.
+  function scrollCue(wrap) {
+    const box = wrap.querySelector("[data-scroll-x]");
+    if (!box) return;
+    const over = box.scrollWidth > box.clientWidth + 1;
+    wrap.toggleAttribute("data-more-right", over && box.scrollLeft + box.clientWidth < box.scrollWidth - 1);
+    const hint = (wrap.closest("[id^='t-']") || wrap.parentElement).querySelector("[data-scroll-hint]");
+    if (hint) hint.hidden = !over;
+  }
+  const allCues = () => document.querySelectorAll("[data-scroll-cue]").forEach(scrollCue);
+  document.addEventListener("scroll", e => {
+    const w = e.target.closest?.("[data-scroll-cue]");
+    if (w) scrollCue(w);
+  }, true);
+  document.addEventListener("DOMContentLoaded", allCues);
+  document.addEventListener("htmx:afterSettle", allCues);
+  document.addEventListener("toggle", allCues, true);   // a table inside a disclosure gets its size when opened
+  window.addEventListener("resize", allCues);
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>

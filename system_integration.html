@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Integration</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+<a href="#main" class="skip-link">Skip to content</a>
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." aria-current="page"
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink nav-active font-medium text-ink">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <span class="text-faint">Hardware &amp; facility</span><span class="text-faint">/</span><span class="truncate font-medium text-ink">5. System Integration</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 10 Oct 2026, 18:10 AWST. Signal ages and stale marks are counted to today when the page opens; every other date is as of this build. Data: cutout-z/ai-dc-dashboard@bef749e.">Built <time datetime="2026-10-10T10:10:03Z"><span class="hidden sm:inline">10 Oct 2026, 18:10 AWST</span><span class="sm:hidden">10 Oct 18:10</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main id="main" tabindex="-1" class="px-4 pb-16 pt-8 focus:outline-none md:px-8">
+        <div data-snapshot-banner class="callout callout-warn mb-6 hidden items-start" role="status">
+          <svg class="callout-icon text-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17h.01"/>
+</svg>
+          <p class="min-w-0 flex-1">This snapshot was built <span data-snapshot-days></span> ago (<span class="whitespace-nowrap">10 Oct 2026</span>). <span data-snapshot-ages>Ages and stale marks below are counted to today.</span></p>
+          <button type="button" class="btn btn-ghost -my-1 h-7 px-2 text-[12px]" data-snapshot-dismiss>Dismiss</button>
+        </div>
+        
+<div class="mx-auto max-w-[1240px] space-y-10">
+  <div>
+    <header class="mb-8">
+  <div class="eyebrow mb-1.5">Hardware &amp; facility</div>
+  <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">System Integration</h1>
+  
+</header>
+    <div class="prose max-w-none -mt-5 text-[13px] text-muted"><p>Sources &amp; as-of (2026-09): NVIDIA system disclosures, Uptime Institute tier definitions, and public reliability studies (Meta/Google/Titan). TCO numbers are an illustrative worked example, not a quote; reliability statistics are as published by the cited operators.</p></div>
+    
+    <nav aria-label="On this page" class="mt-5 flex flex-wrap gap-1.5">
+      <a href="#s3" class="chip no-underline">Deep Dive</a><a href="#s0" class="chip no-underline">TCO Framework</a><a href="#s1" class="chip no-underline">Reliability</a><a href="#s2" class="chip no-underline">Power &amp; Cooling</a>
+    </nav>
+    
+  </div>
+  
+  <section id="s3" class="scroll-mt-20 space-y-4" aria-label="Deep Dive">
+    <div class="eyebrow border-t border-line pt-6">Deep Dive</div>
+    <h2 class="pt-2 text-[17px] font-semibold tracking-[-0.01em] text-ink">Deep Dive</h2>
+<details class="disclosure" >
+  <summary><span class="flex items-center gap-2">DGX Server Architecture</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="space-y-4"><div class="prose max-w-[100ch] text-[14px]"><p><strong>DGX</strong> is NVIDIA's integrated AI server: 8 GPUs + NVSwitch + CPUs + networking + storage in one box.</p>
+<table>
+<thead>
+<tr>
+<th>Generation</th>
+<th>GPU</th>
+<th>Year</th>
+<th>Price</th>
+<th>Key Advance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DGX-1</td>
+<td>P100 (8x)</td>
+<td>2016</td>
+<td>~$129K</td>
+<td>First AI appliance</td>
+</tr>
+<tr>
+<td>DGX A100</td>
+<td>A100 (8x)</td>
+<td>2020</td>
+<td>~$199K</td>
+<td>MIG, TF32, sparsity</td>
+</tr>
+<tr>
+<td>DGX H100</td>
+<td>H100 (8x)</td>
+<td>2022</td>
+<td>~$300K</td>
+<td>FP8, Transformer Engine</td>
+</tr>
+<tr>
+<td>DGX B200</td>
+<td>B200 (8x)</td>
+<td>2024</td>
+<td>~$500K</td>
+<td>Dual-die, FP4, NVL72-ready</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HGX</strong> is the OEM baseboard version — same GPU+NVSwitch layout but for Dell, Supermicro, HPE to build servers around. Most cloud deployments use HGX, not DGX.</p>
+<p><strong>AMD equivalent:</strong> MI300X uses OAM (OCP Accelerator Module) form factor — less integrated than DGX but more flexible for OEMs.</p></div>
+</div></div>
+</details>
+<details class="disclosure" >
+  <summary><span class="flex items-center gap-2">GB200 NVL72 Rack</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="space-y-4"><div class="prose max-w-[100ch] text-[14px]"><p>The NVL72 is the current flagship AI rack: 36 Grace CPUs + 72 Blackwell GPUs in a single liquid-cooled rack.</p>
+<ul>
+<li><strong>130 TB/s NVLink domain</strong> — all 72 GPUs share a coherent memory domain</li>
+<li><strong>120-132 kW per rack</strong> — 10-20x a typical enterprise rack</li>
+<li><strong>~1,500 kg</strong> — requires reinforced floor loading</li>
+<li><strong>Liquid cooling mandatory</strong> — no air-cooled NVL72 option</li>
+<li><strong>25x more energy efficient than H100</strong> for LLM inference</li>
+</ul>
+<p><strong>Credit implication:</strong> A data centre built for air-cooled 20 kW racks cannot host NVL72. This is the physical manifestation of GPU power density growth outpacing facility design cycles.</p></div>
+</div></div>
+</details>
+<details class="disclosure" >
+  <summary><span class="flex items-center gap-2">Silent Data Corruption (SDC)</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="space-y-4"><div class="prose max-w-[100ch] text-[14px]"><p>SDC is hardware that produces wrong results without any error flag. It is the most insidious failure mode because it is invisible.</p>
+<p><strong>Scale of the problem:</strong>
+- Google: ~1 SDC per 1,000 machines per month
+- Meta: SDC caused 3.1% of training disruptions in A100 clusters
+- Titan supercomputer: 30.1% of pre-training disruptions were GPU failures</p>
+<p><strong>Why it matters for credit:</strong> A GPU cluster with undetected SDC produces wrong AI models. Worse: it may produce models that appear correct but have subtle errors. This is a reputational and operational risk for AI service providers. SDC rates increase with GPU age — older collateral has higher SDC risk.</p></div>
+</div></div>
+</details>
+<details class="disclosure" >
+  <summary><span class="flex items-center gap-2">Credit Implications</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body"><div class="space-y-4"><div class="prose max-w-[100ch] text-[14px]"><p><strong>Collateral value mismatch (editorial, as-of 2026-09):</strong> GPU <em>frontier-training</em> economic life (commonly cited 18-36 months) is a fraction of building life (25-40 years). A 7-year loan on a data centre must survive 4-5 GPU generations. The building's value is more durable, while GPU value is workload- and price-dependent — prior generations typically keep earning on inference/secondary workloads, so residual-value assumptions should be conservative rather than assuming the GPUs become worthless at the next launch.</p>
+<p><strong>Concentration risk:</strong> NVIDIA controls the DGX/HGX platform standard. No credible alternative for integrated AI server systems exists at scale. AMD OAM is an emerging alternative but lacks the software integration of DGX.</p>
+<p><strong>Cost exposure:</strong> Power is the dominant OpEx (50-70% of facility operating cost). A $0.01/kWh change in electricity price swings OpEx by ~$2M/year per 25MW facility. Transformer lead times (140-160+ weeks) are a hard gate on construction timelines.</p>
+<p><strong>Transition risk:</strong> Air cooling -&gt; liquid cooling is a non-linear transition. Air-cooled data centres face retrofit costs of $5-15M per MW to accommodate next-gen GPUs. New-build liquid-cooled are cheaper than retrofit. Loan terms must account for this upgrade cycle.</p></div>
+</div></div>
+</details>
+
+  </section>
+  
+  <section id="s0" class="scroll-mt-20 space-y-4" aria-label="TCO Framework">
+    <div class="eyebrow border-t border-line pt-6">TCO Framework</div>
+    <h2 class="pt-2 text-[17px] font-semibold tracking-[-0.01em] text-ink">Cluster TCO — 1 GW Facility Example</h2>
+<div class="card">
+    <div class="card-head"><div class="card-title">1 GW AI Cluster — Annual TCO ($8.5B/yr)</div></div>
+    
+    <div class="card-body grid grid-cols-1 items-center gap-6 sm:grid-cols-[200px_1fr]">
+      <div data-fig="{&#34;dark&#34;: {&#34;data&#34;: [{&#34;direction&#34;: &#34;clockwise&#34;, &#34;hole&#34;: 0.7, &#34;hovertemplate&#34;: &#34;%{label}&lt;br&gt;%{value:,.0f} MW \u00b7 %{percent}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;labels&#34;: [&#34;GPU Servers&#34;, &#34;Networking&#34;, &#34;Storage &amp; Servers&#34;, &#34;Power &amp; Cooling Infra&#34;, &#34;Building &amp; Land&#34;, &#34;Power (Electricity)&#34;, &#34;Operations &amp; Staff&#34;], &#34;marker&#34;: {&#34;colors&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;], &#34;line&#34;: {&#34;color&#34;: &#34;#171717&#34;, &#34;width&#34;: 2}}, &#34;sort&#34;: false, &#34;textinfo&#34;: &#34;none&#34;, &#34;values&#34;: [3200.0, 1200.0, 400.0, 600.0, 2100.0, 700.0, 300.0], &#34;type&#34;: &#34;pie&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#fafafa&#34;}, &#34;bgcolor&#34;: &#34;#1e1e1e&#34;, &#34;bordercolor&#34;: &#34;#3a3a3a&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#a3a3a3&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#3987e5&#34;, &#34;#d95926&#34;, &#34;#199e70&#34;, &#34;#c98500&#34;, &#34;#d55181&#34;, &#34;#008300&#34;, &#34;#9085e9&#34;, &#34;#e66767&#34;], &#34;height&#34;: 200, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#3a3a3a&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;ticklabelstandoff&#34;: 6, &#34;showspikes&#34;: true, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#3a3a3a&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#898989&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#262626&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true}, &#34;annotations&#34;: [{&#34;font&#34;: {&#34;color&#34;: &#34;#fafafa&#34;, &#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;&lt;span style=&#39;font-size:16px;font-weight:600&#39;&gt;8,500&lt;/span&gt;&lt;br&gt;&lt;span style=&#39;font-size:11px;color:#a3a3a3&#39;&gt;Annual Cost ($M/yr)&lt;/span&gt;&#34;, &#34;x&#34;: 0.5, &#34;y&#34;: 0.5}]}}, &#34;light&#34;: {&#34;data&#34;: [{&#34;direction&#34;: &#34;clockwise&#34;, &#34;hole&#34;: 0.7, &#34;hovertemplate&#34;: &#34;%{label}&lt;br&gt;%{value:,.0f} MW \u00b7 %{percent}&lt;extra&gt;&lt;/extra&gt;&#34;, &#34;labels&#34;: [&#34;GPU Servers&#34;, &#34;Networking&#34;, &#34;Storage &amp; Servers&#34;, &#34;Power &amp; Cooling Infra&#34;, &#34;Building &amp; Land&#34;, &#34;Power (Electricity)&#34;, &#34;Operations &amp; Staff&#34;], &#34;marker&#34;: {&#34;colors&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;], &#34;line&#34;: {&#34;color&#34;: &#34;#ffffff&#34;, &#34;width&#34;: 2}}, &#34;sort&#34;: false, &#34;textinfo&#34;: &#34;none&#34;, &#34;values&#34;: [3200.0, 1200.0, 400.0, 600.0, 2100.0, 700.0, 300.0], &#34;type&#34;: &#34;pie&#34;}], &#34;layout&#34;: {&#34;template&#34;: {}, &#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;margin&#34;: {&#34;l&#34;: 0, &#34;r&#34;: 0, &#34;t&#34;: 4, &#34;b&#34;: 0}, &#34;hoverlabel&#34;: {&#34;font&#34;: {&#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;, &#34;size&#34;: 12, &#34;color&#34;: &#34;#0a0a0a&#34;}, &#34;bgcolor&#34;: &#34;#ffffff&#34;, &#34;bordercolor&#34;: &#34;#e7e7e7&#34;, &#34;namelength&#34;: -1}, &#34;legend&#34;: {&#34;font&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#525252&#34;}, &#34;orientation&#34;: &#34;h&#34;, &#34;yanchor&#34;: &#34;bottom&#34;, &#34;y&#34;: 1.0, &#34;xanchor&#34;: &#34;left&#34;, &#34;x&#34;: 0, &#34;bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;itemwidth&#34;: 30, &#34;itemsizing&#34;: &#34;constant&#34;, &#34;traceorder&#34;: &#34;normal&#34;}, &#34;paper_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;plot_bgcolor&#34;: &#34;rgba(0,0,0,0)&#34;, &#34;colorway&#34;: [&#34;#2a78d6&#34;, &#34;#eb6834&#34;, &#34;#1baf7a&#34;, &#34;#eda100&#34;, &#34;#e87ba4&#34;, &#34;#008300&#34;, &#34;#4a3aa7&#34;, &#34;#e34948&#34;], &#34;height&#34;: 200, &#34;hovermode&#34;: &#34;closest&#34;, &#34;showlegend&#34;: false, &#34;barcornerradius&#34;: 4, &#34;bargap&#34;: 0.45, &#34;xaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: false, &#34;zeroline&#34;: false, &#34;showline&#34;: true, &#34;linecolor&#34;: &#34;#d4d4d4&#34;, &#34;linewidth&#34;: 1, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;ticklabelstandoff&#34;: 6, &#34;showspikes&#34;: true, &#34;spikemode&#34;: &#34;across&#34;, &#34;spikethickness&#34;: 1, &#34;spikedash&#34;: &#34;solid&#34;, &#34;spikecolor&#34;: &#34;#d4d4d4&#34;, &#34;spikesnap&#34;: &#34;cursor&#34;}, &#34;yaxis&#34;: {&#34;tickfont&#34;: {&#34;size&#34;: 12, &#34;color&#34;: &#34;#737373&#34;}, &#34;showgrid&#34;: true, &#34;gridcolor&#34;: &#34;#efefef&#34;, &#34;gridwidth&#34;: 1, &#34;zeroline&#34;: false, &#34;showline&#34;: false, &#34;ticks&#34;: &#34;&#34;, &#34;automargin&#34;: true, &#34;separatethousands&#34;: true}, &#34;annotations&#34;: [{&#34;font&#34;: {&#34;color&#34;: &#34;#0a0a0a&#34;, &#34;family&#34;: &#34;-apple-system, BlinkMacSystemFont, \&#34;SF Pro Text\&#34;, \&#34;Segoe UI\&#34;, Inter, system-ui, sans-serif&#34;}, &#34;showarrow&#34;: false, &#34;text&#34;: &#34;&lt;span style=&#39;font-size:16px;font-weight:600&#39;&gt;8,500&lt;/span&gt;&lt;br&gt;&lt;span style=&#39;font-size:11px;color:#525252&#39;&gt;Annual Cost ($M/yr)&lt;/span&gt;&#34;, &#34;x&#34;: 0.5, &#34;y&#34;: 0.5}]}}}" class="mx-auto h-[200px] w-[200px]"></div>
+      <table class="w-full max-w-[560px] text-[13px]"><tbody>
+        
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #3987e5; --c-light: #2a78d6"></span>GPU Servers</span></td>
+          <td class="num py-1.5 text-right text-ink">3,200</td>
+          <td class="num w-14 py-1.5 text-right text-muted">38%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #d95926; --c-light: #eb6834"></span>Networking</span></td>
+          <td class="num py-1.5 text-right text-ink">1,200</td>
+          <td class="num w-14 py-1.5 text-right text-muted">14%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #199e70; --c-light: #1baf7a"></span>Storage &amp; Servers</span></td>
+          <td class="num py-1.5 text-right text-ink">400</td>
+          <td class="num w-14 py-1.5 text-right text-muted">5%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #c98500; --c-light: #eda100"></span>Power &amp; Cooling Infra</span></td>
+          <td class="num py-1.5 text-right text-ink">600</td>
+          <td class="num w-14 py-1.5 text-right text-muted">7%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #d55181; --c-light: #e87ba4"></span>Building &amp; Land</span></td>
+          <td class="num py-1.5 text-right text-ink">2,100</td>
+          <td class="num w-14 py-1.5 text-right text-muted">25%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #008300; --c-light: #008300"></span>Power (Electricity)</span></td>
+          <td class="num py-1.5 text-right text-ink">700</td>
+          <td class="num w-14 py-1.5 text-right text-muted">8%</td>
+        </tr>
+        <tr class="border-b border-line-soft last:border-0">
+          <td class="py-1.5 pr-2"><span class="inline-flex items-center gap-2 text-ink"><span class="swatch" style="--c-dark: #9085e9; --c-light: #4a3aa7"></span>Operations &amp; Staff</span></td>
+          <td class="num py-1.5 text-right text-ink">300</td>
+          <td class="num w-14 py-1.5 text-right text-muted">4%</td>
+        </tr>
+      </tbody></table>
+    </div>
+    
+    
+  </div>
+<form id="t-doc_system_integration_tco-form" hx-get="/partials/t/doc_system_integration_tco" hx-target="#t-doc_system_integration_tco"  onsubmit="return false" class="hidden"></form>
+<div id="t-doc_system_integration_tco" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-doc_system_integration_tco-form">
+<input type="hidden" name="direction" value="asc" form="t-doc_system_integration_tco-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label=", scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack dt-stack-labels">
+  <colgroup><col class=""><col class=""><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th     pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_tco" hx-include="#t-doc_system_integration_tco-form" hx-target="#t-doc_system_integration_tco"
+              hx-vals='{"sort": "c0", "direction": "asc", "page": "1"}'>
+        Category<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/doc_system_integration_tco" hx-include="#t-doc_system_integration_tco-form" hx-target="#t-doc_system_integration_tco"
+              hx-vals='{"sort": "c1", "direction": "asc", "page": "1"}'>
+        Annual Cost ($M/yr)<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/doc_system_integration_tco" hx-include="#t-doc_system_integration_tco-form" hx-target="#t-doc_system_integration_tco"
+              hx-vals='{"sort": "c2", "direction": "asc", "page": "1"}'>
+        % of TCO<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">GPU Servers</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">3,200</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">37.6</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Networking</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">1,200</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">14.1</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Storage &amp; Servers</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">400</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">4.7</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Power &amp; Cooling Infra</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">600</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">7.1</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Building &amp; Land</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">2,100</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">24.7</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Power (Electricity)</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">700</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">8.2</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Category" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Operations &amp; Staff</td>
+    
+    
+    <td data-label="Annual Cost ($M/yr)" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   num text-right text-ink">300</td>
+    
+    
+    <td data-label="% of TCO" data-kind="num" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 num text-right text-ink">3.5</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">7 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+<h3 class="pt-1 text-[15px] font-semibold text-ink">Depreciation Mismatch Risk</h3>
+<form id="t-doc_system_integration_depreciation-form" hx-get="/partials/t/doc_system_integration_depreciation" hx-target="#t-doc_system_integration_depreciation"  onsubmit="return false" class="hidden"></form>
+<div id="t-doc_system_integration_depreciation" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-doc_system_integration_depreciation-form">
+<input type="hidden" name="direction" value="asc" form="t-doc_system_integration_depreciation-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label=", scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack dt-stack-labels">
+  <colgroup><col class=""><col class=""><col class=""><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th     pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_depreciation" hx-include="#t-doc_system_integration_depreciation-form" hx-target="#t-doc_system_integration_depreciation"
+              hx-vals='{"sort": "c0", "direction": "asc", "page": "1"}'>
+        Asset<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_depreciation" hx-include="#t-doc_system_integration_depreciation-form" hx-target="#t-doc_system_integration_depreciation"
+              hx-vals='{"sort": "c1", "direction": "asc", "page": "1"}'>
+        Accounting Life<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_depreciation" hx-include="#t-doc_system_integration_depreciation-form" hx-target="#t-doc_system_integration_depreciation"
+              hx-vals='{"sort": "c2", "direction": "asc", "page": "1"}'>
+        Economic Life<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_depreciation" hx-include="#t-doc_system_integration_depreciation-form" hx-target="#t-doc_system_integration_depreciation"
+              hx-vals='{"sort": "c3", "direction": "asc", "page": "1"}'>
+        Risk<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Asset" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">GPU (H100/B200)</td>
+    
+    
+    <td data-label="Accounting Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">3-6 years accounting</td>
+    
+    
+    <td data-label="Economic Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">18-36 months economic</td>
+    
+    
+    <td data-label="Risk" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">CRITICAL</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Asset" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Networking</td>
+    
+    
+    <td data-label="Accounting Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">5-7 years</td>
+    
+    
+    <td data-label="Economic Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">5+ years</td>
+    
+    
+    <td data-label="Risk" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Moderate</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Asset" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Power/Cooling Infra</td>
+    
+    
+    <td data-label="Accounting Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">10-15 years</td>
+    
+    
+    <td data-label="Economic Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">10-15 years</td>
+    
+    
+    <td data-label="Risk" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Low</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Asset" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Building Shell</td>
+    
+    
+    <td data-label="Accounting Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">25-40 years</td>
+    
+    
+    <td data-label="Economic Life" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">25-40+ years</td>
+    
+    
+    <td data-label="Risk" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Very Low</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">4 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+<div class="prose max-w-[100ch] text-[12px] text-muted"><p>Hyperscalers extended GPU depreciation from 3-4yr to 5-6yr. This reduced collective depreciation by ~$18B in 2024. Economic life is 18-36 months for frontier training.</p></div>
+
+  </section>
+  
+  <section id="s1" class="scroll-mt-20 space-y-4" aria-label="Reliability">
+    <div class="eyebrow border-t border-line pt-6">Reliability</div>
+    <h2 class="pt-2 text-[17px] font-semibold tracking-[-0.01em] text-ink">GPU Reliability &amp; Failure Modes</h2>
+<form id="t-doc_system_integration_reliability-form" hx-get="/partials/t/doc_system_integration_reliability" hx-target="#t-doc_system_integration_reliability"  onsubmit="return false" class="hidden"></form>
+<div id="t-doc_system_integration_reliability" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-doc_system_integration_reliability-form">
+<input type="hidden" name="direction" value="asc" form="t-doc_system_integration_reliability-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label=", scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack dt-stack-labels">
+  <colgroup><col class=""><col class=""><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th     pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_reliability" hx-include="#t-doc_system_integration_reliability-form" hx-target="#t-doc_system_integration_reliability"
+              hx-vals='{"sort": "c0", "direction": "asc", "page": "1"}'>
+        Failure Mode<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_reliability" hx-include="#t-doc_system_integration_reliability-form" hx-target="#t-doc_system_integration_reliability"
+              hx-vals='{"sort": "c1", "direction": "asc", "page": "1"}'>
+        Rate<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_reliability" hx-include="#t-doc_system_integration_reliability-form" hx-target="#t-doc_system_integration_reliability"
+              hx-vals='{"sort": "c2", "direction": "asc", "page": "1"}'>
+        Source<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">GPU failures (diverse)</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">30.1% of disruptions</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Meta 16K-GPU A100 cluster</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">ECC double-bit errors</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">3.1% of disruptions</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Silent data corruption risk</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">GPU MTBF</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">~160 hours (DBE ECC)</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Titan supercomputer (18,688 GPUs)</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">GPU AFR (Annual Failure)</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">~9%</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Meta cluster pre-training data</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Silent Data Corruption</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">~1 per 1,000 GPUs/month</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Google/Meta disclosed</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Failure Mode" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Infant mortality</td>
+    
+    
+    <td data-label="Rate" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Elevated (first 1,000 hrs)</td>
+    
+    
+    <td data-label="Source" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Burn-in before revenue service</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">6 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+<h3 class="pt-1 text-[15px] font-semibold text-ink">Data Centre Tier Classification</h3>
+<form id="t-doc_system_integration_tiers-form" hx-get="/partials/t/doc_system_integration_tiers" hx-target="#t-doc_system_integration_tiers"  onsubmit="return false" class="hidden"></form>
+<div id="t-doc_system_integration_tiers" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-doc_system_integration_tiers-form">
+<input type="hidden" name="direction" value="asc" form="t-doc_system_integration_tiers-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label=", scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack dt-stack-labels">
+  <colgroup><col class=""><col class=""><col class=""><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th     pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_tiers" hx-include="#t-doc_system_integration_tiers-form" hx-target="#t-doc_system_integration_tiers"
+              hx-vals='{"sort": "c0", "direction": "asc", "page": "1"}'>
+        Tier<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_tiers" hx-include="#t-doc_system_integration_tiers-form" hx-target="#t-doc_system_integration_tiers"
+              hx-vals='{"sort": "c1", "direction": "asc", "page": "1"}'>
+        Uptime<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_tiers" hx-include="#t-doc_system_integration_tiers-form" hx-target="#t-doc_system_integration_tiers"
+              hx-vals='{"sort": "c2", "direction": "asc", "page": "1"}'>
+        Downtime<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_tiers" hx-include="#t-doc_system_integration_tiers-form" hx-target="#t-doc_system_integration_tiers"
+              hx-vals='{"sort": "c3", "direction": "asc", "page": "1"}'>
+        Redundancy<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Tier" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Tier I</td>
+    
+    
+    <td data-label="Uptime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">99.671%</td>
+    
+    
+    <td data-label="Downtime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">28.8 hrs/yr</td>
+    
+    
+    <td data-label="Redundancy" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Single path, no redundancy</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Tier" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Tier II</td>
+    
+    
+    <td data-label="Uptime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">99.741%</td>
+    
+    
+    <td data-label="Downtime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">22.0 hrs/yr</td>
+    
+    
+    <td data-label="Redundancy" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Single path, redundant components</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Tier" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Tier III</td>
+    
+    
+    <td data-label="Uptime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">99.982%</td>
+    
+    
+    <td data-label="Downtime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">1.6 hrs/yr</td>
+    
+    
+    <td data-label="Redundancy" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Multiple paths, concurrently maintainable</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Tier" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Tier IV</td>
+    
+    
+    <td data-label="Uptime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">99.995%</td>
+    
+    
+    <td data-label="Downtime" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">0.4 hrs/yr</td>
+    
+    
+    <td data-label="Redundancy" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Fully fault-tolerant, 2N redundancy</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">4 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+
+  </section>
+  
+  <section id="s2" class="scroll-mt-20 space-y-4" aria-label="Power &amp; Cooling">
+    <div class="eyebrow border-t border-line pt-6">Power &amp; Cooling</div>
+    <h2 class="pt-2 text-[17px] font-semibold tracking-[-0.01em] text-ink">Cooling Technology Comparison</h2>
+<form id="t-doc_system_integration_cooling-form" hx-get="/partials/t/doc_system_integration_cooling" hx-target="#t-doc_system_integration_cooling"  onsubmit="return false" class="hidden"></form>
+<div id="t-doc_system_integration_cooling" class="overflow-clip rounded-lg border border-line"><input type="hidden" name="sort" value="" form="t-doc_system_integration_cooling-form">
+<input type="hidden" name="direction" value="asc" form="t-doc_system_integration_cooling-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label=", scrollable"><table class="w-full min-w-[640px] table-fixed border-collapse dt-stack dt-stack-labels">
+  <colgroup><col class=""><col class=""><col class=""><col class=""><col class=""><col class=""></colgroup>
+  <thead><tr>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight  pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c0", "direction": "asc", "page": "1"}'>
+        Technology<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight   "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c1", "direction": "asc", "page": "1"}'>
+        Max Density<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight   "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c2", "direction": "asc", "page": "1"}'>
+        How<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight   "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c3", "direction": "asc", "page": "1"}'>
+        PUE<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight   "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c4", "direction": "asc", "page": "1"}'>
+        Best For<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th   !h-auto whitespace-normal py-2 align-bottom leading-tight   pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/doc_system_integration_cooling" hx-include="#t-doc_system_integration_cooling-form" hx-target="#t-doc_system_integration_cooling"
+              hx-vals='{"sort": "c5", "direction": "asc", "page": "1"}'>
+        Tradeoffs<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Technology" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Air Cooling</td>
+    
+    
+    <td data-label="Max Density" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">&lt;30 kW/rack</td>
+    
+    
+    <td data-label="How" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Fans + CRAC/CRAH</td>
+    
+    
+    <td data-label="PUE" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">PUE 1.3-1.6</td>
+    
+    
+    <td data-label="Best For" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Legacy DCs</td>
+    
+    
+    <td data-label="Tradeoffs" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Low complexity, density-limited</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Technology" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Direct-to-Chip (D2C)</td>
+    
+    
+    <td data-label="Max Density" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">&gt;120 kW/rack</td>
+    
+    
+    <td data-label="How" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Cold plates + CDU</td>
+    
+    
+    <td data-label="PUE" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">PUE 1.1-1.2</td>
+    
+    
+    <td data-label="Best For" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">NVL72, H200 clusters</td>
+    
+    
+    <td data-label="Tradeoffs" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">GPU must be liquid-cooled ready</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Technology" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Rear-Door HX</td>
+    
+    
+    <td data-label="Max Density" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">30-50 kW/rack</td>
+    
+    
+    <td data-label="How" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Passive liquid coil</td>
+    
+    
+    <td data-label="PUE" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">PUE 1.2-1.4</td>
+    
+    
+    <td data-label="Best For" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Retrofit option</td>
+    
+    
+    <td data-label="Tradeoffs" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Limited max density</td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Technology" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px] pl-5  text-ink">Immersion (1-Phase)</td>
+    
+    
+    <td data-label="Max Density" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">&gt;100 kW/rack</td>
+    
+    
+    <td data-label="How" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">GPU submerged in fluid</td>
+    
+    
+    <td data-label="PUE" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">PUE 1.03-1.05</td>
+    
+    
+    <td data-label="Best For" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]   text-ink">Experimental HPC</td>
+    
+    
+    <td data-label="Tradeoffs" data-kind="text" class="border-b border-line-soft px-3 align-top py-1.5 text-[12px]  pr-5 text-ink">Warranty concerns</td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">4 rows<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+</div></div>
+<div class="prose max-w-[100ch] text-[12px] text-muted"><p>Blackwell (B200) effectively requires liquid cooling for dense deployments. Converting air-cooled DC to liquid costs $5-15M per MW.</p></div>
+
+  </section>
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  // A chart is one image to a screen reader, named by its own aria-label if the template gave one,
+  // else by the nearest heading that owns it (its card's title). tests/test_chart_names.py checks
+  // the same rule on every page, so no chart is left unnamed.
+  function chartName(el) {
+    if (el.getAttribute("aria-label")) return el.getAttribute("aria-label");
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const h = a.querySelector("h1, h2, h3, h4, .card-title");
+      if (!h) continue;
+      const c = h.cloneNode(true);   // the title's own words: not a help tip's text inside it
+      c.querySelectorAll(".tip, [aria-hidden=true]").forEach(x => x.remove());
+      const t = c.textContent.trim().replace(/\s+/g, " ");
+      if (t) return t + ", chart";
+    }
+    return "Chart";
+  }
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", chartName(el));
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Scroll cue: a [data-scroll-cue] wraps a sideways-scrolling box ([data-scroll-x]). While columns
+  // are hidden to its right it carries data-more-right (CSS draws a fade) and un-hides any
+  // [data-scroll-hint] in the same table, so a clipped table is never silent about it.
+  function scrollCue(wrap) {
+    const box = wrap.querySelector("[data-scroll-x]");
+    if (!box) return;
+    const over = box.scrollWidth > box.clientWidth + 1;
+    wrap.toggleAttribute("data-more-right", over && box.scrollLeft + box.clientWidth < box.scrollWidth - 1);
+    const hint = (wrap.closest("[id^='t-']") || wrap.parentElement).querySelector("[data-scroll-hint]");
+    if (hint) hint.hidden = !over;
+  }
+  const allCues = () => document.querySelectorAll("[data-scroll-cue]").forEach(scrollCue);
+  document.addEventListener("scroll", e => {
+    const w = e.target.closest?.("[data-scroll-cue]");
+    if (w) scrollCue(w);
+  }, true);
+  document.addEventListener("DOMContentLoaded", allCues);
+  document.addEventListener("htmx:afterSettle", allCues);
+  document.addEventListener("toggle", allCues, true);   // a table inside a disclosure gets its size when opened
+  window.addEventListener("resize", allCues);
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>

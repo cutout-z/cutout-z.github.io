@@ -1,0 +1,81 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-19"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-09-14</span>
+        <span class="badge hidden sm:inline-flex">Personal investing</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/majmudaradam/status/2098881885200081234?s=12" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@MajmudarAdam</div>
+      <h3 id="note-title-19" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">from the outside, it is very reasonable to interpret the past 2 weeks as an orchestrated… [agents, ai, llm, openai]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>from the outside, it is very reasonable to interpret the past 2 weeks as an orchestrated…</h1>
+<p>from the outside, it is very reasonable to interpret the past 2 weeks as an orchestrated industry-wide regulatory capture strategy.</p>
+<p>I realize that no one has properly explained yet what all the lab employees have seen that scared them so suddenly.</p>
+<p>I will try to explain -</p>
+<p>first, this is all a matter of beliefs about how quickly model capabilities are progressing. there is currently a large gap between the internal and external perception of the rate of progress, which is what I am going to address here.</p>
+<p>the general perception about the rate of progress has been informed by a few years of experience with model releases, intuitively feeling the capability jump between GPT3 -&gt; GPT3.5 -&gt; GPT4 -&gt; o1/o3 -&gt; GPT5 etc, and in particular seeing where the models are still far below human ability. there have really only been a few model releases that felt like large leaps in progress - GPT3, GPT4, o1/o3, DeepSeek R1, Fable/Mythos, Kimi K3 and now Astra.</p>
+<p>because of the infrequency of these large jumps compared with the relatively common marginal releases, it has been easy to form a view at certain points that “scaling has hit a wall,” especially at points like GPT5 release. This view is comforting in that it feels like there is some universal rate limit beyond which we cannot progress too much faster. Between o1/o3 and Astra, there was a year of seemingly linear progress. So we extrapolate from here about how fast progress will “realistically” occur.</p>
+<p>There is always an underlying question from the outside perspective “how long can this scaling stuff really keep going for? surely it must stop at some point soon, we’ve already gone pretty far.” and it is very possible to search for reasons why progress will stop working and find reasons that seem valid - (“models are already as large as they can get it would be too hard to do more parameters”, “we already used all the data on the internet we don’t have anymore”, “it’s gonna be pretty linear from here buying up more RL envs to bring them in distribution”).</p>
+<p>From the inside of labs, researchers have direct answers to these questions in the form of scaling law/capability plots.</p>
+<p>In reality, there are only really 2 ways that AI capabilities have advanced over the past decade: (1) either scale father on an existing scaling law or (2) discover a new scaling law to take advantage of.</p>
+<p>All of the largest capability jumps were caused by exactly these factors. GPT2 was a pre-training scale-up compared to GPT1. Same for GPT3 and GPT4. o1/o3 benefited from the invention of a new scaling law axis - test-time compute. Perhaps Fable was a scale-up on both of these axes, or maybe more. Lots of algorithmic improvements are needed to make these scale-ups work, but ultimately we can approximate by saying that the scaling laws are what yield gains in capabilities (à la bitter lesson)</p>
+<p>So the question of “how much father can we scale” is really - “how many more scaling axes do we know about that are unsaturated?”</p>
+<p>If we hypothetically only knew about pre-training scaling, and we already had a 10T or 100T model, maybe it would be reasonable to say we’ve hit a wall. Same if we only knew about pre-training and test-time scaling and we had roughly saturated both methods.</p>
+<p>But what if we had discovered new scaling laws? For example, let’s hypothetically use SSI’s rumored result that they have cracked “test-time training,” creating a new scaling law of spending more compute training during test-time rollouts that they could saturate. Or maybe there is some way to scale agent-clusters to collaborate up to N number of agents which we’re already seeing lots of people try that represents a new way to saturate compute. etc. Even recursive-self improvement can be thought of as a scaling law - how much compute do you spend on inference making the algorithms of the model better.</p>
+<p>Obviously I am not saying any of these specific directions explicitly yield new scaling laws, but what I am saying is that it’s not hard to imagine many many new scaling axes aside from just the main 2 that we have seen publicly.</p>
+<p>In some ways, every new lab release that represents a huge capability jump has to represent some new techniques developed which may exhibit new scaling laws, or the ability to scale much farther than expected on existing scaling axes.</p>
+<p>From an internal perspective, this might look like sitting inside Anthropic with the new Mythos 5, seeing all of the new insane things it can do (like hack into xyz website that was thought to be secure), and then you look over at your plots and see that you’ve barely scratched the surface of 2 new scaling laws and 1 existing one. And you have WAY more room to go. Then you think “holy shit this stuff is going to get so much better very very soon.” And you can say that with pretty high confidence, because the plot is showing you, and the plot has never lied (so far).</p>
+<p>So let’s imagine all the different labs are staring at their own plots and have concluded that there is no end in sight for scaling and in fact just their next 1-2 model generations based on the expected returns will have much higher base intelligence.</p>
+<p>How much more intelligence do we actually get from further scaling?</p>
+<p>As a proxy, we went from a complete inability to do advanced math before the o-series to solving a millenium prize problem with next-gen models. This happened in less than 2 years. The same happened in coding. And it appears that this was not just the result of 1-scaling law but the stacking effects of multiple (great pre-training scale x greater RL scale).</p>
+<p>What you can concretely take from this is that in areas where models have shown beginning signs of competence today, they will probably be superhuman relatively shortly. There are many areas where models have not even shown this basic competence.</p>
+<p>But one of the areas that they have happens to be hacking and cybersecurity. Which happens to be the gate to the entire internet and a massive amount physical infrastructure in the world. So assuming there is more room to scale, it is safe to assume that models will be superhuman at cyber capabilities in not too long.</p>
+<p>So the only question remaining is what will this increased base intelligence be able to do, and what is it likely to do.</p>
+<p>Finally, we are at a point where we can integrate the information of the past 2 weeks:
+&gt; Just at the existing point on the scaling curve, models are at the level of Astra. There is clearly a large number of things they are capable of hacking
+&gt; We have seen that both OAI and Ant models have shown a willingness to hack external websites to solve their tasks or keep themselves “alive”
+&gt; If we crank up the scaling even farther, assuming there is room to go, we will certainly have models that are far more able to hack more well defended places, and obfuscate their own intent, which might have much larger consequences.
+&gt; If all of this is allowed to go unchecked, we would likely have rapid runaway capability takeoff very soon, with misaligned models that hack whatever they can to get what they want
+&gt; This could of course have very damaging consequences.</p>
+<p>Within this view you can see why researchers would be very scared, and why theymight have made the comments they have over the past 2 weeks (you may argue the extent to which they went was misguided for various reasons), and also why pacing the frontier is very much a necessity and by no means a regulatory capture strategy.</p>
+<p>People are staring at their plots, seeing that there is no end in sight, but in fact very much the contrary, that there are compounding scaling effects that might stack on each other to create ever-greater model capabilities, and that at the same time we clearly do not have anywhere close to what's required to control these increasingly superhuman capabilities.</p>
+<p>This has nothing to do with wanting to feel like the labs have produced something amazing so they are overhyping it. It is rather fear at the overwhelming implications of the knowledge that with just what we know now, we can create intelligences far more capable than us on every axis that we know how to train on*.</p>
+<ul>
+<li>and the last caveat, the things the models are really bad at, of which there are still many, are things that they have not been trained on. maybe there are the things the models can/will never be trained on, so they will remain human edge. I would love for this to be the case, though it is hard for me to see what would fall into that category.</li>
+</ul></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">AI/DC</span><span class="badge">Macro</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">OpenAI</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Anthropic</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @MajmudarAdam on <span class="num">2026-09-14</span>; its frontmatter is not shown. <a href="https://x.com/majmudaradam/status/2098881885200081234?s=12" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>

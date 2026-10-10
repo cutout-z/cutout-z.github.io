@@ -1,0 +1,101 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-15"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-09-17</span>
+        <span class="badge hidden sm:inline-flex">Personal investing</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/magicsilicon/status/2055735299570098377?s=12" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@magicsilicon</div>
+      <h3 id="note-title-15" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">Deep Moats and Platform Shifts in Computing - Part 2 [datacentre, gpu, llm, openai, trading]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>Deep Moats and Platform Shifts in Computing - Part 2</h1>
+<h2>NVIDIA, CUDA and the New Challengers</h2>
+<p>“You can't connect the dots looking forward; you can only connect them looking backwards.”</p>
+<p>Steve Jobs</p>
+<p>Part 1 of this 3-part essay covered the RISC vs CISC wars and how Intel's x86 ISA, aided by the Wintel flywheel, volume economics and a complete ecosystem lock on the PC era, defeated a generation of more elegant RISC architectures, while DEC and Sun Microsystems, two iconic companies, faded into footnotes.</p>
+<p>This part examines how NVIDIA built a strikingly similar empire over three decades to establish itself as the clear leader in the present-day AI era, and how a new set of challengers is trying to take share away from it.</p>
+<h2>NVIDIA: From a Denny’s Booth to a Multi-Trillion Dollar Fortress</h2>
+<p>In 1993, Intel launched the Pentium processor that cemented its status as the undisputed computing platform of the PC era. That same year, three engineers – Jensen Huang, Chris Malachowsky, and Curtis Priem – sketched out the idea for a business that would become NVIDIA - over breakfast at a Denny's booth in San Jose, California.</p>
+<p>Priem and Malachowsky were coworkers at Sun, one of the most prominent RISC era companies, discussed in Part 1, that Intel's x86 ecosystem ultimately destroyed. Sun's SPARC architecture, its proprietary hardware margins and its vertically integrated model were all commoditized away by x86 + Linux over the following decade.</p>
+<p>And yet, two engineers from that same company went on to build NVIDIA, which by 2023 had become the very thing Intel was in 1993 – the dominant, ecosystem-controlling platform of its computing era. The company that Intel killed, inadvertently spawned the company that would one day eclipse Intel.</p>
+<p>Nothing about the three-decade crystallization of NVIDIA was visible in 1993. NVIDIA spent its first decade as a graphics card company, its second decade building a niche scientific computing platform, and only in its third decade, with the AI boom did it become clear that NVIDIA had built a moat structurally identical to, and arguably deeper than the one Intel built with x86 and Wintel. The NVIDIA founders who watched Sun lose to Intel's ecosystem playbook ended up running the same playbook, more effectively, a generation later.</p>
+<p>After nearly dying with the NV1 chip, NVIDIA established itself as the graphics leader with GeForce 256, marketed as “the world's first GPU” in 1999. But GPUs were still just niche peripherals for gamers and CAD engineers. NVIDIA's transformation into an AI juggernaut began with a single bet: CUDA.</p>
+<h2>CUDA: The Gambit that Created an Empire</h2>
+<p>In 2006, NVIDIA released a Compute Unified Device Architecture, aka CUDA. The intellectual origins trace to Ian Buck, a Stanford PhD student whose general-purpose GPU language, Brook, convinced NVIDIA to hire him in 2004. Buck and GPU architect John Nickolls transformed Brook into a full development platform. For the first time, developers could program GPUs for non-graphics tasks in C/C++.</p>
+<p>CUDA grew slowly for years, merely as a niche tool for computational scientists. NVIDIA invested heavily in libraries, documentation, university partnerships, and developer relations, with conviction, and without any near-term returns. Jensen would later recall how his relentless investment in CUDA nearly drove NVIDIA to the brink of bankruptcy.</p>
+<p>Then in 2012, AlexNet, a neural network built by Geoffrey Hinton's team at the University of Toronto, demolished the ImageNet image recognition benchmark using two NVIDIA GPUs. A niche research curiosity suddenly looked like the future of AI. NVIDIA moved with extraordinary speed and flawless execution to seize the opportunity:</p>
+<p>Built cuDNN, which TensorFlow and PyTorch integrated as their default deep learning backend.</p>
+<p>Added Tensor Cores for deep learning matrix math.</p>
+<p>Launched DGX systems as the standard AI research appliance.</p>
+<p>In 2016, donated the first DGX1 to OpenAI, cultivating the organization that would create ChatGPT.</p>
+<p>Acquired Mellanox, gaining control of the networking fabric connecting thousands of GPUs in AI supercomputers.</p>
+<p>When ChatGPT unleashed mass-market demand for generative AI in November 2022, the CUDA moat had been sixteen years in the making! The H100 became the must-have chip of the AI boom and NVIDIA revenue went parabolic to grow 5X over the next 3 years.</p>
+<p>The slow start and eventual explosive rise of NVIDIA mirror the evolution of Intel from a memory maker at its founding in 1968 to becoming the flag bearer of the microprocessor and PC revolution in the 1990s.</p>
+<p>Both Intel and NVIDIA started out developing technologies that were distinct from what would eventually become their core growth engines. Both effectively used their core competencies to their advantage and became dominant computing platforms, three decades apart. Both faced a full slate of challengers, incumbents and startups alike.</p>
+<h2>The Challengers: A Dozen Ways to Accelerate</h2>
+<p>The roster of NVIDIA challengers in 2026 bears a structural resemblance to the Intel and x86 challengers of the 1990s. Each brings genuine innovation, and each faces the same ecosystem gravity.</p>
+<p>AMD is the closest merchant silicon competitor, and it plays the same shadow role it played against Intel in x86. AMD's hardware is competitive. But the software ecosystem gap is what keeps CUDA dominant, exactly how the x86 software base kept Intel dominant even when RISC hardware was faster.</p>
+<p>Google TPUs are the most credible training alternative. Google has the most complete AI stack from silicon to cloud. But TPUs are exclusive to Google Cloud, trading NVIDIA lock-in for Google lock-in.</p>
+<p>Amazon Trainium powers frontier model training at substantially better price-performance than NVIDIA instances, but AWS exclusive, again training NVIDIA lock-in for AWS lock-in. Amazon is subsidizing its own escape from NVIDIA.</p>
+<p>Microsoft Maia 100 is designed not to replace NVIDIA but to reduce Azure's dependence on NVIDIA – a TCO optimization play, not a platform challenge. Cerebras built the Wafer-Scale Engine – nearly an entire 300mm silicon wafer as a single processor. A disruptive and bold but niche solution, gaining some traction, but widespread adoption remains unclear.</p>
+<p>SambaNova took a different approach with its Reconfigurable Dataflow Unit (RDU), a dataflow architecture distinct from GPUs and TPUs.</p>
+<p>Tenstorrent is also betting that GPUs are fundamentally the wrong abstraction for AI workloads, and that dataflow will win at scale the way RISC won the technical argument against CISC. Tenstorrent has developed an accelerator architecture built around a grid of small, identical compute cores, each with its own local SRAM, matrix math unit, vector unit, and RISC-V processors that manage data movement and scheduling locally.</p>
+<p>There are several other startups as well. JP Morgan projects custom silicon could capture 45% of the AI chip market by 2028. NVIDIA now faces competition from its own customers.</p>
+<h2>The CUDA Moat: Wintel, Reloaded</h2>
+<p>The parallels between NVIDIA today and Intel in the 1990s are structural, and not merely superficial:</p>
+<p>Parallels between NVIDIA/CUDA today and Intel/x86 in the 1990s.</p>
+<p>CUDA lock-in is not a single dependency. It is accumulated across multiple levels – kernels tuned to NVIDIA's math libraries, mixed-precision behavior calibrated to cuDNN, distributed training optimized around NVIDIA Collective Communications Library (NCCL), continuous integration and deployment pipelines built on CUDA tooling and an entire generation of engineers trained on CUDA even before they graduate.</p>
+<p>NVIDIA's moat may be deeper than the moat Intel built for two primary reasons:</p>
+<p>Vertical integration: Wintel controlled the OS and the CPU but relied on third parties for everything else. NVIDIA controls the GPU, networking (NVLink, InfiniBand), software (CUDA, cuDNN, TensorRT, NCCL), and full rack-scale systems (NVL72, 72 Blackwell GPUs as a single logical compute unit). At GTC 2026, NVIDIA unveiled the Vera Rubin platform with seven distinct chip types comprising five rack-scale system configurations, extending vertical control further than Intel ever achieved.</p>
+<p>Capital-intensive switching costs: Porting a Windows app to Linux in the 1990s was expensive but bounded. Retraining a frontier AI model on alternative hardware costs hundreds of millions of dollars and months of engineering.</p>
+<h2>Groq: NVIDIA Absorbs a Challenger</h2>
+<p>Perhaps the most telling development of the past year is what happened to one challenger that was gaining real traction. Groq, founded by ex-Google TPU engineer Jonathan Ross had built a Language Processing Unit (LPU) optimized for ultra-low-latency inference. Its SRAM-based architecture claimed to deliver 4-7X faster token generation than GPUs with deterministic latency. By 2025, Groq was targeting $500 M in revenue and had raised $750 M at a $6.9 B valuation. On Christmas Eve 2025, NVIDIA announced a $20 B deal, its largest ever, to license Groq's inference technology and hire most of its technical team, including founder Ross.</p>
+<p>At GTC 2026, Jensen revealed his plan for Groq technology. The Groq 3 LPX inference accelerator will slot into the Vera Rubin platform as a dedicated decode-phase co-processor, and according to Jensen, represent ~25% of the compute in an AI cluster.</p>
+<p>The acquisition carries a deeper signal. On the one hand, it validates the existence of a market for non-GPU accelerators, especially for inference workloads. On the other hand, it indicates that Jensen and NVIDIA may be willing to gobble up any emerging threats to their GPU empire.</p>
+<p>It is fascinating to note that this too is a playbook with historical precedent. In 1998, Intel acquired DEC's Alpha IP and their silicon manufacturing fab, not to use it, but to neutralize it. The Groq deal is a bit more sophisticated – NVIDIA is integrating genuinely useful technology – but the competitive effect is similar: one fewer challenger at the table.</p>
+<p>Summary</p>
+<p>Just as Intel built a formidable ecosystem around x86 CPUs during the PC era, NVIDIA built a strikingly similar empire around programmable GPUs to launch the AI era. The CUDA moat may be deeper than the x86 and Wintel moat ever was, and unlike Intel, NVIDIA was quick to move up the technology stack and become a system and software provider, instead of remaining a mere merchant silicon supplier.</p>
+<p>Just as in the past, along with the rise of NVIDIA, came a new roster of challengers including merchant chip companies, hyperscalers and a host of startups building custom silicon. These challengers have developed innovative and elegant architectures that are going against the NVIDIA juggernaut. But just as in the past, they lack the scale, volume economics, software lock-in and system integration dominated by NVIDIA.</p>
+<p>Just as Intel’s massive war chest allowed it to vanquish nearly all semiconductor manufacturing competitors of the 1990s, NVIDIA is using its massive windfall to make smart acquisitions across the technology stack, covering nearly every potential emerging trend from optical interconnects to quantum computing.</p>
+<p>Part 3 will take a step back from the specifics to ponder a fascinating question: What happens next?</p></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">AI/DC</span><span class="badge">Supply chain</span><span class="badge">Macro</span><span class="badge">Commodities / energy</span><span class="badge">Company / security</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">NVIDIA</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Google</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Amazon</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Microsoft</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">OpenAI</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">AMD</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Intel</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @magicsilicon on <span class="num">2026-05-17</span>; its frontmatter is not shown. <a href="https://x.com/magicsilicon/status/2055735299570098377?s=12" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>

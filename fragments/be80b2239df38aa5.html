@@ -1,0 +1,68 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-58"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-05-18</span>
+        <span class="badge hidden sm:inline-flex">Investment Miner</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/jukan05/status/2052957921563316619?s=12" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@jukan05</div>
+      <h3 id="note-title-58" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">Why did xAI hand over a 220,000-GPU cluster to Anthropic [datacenter, gpu, infrastructure, llm, openai]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>Why did xAI hand over a 220,000-GPU cluster to Anthropic?</h1>
+<p>The technical backdrop to xAI's decision to hand Colossus 1 over to Anthropic in its entirety is more interesting than it appears. xAI deployed more than 220,000 NVIDIA GPUs at its Colossus 1 data center in Memphis. Of these, roughly 150,000 are estimated to be H100s, 50,000 H200s, and 20,000 GB200s. In other words, three different generations of silicon are mixed together inside a single cluster — a "heterogeneous architecture."</p>
+<p>For distributed training, however, this configuration is close to a disaster, according to engineers familiar with the setup. In distributed training, 100,000 GPUs must finish a single step simultaneously before the cluster can advance to the next one. Even if the GB200s finish their computation first, the remaining 99,999 chips have to wait for the slower H100s — or for any GPU that has hit a stack-related snag — to catch up. This is known as the straggler effect. The 11% GPU utilization rate (MFU: the share of theoretical FLOPs actually realized) at xAI recently reported by The Information can be read as the numerical fallout of this problem. It stands in stark contrast to the 40%-plus MFU figures achieved by Meta and Google.</p>
+<p>The problem runs deeper still. As discussed earlier, NVIDIA's NCCL has traditionally been optimized for a ring topology. It works beautifully at the 1,000–10,000 GPU scale, but once you push into the 100,000-unit range, the latency of data traversing the ring once around becomes punishingly long. GPUs need to churn through computations rapidly to keep MFU high, but while they sit waiting endlessly for data to arrive over the network fabric, more than half of the silicon falls into idle. Google sidestepped this bottleneck with its own custom topology (Google's OCS: Apollo/Palomar), but xAI, by my read, has not yet reached that stage.</p>
+<p>Layer Blackwell's (GB200) "power smoothing" issue on top, and the picture comes into focus. According to Zeeshan Patel, formerly in charge of multimodal pre-training at xAI, Blackwell GPUs draw power so aggressively that the chip itself includes a hardware feature for smoothing power delivery. xAI's existing software stack, however, was optimized for Hopper and does not understand the characteristics of the new hardware; when it imposes irregular loads on the chip, the silicon physically destructs — literally melts. That means the modeling stack must be rewritten from scratch, which in turn means scaling is far harder than most of us imagine.</p>
+<p>Pulling all of this together points to a single conclusion. xAI judged that training frontier models on Colossus 1 simply was not efficient enough to be worthwhile. It therefore moved its own training workloads wholesale onto Colossus 2, built as a 100% Blackwell homogeneous cluster. Colossus 1, on the other hand — whose mixed architecture is far less crippling for inference, which parallelizes more forgivingly — was leased in its entirety to an Anthropic that desperately needed inference capacity.</p>
+<p>Many observers point to what looks like a contradiction: Elon Musk poured enormous capital into building Colossus, only to hand the core asset over to a direct competitor in Anthropic. Others read it as xAI capitulating because it is a "middling frontier lab." But these are surface-level reads.</p>
+<p>Look at the numbers and a different picture emerges. xAI today holds roughly 550,000+ GPUs in total (on an H100-equivalent performance basis), and Colossus 1 (220,000 units) accounts for only about 40% of the total available capacity. Colossus 2 — built entirely on Blackwell — is already operational and continuing to expand. Elon kept the all-Blackwell homogeneous cluster (Colossus 2) for himself and leased out the older, mixed-generation Colossus 1. In other words, he handed the pain of rewriting the stack — the MFU-11% debacle — to Anthropic, while keeping his own focus on training the next generation of models.</p>
+<p>The real point, then, is this. Elon's objective appears to be positioning ahead of the SpaceXAI IPO at a $1.75 trillion valuation, currently floated for as early as June. The narrative SpaceXAI now needs is that xAI — long the "sore finger" — is not merely a research lab burning cash, but a business with a "neo-cloud" model in the mold of AWS, capable of leasing surplus assets at high yields.</p>
+<p>From a cost-of-capital perspective, an "AGI cash incinerator" is far less attractive to investors than a "data-center landlord generating cash."</p>
+<p>As noted above, the most important detail of the Colossus 1 lease is that it is for inference, not training. Unlike training, inference requires far less tightly synchronized inter-GPU communication. Even when the chips are heterogeneous, the workload parcels out cleanly across them in parallel. The straggler effect — the chief weakness of a mixed cluster — is essentially neutralized for inference workloads.</p>
+<p>Furthermore, with Anthropic occupying all 220,000 GPUs as a single tenant, the network-switch jitter (unanticipated latency) that arises under multi-tenancy disappears. The two sides' technical weaknesses end up complementing each other almost exactly.</p>
+<p>One insight follows. As a training cluster mixing H100/H200/GB200, Colossus 1 was an asset that could only deliver an MFU of 11%. The moment it was handed over to a single inference customer, however, that asset transformed into a cash-flow asset rented out at roughly $2.60 per GPU-hour (a weighted average of the lease rates across GPU types). For xAI, what was a "cluster from hell" for training has become a "golden goose" minting $5–6 billion in annual revenue when redeployed for inference. Elon's genius, I would argue, lies not in the model but in this asset-rotation structure.</p>
+<p>The weight of that $6 billion becomes clearer when set against xAI's income statement. Annualizing xAI's 1Q26 net loss yields roughly $6 billion in losses per year. The $5–6 billion in annual revenue generated by leasing Colossus 1 to Anthropic, in other words, almost perfectly hedges xAI's loss figure. This single deal effectively pulls xAI to break-even.</p>
+<p>Heading into the SpaceXAI IPO, this functions as a core line of financial defense. From a cost-of-capital standpoint, if the image shifts from "research lab burning cash" to "infrastructure tollgate stably printing $6 billion a year," the entire tone of the offering can change.</p>
+<p>(May 8, 2026, Mirae Asset Securities)</p>
+<p>What the SpaceX–Anthropic Deal Means</p>
+<p>Two weeks ago, we published a note laying out what GPT-5.5's release implied. The conclusion was simple: whoever secures compute first, in greater volume, and with greater reliability ultimately takes the win. With OpenAI's 30GW roadmap</p></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">AI/DC</span><span class="badge">Macro</span><span class="badge">Commodities / energy</span><span class="badge">Market structure</span><span class="badge">Company / security</span><span class="badge">Geopolitics</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">NVIDIA</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">SpaceX</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Meta</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Google</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">OpenAI</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Anthropic</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @jukan05 on <span class="num">2026-05-18</span>; its frontmatter is not shown. <a href="https://x.com/jukan05/status/2052957921563316619?s=12" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>

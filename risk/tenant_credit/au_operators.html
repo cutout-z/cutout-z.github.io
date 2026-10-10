@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Australian operators · Tenant credit</title>
+  <script>
+    // Theme before first paint, so nothing flashes. An explicit ?theme= wins, so screenshots are
+    // deterministic.
+    (function () {
+      var t = new URLSearchParams(location.search).get("theme");
+      if (!t) { try { t = localStorage.getItem("theme"); } catch (e) {} }
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23ff7a3d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/vendor/plotly.min.js" defer></script>
+  <script src="/static/js/static-export.js" defer></script>
+
+</head>
+<body class="min-h-screen">
+<a href="#main" class="skip-link">Skip to content</a>
+
+
+
+
+
+
+
+
+
+<dialog id="nav-drawer" class="drawer ml-0 mr-auto w-[288px] border-l-0 border-r bg-bg" aria-label="Pages">
+  <div class="flex h-14 items-center justify-between px-4">
+    <div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Close menu" onclick="this.closest('dialog').close()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+  </div>
+  <nav class="h-[calc(100%-56px)] overflow-y-auto px-2 pb-6">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" aria-current="page"
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            nav-active text-ink font-medium"
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+</dialog>
+
+
+<div class="flex min-h-screen">
+  <aside class="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col md:flex">
+    <div class="flex h-14 items-center px-4"><div class="flex items-center gap-2.5">
+    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-bg">AI</span>
+    <div class="min-w-0 leading-tight">
+      <div class="truncate text-[13px] font-semibold text-ink">AI &amp; DC Research</div>
+      <div class="text-[12px] text-faint">Dashboard</div>
+    </div>
+  </div></div>
+    <nav class="min-h-0 flex-1 overflow-y-auto px-2 pb-6 pt-2" aria-label="Pages">
+  <div class="mb-4">
+  <a href="/" title="The risk cockpit: what changed, then every signal by risk row, its change before its level, and what is not yet instrumented." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Cockpit</span>
+  </a>
+  
+  <a href="/map" title="The risk taxonomy drawn as a map: the three risk rows and their nodes, each sized by its last 90 days of news and linked to its dossier." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Risk map</span>
+  </a>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/tenant_credit" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Tenant credit</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/credit_primer" title="Hardware component dependency map, single points of failure, hardware risk matrix, NVIDIA dependency index and acronym sheet." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Hardware Credit Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/tenant_credit/hyperscalers" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscalers</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscalers">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscalers: show its pages" title="Pages under Hyperscalers">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/financials" title="Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Financial (key players)</span>
+  </a>
+  
+  <a href="/equity_analysis" title="Share price returns, P/E comparison, market cap treemap, Nasdaq-100 P/E context, Mag 7 concentration and CHAT ETF holdings." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Equity Analysis (key players)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/frontier_labs" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Frontier labs</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Frontier labs">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Frontier labs: show its pages" title="Pages under Frontier labs">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/frontier_lab_revenue" title="Funding-round valuations, reported ARR and implied EV/revenue multiples for OpenAI, Anthropic and xAI, with a timeline." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Frontier Lab Revenue &amp; Valuations</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/neoclouds_guarantors" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Neoclouds &amp; guarantors</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/circular_financing" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Circular financing</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/tenant_credit/au_operators" aria-current="page"
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            nav-active text-ink font-medium"
+     >
+    <span class="truncate">Australian operators</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Australian operators">1</span>
+  </a>
+  
+  <details class="group/fold" open>
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian operators: show its pages" title="Pages under Australian operators">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/company_analysis" title="Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Company Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/renewal" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Renewal &amp; obsolescence</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/renewal_risk" title="Why a tenant renews or not at expiry or an option date: the return a facility must keep earning, and what wears it down." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Renewal Risk Primer</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/renewal/model_economics" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Model economics</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="6 pages under Model economics">6</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Model economics: show its pages" title="Pages under Model economics">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/prices_and_value" title="Cost per GPQA point by tier, cheapest 75%+ GPQA model over time, SWE-Bench SOTA versus average price, and GPQA versus price." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Prices and Value</span>
+  </a>
+  
+  <a href="/open_models" title="Open-weight versus proprietary release share, the GPQA SOTA gap between them, and the US versus China open-weights race." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Open Models</span>
+  </a>
+  
+  <a href="/efficiency_and_scale" title="GPQA score versus price for MoE and dense models, GPQA by model size tier, and the smallest model reaching each GPQA threshold." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Efficiency and Scale</span>
+  </a>
+  
+  <a href="/speed_and_context" title="Maximum context window over time, capability versus speed, and GPQA and SWE-Bench throughput frontiers by provider." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Speed and Context</span>
+  </a>
+  
+  <a href="/benchmark_performance" title="Benchmark SOTA over time, the gap between the #1 and #10 GPQA scores, and GPQA and SWE-Bench progress by lab and organisation." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Benchmark Performance</span>
+  </a>
+  
+  <a href="/labs_and_countries" title="Cumulative model releases by country and by lab, country share of releases over time, and a release heatmap." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Labs and Countries</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/inference_demand" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Inference demand</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Inference demand">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Inference demand: show its pages" title="Pages under Inference demand">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/openrouter-token-traffic" title="Daily OpenRouter token volume: 7-day average, cumulative total and growth, weekly top models, provider share and daily ranks." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Token Traffic (OpenRouter)</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hyperscaler_ai_roi" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hyperscaler AI ROI</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Hyperscaler AI ROI">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hyperscaler AI ROI: show its pages" title="Pages under Hyperscaler AI ROI">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/hyperscaler_capex" title="Annual capex versus guidance, forecast-year bridge and quarterly capex for Microsoft, Alphabet, Amazon, Meta, Oracle and others." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI &amp; DC CAPEX</span>
+  </a>
+  
+  <a href="/guidance_revisions" title="Hyperscaler annual capex guidance paths from first issue to reported actual, with net revision summary and detail table." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Historical Guidance Revisions</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/hardware_facility" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Hardware &amp; facility</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="11 pages under Hardware &amp; facility">11</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Hardware &amp; facility: show its pages" title="Pages under Hardware &amp; facility">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/gpu_hardware" title="H100 spot and on-demand lease prices, the H200/B200 generation gap, and NVIDIA data-centre GPU TFLOPS and performance per watt." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">GPU Hardware &amp; Pricing</span>
+  </a>
+  
+  <a href="/other_signals" title="Quarterly revenue in USD for TSMC, ASML and NVIDIA, plus TSMC monthly revenue against its 12-month average." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Other Signals</span>
+  </a>
+  
+  <a href="/value_chain" title="AI infrastructure stock taxonomy as a sunburst of segments and sub-buckets, with company, ticker, region and market cap tables." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">AI Infra Value Chain</span>
+  </a>
+  
+  <a href="/dc_inputs" title="Prices and returns for DC inputs: gas, oil, uranium, copper, aluminium, lithium, steel, semiconductor ETFs and memory makers." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">DC &amp; AI Inputs</span>
+  </a>
+  
+  <a href="/accelerator_architecture" title="NVIDIA data-centre GPU specs by generation, FP16 TFLOPS and TDP over time, and a cross-vendor accelerator architecture comparison." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">1</span><span class="truncate">AI Accelerator Architecture</span>
+  </a>
+  
+  <a href="/memory_subsystem" title="HBM versus GDDR specs, HBM bandwidth by generation, bytes per FLOP across NVIDIA GPUs, and HBM supplier shares and status." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">2</span><span class="truncate">Memory Subsystem</span>
+  </a>
+  
+  <a href="/advanced_packaging" title="Advanced packaging technologies side by side, TSMC CoWoS capacity ramp, and packaging suppliers with shares and locations." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">3</span><span class="truncate">Advanced Packaging</span>
+  </a>
+  
+  <a href="/interconnect_networking" title="NVLink bandwidth by generation, InfiniBand versus Ethernet, PCIe evolution, scale-up versus scale-out, and network topologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">4</span><span class="truncate">Interconnect &amp; Networking</span>
+  </a>
+  
+  <a href="/system_integration" title="Worked TCO for a 1 GW AI cluster, accounting versus economic asset lives, GPU failure rates, DC tiers and cooling technologies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">5</span><span class="truncate">System Integration</span>
+  </a>
+  
+  <a href="/supply_chain_mapping" title="Dominant supplier share by AI hardware component, component lead times, a geopolitical risk matrix and stress-test scenarios." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">6</span><span class="truncate">Supply Chain Mapping</span>
+  </a>
+  
+  <a href="/technology_roadmaps" title="NVIDIA, competitor and process-node roadmaps, technology inflections for 2025-2030, and a year-by-year technology risk calendar." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="w-3 shrink-0 font-mono text-[11px] text-faint">7</span><span class="truncate">Technology Roadmaps</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/renewal/au_commitment" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian commitment</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  <div class="mb-5">
+    <a href="/risk/supply_power" 
+   class="nav-heading group/h transition-colors hover:text-ink ">
+  <span class="truncate">Supply, demand &amp; power</span>
+  <svg class="size-3 shrink-0 opacity-0 transition-opacity group-hover/h:opacity-100 group-focus-visible/h:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/>
+</svg>
+</a>
+    
+  <a href="/au-overview" title="Australian data centre section landing: data-layer status for projects, DC demand and grid capacity, page links and sources." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Overview</span>
+  </a>
+  
+    <div class="relative">
+  <a href="/risk/supply_power/au_pipeline" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Australian pipeline</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="2 pages under Australian pipeline">2</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Australian pipeline: show its pages" title="Pages under Australian pipeline">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/market_overview" title="Australian DC project counts, operating and risked MW, top operators by announced MW, forecast pipeline and market mix pies." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Market Overview</span>
+  </a>
+  
+  <a href="/project_analysis" title="Filterable Australian DC project database with MW by status, size and startup year, hyperscaler announcements and site leads." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Project Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/demand_grid" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink pr-9
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Demand &amp; grid</span>
+    <span class="num ml-auto text-[11px] text-faint [[data-theme=light]_&]:text-muted" title="1 page under Demand &amp; grid">1</span>
+  </a>
+  
+  <details class="group/fold" >
+    <summary class="absolute right-0 top-0 flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-md text-faint hover:bg-surface-2 hover:text-ink [&::-webkit-details-marker]:hidden"
+             aria-label="Demand &amp; grid: show its pages" title="Pages under Demand &amp; grid">
+      <svg class="size-3.5 transition-transform group-open/fold:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+    </summary>
+    <div class="mb-1 ml-3 mt-0.5 border-l border-line pl-1.5" >
+      
+  <a href="/regional_analysis" title="DC energy scenarios, NEM demand, grid generation and pipeline by fuel, ESOO supply-demand balance and a regional DC screener." 
+     class="flex h-7 text-[12.5px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Regional Analysis</span>
+  </a>
+  
+    </div>
+  </details>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/power_price" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Power price</span>
+    
+  </a>
+  
+</div><div class="relative">
+  <a href="/risk/supply_power/regulatory_policy" 
+     class="flex items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink 
+            h-8 text-[13px]
+            text-muted "
+     >
+    <span class="truncate">Regulation &amp; policy</span>
+    
+  </a>
+  
+</div>
+  </div>
+  
+  
+  <div class="mb-5">
+    <div class="nav-heading">News</div>
+    
+  <a href="/news" title="Earnings calendars for global and ANZ companies, a news feed ranked by materiality across topic buckets, and curated articles." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">News &amp; Interesting Articles</span>
+  </a>
+  
+  </div>
+  
+  <div class="mb-5">
+    <div class="nav-heading">Reference</div>
+    
+  <a href="/leaderboard" title="LLM ranking table with TrueSkill indices, benchmark scores, input and output prices, context and speed, plus category charts." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">LLM Leaderboard</span>
+  </a>
+  
+  <a href="/acronyms" title="Glossary of AI benchmark, model architecture, data centre, Australian energy and finance terms in one searchable table." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Acronyms &amp; Glossary</span>
+  </a>
+  
+  <a href="/source_health" title="How old every data file is: the newest date inside each file against its freshness limit, the AU project checks and each ETL script&#39;s last run." 
+     class="flex h-8 text-[13px] items-center gap-2 rounded-md px-2 transition-colors hover:bg-surface-2 hover:text-ink text-muted">
+    <span class="truncate">Source Health</span>
+  </a>
+  
+  </div>
+  
+</nav>
+  </aside>
+
+  <div class="min-w-0 flex-1 md:py-2 md:pr-2">
+    <div class="min-h-full bg-canvas md:rounded-panel md:border md:border-line">
+      <header class="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-canvas px-4 md:rounded-t-panel md:px-6">
+        <div class="flex min-w-0 items-center gap-2">
+          <button class="btn btn-ghost btn-icon -ml-2 md:hidden" aria-label="Open menu"
+                  onclick="document.getElementById('nav-drawer').showModal()"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/>
+</svg></button>
+          <nav class="flex min-w-0 items-center gap-1.5 text-[13px]" aria-label="Current page">
+            <a href="/risk/tenant_credit" class="hidden truncate text-faint hover:text-ink sm:inline">Tenant credit</a><span class="hidden text-faint sm:inline">/</span><span class="truncate font-medium text-ink">Australian operators</span>
+          </nav>
+        </div>
+        <span class="num ml-auto whitespace-nowrap text-[12px] text-muted" title="Static snapshot, built 10 Oct 2026, 18:10 AWST. Signal ages and stale marks are counted to today when the page opens; every other date is as of this build. Data: cutout-z/ai-dc-dashboard@bef749e.">Built <time datetime="2026-10-10T10:10:03Z"><span class="hidden sm:inline">10 Oct 2026, 18:10 AWST</span><span class="sm:hidden">10 Oct 18:10</span></time></span>
+        <button class="btn btn-icon" data-theme-toggle aria-label="Toggle light and dark theme">
+          <span class="hidden [[data-theme=light]_&]:inline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+</svg></span>
+          <span class="[[data-theme=light]_&]:hidden"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+</svg></span>
+        </button>
+      </header>
+      <main id="main" tabindex="-1" class="px-4 pb-16 pt-8 focus:outline-none md:px-8">
+        <div data-snapshot-banner class="callout callout-warn mb-6 hidden items-start" role="status">
+          <svg class="callout-icon text-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17h.01"/>
+</svg>
+          <p class="min-w-0 flex-1">This snapshot was built <span data-snapshot-days></span> ago (<span class="whitespace-nowrap">10 Oct 2026</span>). <span data-snapshot-ages>Ages and stale marks below are counted to today.</span></p>
+          <button type="button" class="btn btn-ghost -my-1 h-7 px-2 text-[12px]" data-snapshot-dismiss>Dismiss</button>
+        </div>
+        
+<article class="mx-auto max-w-[1080px]">
+  <nav aria-label="Tenant credit: row overview and nodes" class="mb-8 border-b border-line pb-4">
+    <ul class="flex flex-wrap gap-1.5">
+      
+      <li><a href="/risk/tenant_credit" class="chip " >Row overview</a></li>
+      
+      <li><a href="/risk/tenant_credit/hyperscalers" class="chip " >Hyperscalers</a></li>
+      
+      <li><a href="/risk/tenant_credit/frontier_labs" class="chip " >Frontier labs</a></li>
+      
+      <li><a href="/risk/tenant_credit/neoclouds_guarantors" class="chip " >Neoclouds &amp; guarantors</a></li>
+      
+      <li><a href="/risk/tenant_credit/circular_financing" class="chip " >Circular financing</a></li>
+      
+      <li><a href="/risk/tenant_credit/au_operators" class="chip border-transparent bg-ink text-bg hover:text-bg" aria-current="page">Australian operators</a></li>
+      
+    </ul>
+  </nav>
+  
+  <header class="mb-10">
+    <div class="eyebrow mb-1.5"><a href="/risk/tenant_credit" class="hover:text-ink">Tenant credit</a></div>
+    <h1 class="text-[26px] font-semibold leading-tight tracking-[-0.015em] text-ink">Australian operators</h1>
+    <p class="mt-3 text-[14px] leading-relaxed text-muted">NEXTDC, Goodman, Macquarie Technology, AirTrunk, CDC, Equinix and the other owners and operators of Australian data centres, seen as a market: the companies that borrow against long-dated tenant leases. An operator&#39;s leverage, its funding cadence and the tenants its capacity is contracted to set how much lease income can fall before debt service is strained. The node follows them as market participants, through listed financials and announced raises, debt facilities and contracts.</p>
+    <dl class="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 text-[12px] sm:flex sm:flex-wrap">
+      <div><dt class="text-faint">Last activity</dt><dd class="num mt-0.5 text-[13px] text-ink">2026-10-09</dd></div>
+      <div><dt class="text-faint">News items filed</dt><dd class="num mt-0.5 text-[13px] text-ink">210</dd></div>
+      <div><dt class="text-faint">Evidence pages</dt><dd class="num mt-0.5 text-[13px] text-ink">2</dd></div>
+      <div><dt class="text-faint">Signals</dt><dd class="num mt-0.5 text-[13px] text-ink">1</dd></div>
+    </dl>
+  </header>
+
+  <div class="space-y-12">
+    
+    <section aria-labelledby="sig-h">
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div class="min-w-0">
+    <h2 id="sig-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">Signals</h2>
+    
+  </div>
+  
+</div>
+      
+      <div class="card overflow-clip">
+  <div class="hidden border-b border-line px-5 py-2.5 text-[12px] font-medium text-faint md:grid md:grid-cols-[minmax(0,1fr)_10rem_9rem_104px_6.5rem] md:items-center md:gap-x-6" aria-hidden="true">
+  <span>Signal and what it reads now</span><span class="text-right">Change</span><span class="text-right">Level</span><span>Last 12 readings</span><span>As of</span>
+</div>
+  <ol class="divide-y divide-line-soft"><li class="px-5 py-4 md:grid md:grid-cols-[minmax(0,1fr)_10rem_9rem_104px_6.5rem] md:items-start md:gap-x-6">
+  <div class="min-w-0">
+    <div class="flex flex-wrap items-baseline gap-x-1.5 text-[11px] text-faint">
+      <span class="font-mono">T6</span><span aria-hidden="true">·</span>
+      <a href="/risk/tenant_credit/au_operators" class="hover:text-ink hover:underline"><span class="sr-only">Topic: </span>Australian operators</a><span aria-hidden="true">·</span>
+      <span title="Measured on Australian data"><span class="sr-only">Lens: </span>Australia</span>
+    </div>
+    <a href="/risk/tenant_credit/au_operators#signal-t6" class="mt-1 block text-[14px] font-medium leading-snug text-ink hover:underline">Listed AU operator leverage</a>
+    <p class="mt-1.5 text-[13px] leading-relaxed text-ink">Debt to equity is 24.4% at Goodman Group, 20.8% at Macquarie Technology and 55.3% at NEXTDC, from their latest balance sheets; Goodman&#39;s figure covers the whole group, mostly industrial property; the median was 36.4% as of 20 Apr 2026.</p>
+    <p class="mt-1.5 text-[12px] leading-snug text-muted"><span class="font-medium text-faint">Why it matters: </span>As listed AU operators&#39; debt to equity rises, a smaller fall in lease income strains debt service.</p>
+    
+    
+  </div>
+  <div class="mt-3 grid grid-cols-[auto_auto_1fr] items-start gap-x-6 gap-y-2 md:contents">
+    <div class="min-w-0 md:pt-5 md:text-right">
+      <span class="sr-only">Change: </span>
+<div class="num whitespace-nowrap text-[18px] font-semibold leading-none text-ink"><span aria-label="down">↓</span> 12.0<span class="ml-1 text-[12px] font-normal text-muted">pts</span></div>
+<div class="mt-1.5 text-[11px] leading-snug text-faint">from <span class="num text-muted">36.4%</span> on <span class="whitespace-nowrap">5 Jul 2026</span>, as recorded on <span class="whitespace-nowrap">20 Apr 2026</span></div>
+
+
+    </div>
+    <div class="min-w-0 md:pt-5 md:text-right">
+      <span class="sr-only">Level: </span>
+      <div class="num whitespace-nowrap text-[15px] leading-none text-ink">24.4%</div>
+      <div class="mt-1.5 text-[11px] leading-snug text-faint">debt to equity, median of 3 listed</div>
+    </div>
+    <div class="justify-self-end md:justify-self-start md:pt-5"><svg class="text-muted" width="100" height="28" viewBox="0 0 100 28" aria-hidden="true">
+    <polyline fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"
+      points="2.0,3.0 18.0,3.0 34.0,3.0 50.0,3.0 66.0,3.0 82.0,3.0 98.0,25.0 "/>
+    <circle cx="98" cy="25.0" r="2" fill="currentColor"/>
+  </svg><div class="mt-1 flex w-[100px] justify-between text-[10px] leading-none text-faint"><span class="sr-only">Readings from </span><span>Apr</span><span class="sr-only"> to </span><span>Oct 2026</span></div></div>
+    <div class="col-span-3 text-[12px] text-muted md:col-span-1 md:pt-5">
+      <span class="sr-only">As of </span><span class="num text-ink">2026-10-05</span><span class="md:hidden"> · </span><span class="md:block"><span class="num" data-age data-signal="T6" data-as-of="2026-10-05" data-stale-after="21">5 d</span></span>
+    </div>
+  </div>
+</li></ol>
+</div>
+      <div class="mt-4 space-y-4"><article id="signal-t6" class="card scroll-mt-20" aria-labelledby="signal-t6-h">
+  <div class="card-head">
+    <h3 id="signal-t6-h" class="card-title"><span class="font-mono text-[12px] font-normal text-faint">T6</span> Listed AU operators: leverage and valuation (share prices on Company Analysis)</h3>
+  </div>
+  <div class="card-body space-y-5">
+    
+    <details class="disclosure" open>
+  <summary><span class="flex items-center gap-2">Listed operators in the AU lane&#39;s quotes<span class="font-normal text-faint">3</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body">
+    <div>
+      <table class="hidden w-full text-[13px] md:table">
+        <thead><tr class="border-b border-line text-left text-[12px] text-faint"><th class="py-1.5 pr-3 font-medium ">Ticker</th><th class="py-1.5 pr-3 font-medium ">Operator</th><th class="py-1.5 pr-3 font-medium text-right">Debt to equity, %</th><th class="py-1.5 pr-3 font-medium text-right">EV/EBITDA, ×</th><th class="py-1.5 pr-3 font-medium text-right">Market cap, A$ bn</th></tr></thead>
+        <tbody><tr class="border-b border-line-soft last:border-0"><td class="py-1.5 pr-3 num whitespace-nowrap text-muted">ASX:GMG</td><td class="py-1.5 pr-3 text-ink break-words">Goodman Group</td><td class="py-1.5 pr-3 num text-right text-ink">24.4</td><td class="py-1.5 pr-3 num text-right text-ink">23.1</td><td class="py-1.5 pr-3 num text-right text-ink">53.7</td></tr><tr class="border-b border-line-soft last:border-0"><td class="py-1.5 pr-3 num whitespace-nowrap text-muted">ASX:MAQ</td><td class="py-1.5 pr-3 text-ink break-words">Macquarie Technology</td><td class="py-1.5 pr-3 num text-right text-ink">20.8</td><td class="py-1.5 pr-3 num text-right text-ink">14.7</td><td class="py-1.5 pr-3 num text-right text-ink">1.3</td></tr><tr class="border-b border-line-soft last:border-0"><td class="py-1.5 pr-3 num whitespace-nowrap text-muted">ASX:NXT</td><td class="py-1.5 pr-3 text-ink break-words">NEXTDC</td><td class="py-1.5 pr-3 num text-right text-ink">55.3</td><td class="py-1.5 pr-3 num text-right text-ink">55.0</td><td class="py-1.5 pr-3 num text-right text-ink">7.8</td></tr></tbody>
+      </table>
+      <ul class="divide-y divide-line-soft md:hidden"><li class="py-2 text-[13px]"><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Ticker</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">ASX:GMG</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Operator</span><span class=" min-w-0 text-right text-ink [overflow-wrap:anywhere]">Goodman Group</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Debt to equity, %</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">24.4</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">EV/EBITDA, ×</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">23.1</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Market cap, A$ bn</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">53.7</span></div></li><li class="py-2 text-[13px]"><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Ticker</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">ASX:MAQ</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Operator</span><span class=" min-w-0 text-right text-ink [overflow-wrap:anywhere]">Macquarie Technology</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Debt to equity, %</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">20.8</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">EV/EBITDA, ×</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">14.7</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Market cap, A$ bn</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">1.3</span></div></li><li class="py-2 text-[13px]"><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Ticker</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">ASX:NXT</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Operator</span><span class=" min-w-0 text-right text-ink [overflow-wrap:anywhere]">NEXTDC</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Debt to equity, %</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">55.3</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">EV/EBITDA, ×</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">55.0</span></div><div class="flex justify-between gap-3"><span class="text-[12px] text-faint">Market cap, A$ bn</span><span class="num min-w-0 text-right text-ink [overflow-wrap:anywhere]">7.8</span></div></li></ul>
+    </div>
+    </div>
+</details>
+    
+    <details class="disclosure" >
+  <summary><span class="flex items-center gap-2">How it is measured</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+  <div class="disclosure-body">
+    <dl class="space-y-3 text-[12px]">
+      <div><dt class="text-faint">Formula</dt><dd class="mt-0.5 text-muted">Median, across the listed operators, of debt to equity: total debt ÷ shareholders&#39; equity, in %, from each one&#39;s latest reported balance sheet, as the AU lane&#39;s Yahoo Finance quotes carry it (NXT, GMG and MAQ at present; others as they list). Per operator with it: EV/EBITDA and market capitalisation. As of: the newest date in financials_history.parquet, written in the same run as the quotes, which carry no date, so it dates the prices: stale after 21 days. The debt-to-equity figures carry no balance-sheet date in the data yet (an ETL item), so they are not aged on their own. Net debt ÷ EBITDA and capex ÷ operating cash flow are not in these files, so they are not computed. Change: the same median of the quotes as they stood 3 months before as_of (else 1 month), from their recorded history.</dd></div>
+      <div><dt class="text-faint">Inputs</dt><dd class="mt-0.5 text-muted [overflow-wrap:anywhere]"><span class="font-mono">data/au_dc/processed/financials_quotes.parquet</span>: ticker, name, debt_to_equity, ev_ebitda, market_cap</dd><dd class="mt-0.5 text-muted [overflow-wrap:anywhere]"><span class="font-mono">data/au_dc/processed/financials_history.parquet</span>: date</dd><dd class="mt-0.5 text-muted [overflow-wrap:anywhere]"><span class="font-mono">data/history/au_quotes/index.csv</span>: vintage_date, file</dd></div>
+      <div><dt class="text-faint">Refresh</dt><dd class="mt-0.5 text-muted">AU lane: weekly quotes; ratios move with semi-annual statements · owner AU lane · stale after 21 days</dd></div>
+      <div><dt class="text-faint">Notes</dt><dd class="mt-0.5 text-muted [overflow-wrap:anywhere]">The median of 3 ASX-listed operators&#39; debt to equity (GMG, MAQ, NXT), each from its latest reported balance sheet, dated 5 Oct 2026 by the newest week of the price history. The ratios carry no balance-sheet date in the AU lane&#39;s files, so the date is the prices&#39;, not the balance sheets&#39;. Net debt ÷ EBITDA and capex ÷ operating cash flow are not in the AU lane&#39;s files. Goodman&#39;s ratio is the whole group&#39;s, most of it industrial property. Earlier values are the quotes file as it stood on each date, from its recorded history (data/history/au_quotes, 5 versions since 13 Apr 2026), corrections included: a change can be a market move or a fix to the data. On 5 Jul 2026 it stood as recorded on 20 Apr 2026.</dd></div>
+    </dl>
+    </div>
+</details>
+  </div>
+</article></div>
+      
+      
+      
+      
+    </section>
+
+    
+
+    
+    <section aria-labelledby="ev-h">
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div class="min-w-0">
+    <h2 id="ev-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">Evidence</h2>
+    <p class="mt-1 text-[13px] text-muted">The dashboard pages that inform this node. A page lives under one node in the menu and may be evidence for others.</p>
+  </div>
+  
+</div>
+      
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        
+<a href="/company_analysis" class="card group flex min-w-0 flex-col p-5 transition-colors hover:border-line-strong">
+  <div class="flex items-start justify-between gap-3">
+    <span class="text-[14px] font-semibold leading-snug text-ink">Company Analysis</span>
+    <svg class="mt-0.5 size-4 shrink-0 text-faint transition-transform group-hover:translate-x-0.5 group-hover:text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+  </div>
+  <p class="mt-1.5 text-[13px] leading-relaxed text-muted">Operator market share by MW or project count, operator profiles with projects and financials, and an ASX DC operator comparison.</p>
+  </a>
+
+<a href="/financials" class="card group flex min-w-0 flex-col p-5 transition-colors hover:border-line-strong">
+  <div class="flex items-start justify-between gap-3">
+    <span class="text-[14px] font-semibold leading-snug text-ink">Financial (key players)</span>
+    <svg class="mt-0.5 size-4 shrink-0 text-faint transition-transform group-hover:translate-x-0.5 group-hover:text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg>
+  </div>
+  <p class="mt-1.5 text-[13px] leading-relaxed text-muted">Income statement, balance sheet, cash flow, key ratios and analyst consensus for 14 AI and DC companies, plus AI revenue proxies.</p>
+  
+  <div class="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-3 text-[12px] text-faint">
+    
+    
+    <span>Filed under Hyperscalers</span>
+  </div>
+  </a>
+
+      </div>
+      
+    </section>
+    
+
+    
+
+    <section aria-labelledby="news-h" id="news">
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div class="min-w-0">
+    <h2 id="news-h" class="text-[17px] font-semibold tracking-[-0.01em] text-ink">News</h2>
+    <p class="mt-1 text-[13px] text-muted">Catalogued articles and radar notes this node files, latest activity first.</p>
+  </div>
+  <div class="shrink-0">
+        <span class="text-[12px] text-muted">Last activity <span class="num text-ink">2026-10-09</span></span>
+      </div>
+</div>
+      <div class="card mb-4" id="news-activity">
+        <div class="card-head"><div><div class="card-title">News activity</div><div class="card-sub">Items per month, last 12 full months</div></div></div>
+        <div class="card-body">
+          
+          <div class="grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-[minmax(0,440px)_minmax(0,1fr)] md:items-end">
+            <div class="min-w-0">
+              <svg class="block w-full text-muted" style="height: 56px" viewBox="0 0 120 56" preserveAspectRatio="none" role="img" aria-label="News items per month, 2025-10 to 2026-09"><rect x="1" y="41.46" width="8" height="14.54" fill="currentColor" ><title>2025-10: 7 items</title></rect><rect x="11" y="33.15" width="8" height="22.85" fill="currentColor" ><title>2025-11: 11 items</title></rect><rect x="21" y="29.00" width="8" height="27.00" fill="currentColor" ><title>2025-12: 13 items</title></rect><rect x="31" y="43.54" width="8" height="12.46" fill="currentColor" ><title>2026-01: 6 items</title></rect><rect x="41" y="39.38" width="8" height="16.62" fill="currentColor" ><title>2026-02: 8 items</title></rect><rect x="51" y="31.08" width="8" height="24.92" fill="currentColor" ><title>2026-03: 12 items</title></rect><rect x="61" y="2.00" width="8" height="54.00" fill="currentColor" ><title>2026-04: 26 items</title></rect><rect x="71" y="29.00" width="8" height="27.00" fill="currentColor" ><title>2026-05: 13 items</title></rect><rect x="81" y="31.08" width="8" height="24.92" fill="currentColor" ><title>2026-06: 12 items</title></rect><rect x="91" y="12.38" width="8" height="43.62" fill="currentColor" ><title>2026-07: 21 items</title></rect><rect x="101" y="26.92" width="8" height="29.08" fill="currentColor" ><title>2026-08: 14 items</title></rect><rect x="111" y="2.00" width="8" height="54.00" fill="currentColor" ><title>2026-09: 26 items</title></rect>
+</svg>
+              <div class="mt-1.5 flex justify-between text-[11px] text-faint"><span class="num">2025-10</span><span class="num">2026-09</span></div>
+            </div>
+            <p class="text-[13px] text-muted"><span class="num text-ink">169</span> in these 12 months; <span class="num text-ink">8</span> so far in October.</p>
+          </div>
+          
+        </div>
+        <div class="card-foot"><span>By publication date (radar: article date); the live feed began <span class="num">2026-05-11</span>, and a back-fill searched to <span class="num">2025-04-01</span>, finding less the further back it reached, so its early months are a floor, not a measure; catalogue as of <span class="num">2026-10-09</span>.</span></div>
+      </div>
+      <div class="min-w-0"><div id="risk-news" class="card overflow-clip">
+  
+  <ol class="divide-y divide-line-soft">
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMijAJBVV95cUxOdDJycDBMOGJXYVhhQXdpSm9pMkVNLVJ3SUFGNFBFN2xFcS04dDVCR3RsOGNfdTFYRWVnU3lka3Q3eVUxdXBtNnlxVE9kMGJVWVo0Z1d0VnR6eG1lMmhnSkYtYUZiTDZtVVJCZ1BBaVUyY01lVlVwc3Rpdk9UdXdYeWpTa2Y1TzcyVm5rLWxza3hEam1jZEZ4d0lEMkN6QW56ajNzVzRKWmZpMC1XM3dWNWNYdXl3U2Y0MmZmb09xdEdUdU1HU3FXUlNsb01KQ20tbzFPeVZyMkFnUVBBeDdEMnotbEIyMEpoMm5ENjFtODZlX0ZsN29PdEtPdUVvRHRvbGxaWGk2SUhyTXo1?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">AirTrunk to treble Japan data-centre investment to $43bn</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">The Australian</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-10-08</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">2</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQelYwS2lPRWVDWTRHSFpRdzBtcTJqQ09fckZOUmQxR0tMdG1wZWFvUWpJMlZjSEVLWXhrX0pzVVBfaXdBdENYZ0s4VnQtQzBDSGhDNHhwQTlVelhKUmE0MG5PVFZOQUNIQlNRUU1SWmNYX1VTX0lJTVdnZnl3eDBwZ1E0MmJtSHlDRTc5MDdQc1ZjVnRvR3ZtRzJIQ0xmcnBjVHVGRHl0NTRTZjd6OVdRbnJQYUNUM1lkcDZiTmp5UQ?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Australia&#39;s AirTrunk to triple Japan data center investment to up to $30bn</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Nikkei Asia</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-10-07</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">2</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxPU1djbHV6YjZqS2N5QXpUeE54NFU1S1AyVjJITzQ4amdvaDFubWkzMXRQR21UZjBwLXc1MkgxQzcyaWp4Nnd5M2VjNXgtSXNSTmkyNG1xT084VUFtbld6ckNPSE5sdGM5NWtONGpERjEtRzBsUVZ3cHVkemhoZFlMX1BoQTBPcmhhUnBMdUJ6NElVamU5Z0o2RHByVzZjT2dMeGdJUVQ0Xy1zc2F1eXE5SzhxMA?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Goodman axes $1.2b Sydney data centre after backlash</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">AFR</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-09-28</span></span>
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxOMHV4bkZuY1hDUUNIZ2I1Nkl0RkpFWmRLdVBGOGFfMkkybjlyODY1QlNtd1lqZmhGbGctay1LTnUyMFQzR1RQc2Nic2hQR25nVlliVE1iUF9KTWZyNW5sZzlFQmNPakcyeWxjQUI1cGU5dW52dS1oaFdXLU1WeVdGSXJqUF8yazhxYUZ4WldPNWRCcmZoU3pqLVY4akNEWjktOUpDc19jdW1WTWlsb3R4QnhXaV9VUDlyTUxvVzhKMVZKT2pRTkJrU1dPbm51UFgxZzBfOThvY0Q2NXZNalZtVU9kRGJVM2g4TlE?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Infratil shares rally after lifting FY27 guidance on strong data centre demand</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Capital Brief</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-09-16</span></span>
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxPdll4N0dhM2RGWm1WemdORWtKQjNLQi0zb3Bzc1p4bW9fbXhiZ1Axckt4SkhsUkpNcVlWc2c3ekh6SVVqREFfdWdiQ2wzUjR6VDBIR29VQUdNWUl4MEZFNVRCdFQ4VWxuTmQzWVRxV3NXa3RBaFVNU0RzWFctMVU3N2pVa2VtRGJqMzJCc2pkRlFDYnQ3QXlUWm4ycjNieWdDM3FSckJKUldQWjlIcWZzUmR6dzhOZ2hhM3V0U2d2Y2VoN1k?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Australian data centre operator NEXTDC to raise $795 mln for AI infrastructure</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Reuters</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-09-09</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">8</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxOems0M2M5UW41SVFOT3ZmMFhTQUpIemlqVG9mNHhZcEdJMWx3aUVnWVhrQ1lpMHVvZDFIM2hFX19vMTNCMlFONDIyUUdYRXNJelFEb2Y2dE8tbFAxRVA4dFVDWmZxa0otcFpXSE5HN3ZhTGlLTi10OS1Ockp6TGFfcVpnMEU3SXhvVlc1MWtBQWZtcFk5ZnpjVDBNU1huZmRfbFNNMlNibFl4UEp4MmFtSjVSQTVxczhaS2xIc2YtN0J6enc?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Goodman Group gets green light for 135MW data center in northern Sydney, Australia</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Data Center Dynamics</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-09-07</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">8</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiyAFBVV95cUxON2VBOGx1R1BMUktrMzItSm9tUloxUUFub0pHQnNLU01sOEoxamNlRlNKamFoYkRSVF9sQjVYRjR1T29KanVRMWl2cVM3bE02NzVJdWF0Q1NZWTJLQnZMazZmamFWcmpDSnZzdDdFZXM4OFJGTnA4ZTBTbERqWmJ5dmlfcUVQMnN2ZVhpM2RhY0pyNDNoYlZxY2NYQ1hRQTkwRVExbFVtdk1mZkJQaGU5Ni10VVFyc2pMYktXVC11QTJ5Z3ZXRTV2ZA?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Australia data centre firm NextDC reports rising water, energy use with profit beat</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Reuters</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-08-27</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">8</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-09">2026-10-09</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMi5wFBVV95cUxQMm83WEI4RDdibW5qVmRCUHI4LXp2bjNHSW53amZVUlpldW5lcEZzSkJrTFVXRFM0c08yeldWQjRWT0dHbUFWMFRFbmp3cnNwUVNTMmFzZjF6RXg4R3RUekQyV0ktUVIwMGI5d1RCS0NONURlVVJYQW9fbk5FLWNjVGloNVVCQk9iRzdHZ1ZyenhuTnJWQlc2cG9YZE96Ymc2Sk96SjhzZkNWaWxfYkZCYUJkV2ZJdVFZWU9QZEZ5YjdoVl9oQjJ4TGxIdkZnQVpiNEFUQy16YWVPa2tKTFJtYnJBLWpDRkk?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">NextDC expects 50% earnings growth in FY27 as it starts billing new customers</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-09</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Capital Brief</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-08-27</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">2</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-07">2026-10-07</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://www.datacenterdynamics.com/en/news/airtrunk-plans-additional-1bn-investment-in-data-center-campus-in-inzai-japan/" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">AirTrunk plans additional $1bn investment in data center campus in Inzai, Japan</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-07</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">DatacenterDynamics</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">HIGH</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-06">2026-10-06</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxQaWcwdUlZVEZXbkZBTVU4a2NnVHJwYS1LbzVCYjRLSGVfN1NtckJUcUliREQ0bzZERFUyd3FRRkt1b1NBZjdvVzBmY2p4NkJORk1vbmFqdjUyTklfaXBhSnFEcUpsNVpHajZ5cVhDNklLTGFSWUJEaklGSTcyNVhlamY4OW1ETDZHYjZoMllEdFZSM0JsQUJyWGxUeVlSZ19jcXFENTZJSk1LZzhob2c0TXR2bDcwQlNhSWZpTERpX250YmpZR0l1X0tuUGI?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">CDC Data Centres loses $78m in value in September quarter</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-06</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Capital Brief</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-02">2026-10-02</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxPOHQ1eEFTLXZ2R1pPaUlyQXNpWkFlM1prc2k5cEY0RS1IUzY2cDJMa2c2WTh6Yzh0NHRVQ2hxeTJsS2ZwUmx6blRIaXR3dktyeV9OQmRrc1lzdzM1REtYTnc1UktsTW8tVkV5X0tNM2MxZ2tjYU9scy0yRi1hRWhMNmY4S0p3UGlPOU41Zjh1MEY0WW5EVUl6b2htQkppYzJkbTZEQ1NQZEhWNHFpOFpaZUF6bWEzTk1qN0JndlJfampJdHFXeDFrV2dOQXB5MHZ0aGNoNGFB?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Firmus signs AI infrastructure deal with Meta in Southeast Asia</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-02</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Capital Brief</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>Hyperscaler CAPEX</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-09-28</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">3</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-02">2026-10-02</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxPbGFvUVk2eGt0cmVGMzNKc1lWcFhNQWp5MnBvM0dEU19nLXl0WUxwVmF4TzlXMHRMbU9NUktJb2lNNnUwUllyLUljeF92aXJwSXNKTEZzLTNGeXZlZXAweGdGSnU4X2tDaEQ2SWZCZGpNZ1E4enNuRFQxdjRsZDNfY1FBSW9wVXV6YWVHOEV4T1hvZ1hhUV9mUVMyMmpCV3pjWG1sN2JWeExUZldOazEzd00xcUhJc1hSR0h0VlhIWGRtZ214V282WkpB?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Australia&#39;s Macquarie DC acquires 34,200 sqm site in Sydney for 200MW data center campus</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-02</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Data Center Dynamics</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">HIGH</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-07-16</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">10</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxNZUQxbHhMNjVnanZPM1U0STdyQlVaQ0tjYWhFY0ZWVlJQTVlmUEI5TDlxVlpjSG5OMWdHalE4Wmx4c2FlYUlFSnc1MEZmQ3A1LVhOMUVuQ2xVVzRFRjgwTG1NWDR4eGhxcExJYXdLSTdSZ2lYODd1MDdTMWVsM1B6Z1ZyVDhiRF8yR05LY1lZY3dfalNlTTZLaWZBSEZvZFE3VGZRTE9PLW12MGVnbUpUaExRVQ?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Nvidia-Backed Firmus Eyes $30 Billion Valuation in Australia IPO</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Bloomberg.com</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMijwJBVV95cUxQOUdzak9rbVBJU1pnU0ZieHNrVkwyZUR1bXFMejhPS18wa0tPUVBXdVpHZmNaQXkyeGVXbWpnR3ZIdVpzY2VYZGhjRmtsT0NuLWRrRUc2WjlNaC00a1pNc2dWcVhQQXdmTk5OWjIwQzhkeFUtcVAxcjBianNhYzFwTklBcEx2cXhCZmcxNFB0eDJQdlNhb0lGbXpERHRVdnBPZHExUHhqSzF5OU5ZVVZYTkFOZ05IcU5yWUtCVHNLWjFnY3g2U1JvUS0zT3pqZVYzWHRQQ2RySjJyQS1nQWY5bllFNUlUUjREc1gyVmV2eW5BTTc3Q0tWMkdlb1c2N2hseWVselFZdWZXUlQwM2xN?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">AirTrunk’s data centre float buffeted by macro headwinds</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">The Australian</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">LOW</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxPZ2VWSDk2N2VRUlhuQWRvOFo0OUx6RnktZXh2Yk85UUtPSThzTGRsNkJzVEdIcWV0OWdFSkpmOFktZ2VkaFlXcDJGRWZycXNYeFBZY3hwLURzXzhqOWQzOW9TeW5EYlI1U254cklsczgtcE9TRWw2S2JsZUIwd1BER1NUYVlVQVF4MmVpejZ0dG80Vl9qTTZSTVRDQlVGNEVrbUdEVkNDUUpTOVlRdXVMVnRFbktvdlBOVjZRMUVzRDgzV1U4Y2oxc21WTQ?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Firmus on track for $43.7b valuation, dividing the ASX’s big investors</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">AFR</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">LOW</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxNY0gtUWtreUhqSU55TnZEcDBxeS0tVmVyQkIyUS1EQm5zbFFSbklRM0EwWEZLSUU0NmNTYTlWM3RRTHBEa01LLXdBNUhYWXhzSTY1SHltYnpvUVdFYmtxc1MxcGFWYzNjUnR3ci1tbkNfbGNHZVM0M0dyM0N3LXlpUVVENHdMM0tvTTFpdi1yX0hrVEttU3lRWW1XQ1pQOEJ2TnJwU2Mybk9QeFhES2pzQQ?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">‘Bull---t’: Firmus faces backlash over Tasmanian data centres</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">AFR</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">LOW</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxQX2JQLU13NjFpQlozeFFIQWJEbVlZZ0k1eG81djkxSk9yTWhhMlkteHV0NVM4czZnVHBQTzJraVVWR2ZJY2tXdmVsdHNiTVlvQlg4X3ZMeHV6NVp3Qkg2cC1UeHpxWFE0LWoxaW9VYV9VdHJQR3BlV04yVXg0eHpEa2kwcXVzSjFDMkM5MnFtLUpLV3JKUzROVjlnMmNHa3Ffbm9oR1pkWFZjdTVMWWJoUUNYU1BuQQ?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">NEXTDC Shares Jump After Data Center Operator Wins New Contracts</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Bloomberg.com</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">MEDIUM</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-07-20</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">10</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-10-01">2026-10-01</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMixgFBVV95cUxPSzZzZ250MEZjQlQ1N1c3VkxzdmhUbWp0RGY3V0ZQNkIyVTlDU3hwcTJ2c293ak9reXctUVB5bzQwdWQwaTNBTXRNS2R6LS1MeURYcE11eG55d3lGTUNOVGpPVGx1ang2dGwzakpRdzg3Wm8yMEt0VXg4X09PZnZfUkpPdkZLdTNRcGJTeTFnMmNyYUxNdVpnTGh4RkFZanp1bEVKT1VpSkZkTFhBajZ2Mkc1UV8zZVZlUzhGMnNaczNZV3FIWmc?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">Australia&#39;s NEXTDC signs $1.6 billion senior debt facilities to fund expansion</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-10-01</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">Reuters</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">HIGH</span>
+          <span>ANZ DC</span>
+          <span aria-hidden="true">·</span><span>published <span class="num">2026-07-09</span></span>
+          <span aria-hidden="true">·</span><span>seen <span class="num">14</span>×</span>
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-09-30">2026-09-30</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxNYmh2MTlCemloM3llRUR6U0xmTnVXSVRfdVBhQmFWZE9mNDZLaTkyRXZOQ214SGh1enZLaHdRVzdFMzR4cEQwaXNPQk9xMnVEVlM4X1F2MTJnOFRjb0kxTUZOWUZnUm9sbjA3Umw0N0F3b0o4X2ZRbDVmR0ZUbWh0QXc1R00wbHplbFc1TUFLUldkU2hRaGFvS3lUZGZNck9yUHRrNDZpX3pVbzFobzJ0djZGTFM4Y3RIQnFWalVELV95UEE?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">ETF giants take dim view on Firmus as neocloud heads for ASX</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-09-30</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">AFR</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">LOW</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+    <li class="flex items-start gap-4 px-5 py-3">
+      <time class="num hidden w-[84px] shrink-0 pt-0.5 text-[12px] text-faint sm:block" datetime="2026-09-29">2026-09-29</time>
+      <div class="min-w-0 flex-1">
+        
+        <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNNzFEdXlDNmFMbXo5S1NXZ3FWQXQ2STJhaGhxYjQ2a2JhREhod2M5a1RHUy0xU2pfb25aNU5Yc0VmQUVhMmNHdnRMSGZUQmh0N2cwbkhWNmcwTms5NFRoMjhGWkJ5NHl6dURBR05GbWF4dGIwaF9OSWhNWGJKMUh5a3d5ODNZMTBydkpjZG5wZUJFR0RkLVp6bE80T2d0eDRZSDZLbkdQVzk3YzVNZzNQeVVaZk1KTjA?oc=5" target="_blank" rel="noopener noreferrer" class="text-[14px] leading-snug text-ink [overflow-wrap:anywhere] hover:underline">The gulf between Firmus believers and naysayers keeps getting bigger</a>
+        
+        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
+          <span class="num sm:hidden">2026-09-29</span><span class="sm:hidden" aria-hidden="true">·</span>
+          <span class="text-muted">AFR</span>
+          <span class="badge h-5 px-1.5 text-[11px]" title="Materiality tier from the news catalogue">LOW</span>
+          <span title="Found later by a search of its dates, not by the live feed">back-filled</span>
+          
+          
+        </div>
+        
+      </div>
+      
+    </li>
+    
+  </ol>
+  
+  
+  <div class="card-foot justify-between">
+    <span>Items <span class="num">1–20</span> of <span class="num">210</span></span>
+    
+    <span class="flex items-center gap-1.5">
+      <button type="button" class="btn h-7 text-[12px]" disabled aria-label="Newer items">Newer</button>
+      <span class="num px-1 text-faint">1 / 11</span>
+      <button type="button" class="btn h-7 text-[12px]" hx-get="/partials/risk-news?node=tenant_credit/au_operators&page=2" hx-target="#risk-news" hx-swap="outerHTML" aria-label="Older items">Older</button>
+    </span>
+    
+  </div>
+  
+</div></div>
+      
+      <details class="disclosure mt-4">
+        <summary><span>How this stream is filed</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></summary>
+        <div class="disclosure-body space-y-3 text-[12px]">
+          
+          <div><div class="text-faint">Terms in headline or summary</div><div class="mt-0.5 text-muted">NEXTDC · AirTrunk · CDC Data Centres · CDC Data Centers · Canberra Data Centres · Infratil · Goodman · Macquarie Technology · Macquarie Data Centres · Macquarie DC · Equinix · DigiCo · HMC Capital · Firmus · Stack APAC</div></div>
+          
+          <div><div class="text-faint">Terms together: one from each list</div><div class="mt-0.5 text-muted">(CDC · Stack Infrastructure · Stack Infra) with (data centre · data centres · data center · data centers · datacentre · datacentres · datacenter · datacenters · hyperscale · AI factory · AI factories · AI campus · AI hub) with (Australia · Australian · Australians · Aussie · NSW · New South Wales · Victoria · Victorian · Queensland · Tasmania · Tasmanian · Northern Territory · Sydney · Melbourne · Brisbane · Perth · Adelaide · Canberra · Hobart · Christmas Island · NEM · AEMO; or published in AFR · afr.com · Australian Financial Review · The Australian · Capital Brief · Renew Economy · RenewEconomy · pv magazine Australia · iTnews)</div></div>
+          
+          <div><div class="text-faint">Radar entities</div><div class="mt-0.5 text-muted">NEXTDC · AirTrunk · Goodman · Macquarie Technology · Equinix · EQIX</div></div>
+          
+          <p class="text-faint">An item is filed here if any rule matches; terms match whole words, any case, in the headline or the summary; a publisher matches where the story ran, not its words. A back-filled item, found later by a search of its dates rather than by the live feed, is filed by its words, not its bucket. Items that match no node appear on the News page only.</p>
+        </div>
+      </details>
+      
+    </section>
+  </div>
+
+  <footer class="mt-10 border-t border-line pt-4">
+    <p class="text-[12px] leading-relaxed text-faint">Market-level observations about participants in the Australian data-centre market, built from public data. Nothing here describes any lender&#39;s exposures or counterparties.</p>
+  </footer>
+</article>
+<div id="note-host"></div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charts: every figure arrives in both themes; applyTheme redraws from the other key and
+  // passes the theme down to embedded previews (same-origin iframes).
+  window.FIGS = [];
+  const PLOTLY_CONFIG = {"displayModeBar": false, "responsive": true, "displaylogo": false};
+  const currentTheme = () => document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  // A chart is one image to a screen reader, named by its own aria-label if the template gave one,
+  // else by the nearest heading that owns it (its card's title). tests/test_chart_names.py checks
+  // the same rule on every page, so no chart is left unnamed.
+  function chartName(el) {
+    if (el.getAttribute("aria-label")) return el.getAttribute("aria-label");
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const h = a.querySelector("h1, h2, h3, h4, .card-title");
+      if (!h) continue;
+      const c = h.cloneNode(true);   // the title's own words: not a help tip's text inside it
+      c.querySelectorAll(".tip, [aria-hidden=true]").forEach(x => x.remove());
+      const t = c.textContent.trim().replace(/\s+/g, " ");
+      if (t) return t + ", chart";
+    }
+    return "Chart";
+  }
+  function draw(id, figs) {
+    const el = typeof id === "string" ? document.getElementById(id) : id;
+    if (!el || typeof Plotly === "undefined") return;
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", chartName(el));
+    const f = figs[currentTheme()];
+    Plotly.newPlot(el, f.data, f.layout, PLOTLY_CONFIG);
+    window.FIGS.push({ el, figs });
+  }
+  window.applyTheme = function (t, persist) {
+    document.documentElement.dataset.theme = t;
+    if (persist) { try { localStorage.setItem("theme", t); } catch (e) {} }
+    window.FIGS = window.FIGS.filter(({ el }) => el.isConnected);
+    for (const { el, figs } of window.FIGS) Plotly.react(el, figs[t].data, figs[t].layout, PLOTLY_CONFIG);
+    document.querySelectorAll("iframe[data-shell-preview]").forEach(f => {
+      try { f.contentWindow.applyTheme && f.contentWindow.applyTheme(t, false); } catch (e) {}
+    });
+  };
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () =>
+    applyTheme(currentTheme() === "light" ? "dark" : "light", true)));
+
+  // Charts delivered as data: any element with data-fig='{"dark":…,"light":…}' (ct.both()) is drawn
+  // on load and whenever an HTMX swap brings new ones in (e.g. a capacity-view toggle).
+  const drawIn = root => root.querySelectorAll("[data-fig]").forEach(el => {
+    if (!el.dataset.drawn) { el.dataset.drawn = "1"; draw(el, JSON.parse(el.dataset.fig)); }
+  });
+  document.addEventListener("DOMContentLoaded", () => drawIn(document));
+  // After an outerHTML swap the event's target is the detached old node, so scan the document;
+  // data-drawn keeps it to the new charts only.
+  document.addEventListener("htmx:afterSettle", () => drawIn(document));
+  // Note-reading drawer (block 11): the note arrives as a <dialog>; open it modally once swapped in.
+  document.addEventListener("htmx:afterSwap", e => {
+    if (e.detail.target.id === "note-host") e.detail.target.querySelector("dialog")?.showModal();
+  });
+
+  // Scroll cue: a [data-scroll-cue] wraps a sideways-scrolling box ([data-scroll-x]). While columns
+  // are hidden to its right it carries data-more-right (CSS draws a fade) and un-hides any
+  // [data-scroll-hint] in the same table, so a clipped table is never silent about it.
+  function scrollCue(wrap) {
+    const box = wrap.querySelector("[data-scroll-x]");
+    if (!box) return;
+    const over = box.scrollWidth > box.clientWidth + 1;
+    wrap.toggleAttribute("data-more-right", over && box.scrollLeft + box.clientWidth < box.scrollWidth - 1);
+    const hint = (wrap.closest("[id^='t-']") || wrap.parentElement).querySelector("[data-scroll-hint]");
+    if (hint) hint.hidden = !over;
+  }
+  const allCues = () => document.querySelectorAll("[data-scroll-cue]").forEach(scrollCue);
+  document.addEventListener("scroll", e => {
+    const w = e.target.closest?.("[data-scroll-cue]");
+    if (w) scrollCue(w);
+  }, true);
+  document.addEventListener("DOMContentLoaded", allCues);
+  document.addEventListener("htmx:afterSettle", allCues);
+  document.addEventListener("toggle", allCues, true);   // a table inside a disclosure gets its size when opened
+  window.addEventListener("resize", allCues);
+
+  // Dropdown menus (<details data-dropdown>): one open at a time; outside click or Escape closes.
+  const openDropdowns = () => document.querySelectorAll("details[data-dropdown][open]");
+  document.addEventListener("toggle", e => {
+    if (e.target.matches?.("details[data-dropdown]") && e.target.open)
+      openDropdowns().forEach(o => { if (o !== e.target) o.open = false; });
+  }, true);
+  document.addEventListener("click", e => {
+    if (!e.target.closest("details[data-dropdown]")) openDropdowns().forEach(o => o.open = false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") openDropdowns().forEach(o => o.open = false); });
+</script>
+
+</body>
+</html>

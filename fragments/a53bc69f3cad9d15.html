@@ -1,0 +1,218 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-82"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-04-17</span>
+        <span class="badge hidden sm:inline-flex">Personal investing</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/anorth_chen/status/2043694726764003817" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@anorth_chen</div>
+      <h3 id="note-title-82" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">AI-first engineering 99 pct code written by AI [agentic-coding, ai-first, creaoai, engineering, software-development, startup]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>@anorth_chen quoting @intuitiveml — AI-First Engineering</h1>
+<h2>Outer Tweet — @anorth_chen (North@CreaoAI)</h2>
+<p>&gt; Peter is our CTO. A month ago, he started implementing a new AI-First work approach, and the results are obvious—we now have at least 20 PRs merged and deployed every day. The product changelog vividly reflects our team's efficiency: https://docs.creao.ai/community-and-updates/changelog
+&gt;
+&gt; I didn't expect him to write an article sharing such practical, valuable experience. I recommend all founders on X to read this article carefully. If your team is still operating in an AI-assisted rather than AI-first mode, you're likely to gradually fade out of this market within the next year.</p>
+<p><em>10:16 PM · Apr 13, 2026 · 868.9K Views · 36 Replies · 159 Reposts · 1.9K Likes · 4.9K Bookmarks</em></p>
+<hr />
+<h2>Quoted X Article — @intuitiveml (Peter Pang)</h2>
+<p><strong>Source:</strong> https://x.com/intuitiveml/status/2043545596699750791
+<em>12:23 PM · Apr 13, 2026 · 1.7M Views · 143 Replies · 699 Reposts · 3.4K Likes · 9.7K Bookmarks</em></p>
+<hr />
+<h1>Why Your "AI-First" Strategy Is Probably Wrong</h1>
+<p>99% of our production code is written by AI. Last Tuesday, we shipped a new feature at 10 AM, A/B tested it by noon, and killed it by 3 PM because the data said no. We shipped a better version at 5...</p>
+<p>We didn't get here by adding Copilot to our IDE. We dismantled our engineering process and rebuilt it from scratch.</p>
+<p>CREAO is an agent platform. Twenty-five employees, 10 engineers. We started building agents in November 2024.</p>
+<p>OpenAI published a concept in February 2026 that captured what we'd been doing. They called it harness engineering.</p>
+<p>We arrived at that conclusion on our own. We didn't have a name for it.</p>
+<hr />
+<h2>AI-First Is Not the Same as Using AI</h2>
+<p>Most companies bolt AI onto their existing process. An engineer opens Cursor. A PM drafts specs with ChatGPT. A designer uses Midjourney. The workflow stays the same.</p>
+<p>That is AI-assisted.</p>
+<p>AI-first means you redesign your process, your architecture, and your organization around the assumption that AI does the building.</p>
+<p>You stop asking "how can AI help our engineers?" and start asking</p>
+<p>"how do we restructure everything so AI does the building, and engineers provide direction and judgment?"</p>
+<p>The difference is multiplicative.</p>
+<p>I see teams claim AI-first while running the same sprint cycles, the same Jira boards, the same weekly standups, the same two-week reviews.</p>
+<p>A common version of this is what people call vibe coding. Open Cursor, prompt until something works, ship it.</p>
+<hr />
+<h2>Why We Had to Change</h2>
+<p>Last year, I watched how our team worked and saw three bottlenecks that would kill us.</p>
+<p><strong>The Product Management Bottleneck</strong></p>
+<p>Our PMs spent weeks researching, designing, specifying features. Product management has worked this way for thirty years.</p>
+<p>It doesn't make sense to think about something for months and then build it in two hours.</p>
+<p>PMs needed to evolve into product-minded architects who work at the speed of iteration, or step out of the way.</p>
+<p><strong>The QA Bottleneck</strong></p>
+<p>Same dynamic. After an agent shipped a feature, our QA team spent days testing corner cases. Build time was two hours. Test time was three days.</p>
+<p>We replaced manual QA with AI-built testing platforms that test AI-written code. Validation has to match the speed of creation.</p>
+<p><strong>The Headcount Bottleneck</strong></p>
+<p>Our competitors had 100x or more people doing comparable work. We have 25. We couldn't hire our way to scale.</p>
+<p>Three systems needed AI running through them: how we design product, how we implement product, and how we validate product.</p>
+<hr />
+<h2>The Bold Decision: Unifying the Architecture</h2>
+<p>I had to fix the codebase first.</p>
+<p>Our old architecture was scattered across multiple independent systems. A single change might require touching five separate repositories. Agents struggled to reason across the full system.</p>
+<p>I had to unify all the code into a single monorepo. One reason: so AI could see everything.</p>
+<p>This is a harness engineering principle in practice. The more of your system you pull into a form that an agent can ingest and reason about, the more capable the agent becomes at working in that system.</p>
+<p>I spent one week designing the new system: planning stage, implementation stage, testing stage, integration stage. Then I handed it to the agents.</p>
+<p>CREAO is an agent platform. We used our own agents to rebuild the platform that runs agents. If the system breaks, we eat our own dog food.</p>
+<hr />
+<h2>The Stack</h2>
+<p>Here is our stack and what each piece does.</p>
+<p><strong>Infrastructure: AWS</strong></p>
+<p>We run on AWS with auto-scaling container services and circuit-breaker rollback. If metrics degrade below threshold, the system auto-rolls back without human intervention.</p>
+<p>CloudWatch is the central nervous system. Structured logging across all services, over 25 alarms, custom dashboards for every team function.</p>
+<p><strong>CI/CD: GitHub Actions</strong></p>
+<p>Every code change passes through a six-phase pipeline:</p>
+<p>Verify CI → Build and Deploy Dev → Test Dev → Deploy Prod → Test Prod → Release</p>
+<p>The CI gate on every pull request enforces typechecking, linting, unit and integration tests, Docker builds, and security scanning. Nothing merges without passing all of it.</p>
+<p><strong>AI Code Review: Claude</strong></p>
+<p>Every pull request triggers three parallel AI review passes using Claude Opus 4.6:</p>
+<p>Pass 1: Code quality. Logic errors, performance issues, maintainability.</p>
+<p>Pass 2: Security. Vulnerability scanning, authentication boundary checks, injection risks.</p>
+<p>Pass 3: Dependency scan. Supply chain risks, version conflicts, license issues.</p>
+<p>These are review gates, not suggestions. They run alongside human review, catching what humans miss at the speed of a CI check.</p>
+<p>Engineers also tag @claude in any GitHub issue or PR for implementation plans, debugging sessions, or code analysis. The agent responds in context.</p>
+<p><strong>The Self-Healing Feedback Loop</strong></p>
+<p>This is the centerpiece.</p>
+<p>Every morning at 9:00 AM UTC, an automated health workflow runs. Claude Sonnet 4.6 queries CloudWatch metrics from the prior 24 hours, scans for anomalies, and generates a system health report.</p>
+<p>One hour later, the triage engine runs. It clusters production errors from CloudWatch and Sentry, scores each error by severity and customer impact, and creates structured Linear issues with reproduction steps and investigation context.</p>
+<p>The system deduplicates. If an open issue covers the same error pattern, it updates that issue. If a new pattern emerges, it creates a new one.</p>
+<p>When an engineer pushes a fix, the same pipeline handles it. Three Claude review passes evaluate the fix. If it looks wrong, the engineer hears why before the code merges.</p>
+<p>Each tool handles one phase. No tool tries to do everything. The daily cycle creates a self-healing loop: detect, triage, fix, verify.</p>
+<p>I told a reporter from Business Insider: "AI will make the PR and the human just needs to review whether to accept it."</p>
+<p><strong>Feature Flags and the Supporting Stack</strong></p>
+<p>Statsig handles feature flags. Every feature ships behind a gate. The rollout pattern: enable for the internal team first, then percentage rollout, then full release. If metrics degrade at any stage, the gate closes.</p>
+<p>Graphite manages PR branching: merge queues rebase onto main, re-run CI, merge only if green. Stacked PRs let agents work on multiple layers simultaneously.</p>
+<p>Sentry reports structured exceptions across all services, merged with CloudWatch by the triage engine.</p>
+<hr />
+<h2>How a Feature Moves from Idea to Production</h2>
+<p><strong>New Feature Path</strong></p>
+<ol>
+<li>The architect defines the task as a structured prompt with codebase context, goals, and constraints.</li>
+<li>An agent decomposes the task, plans implementation, writes code, and generates its own tests.</li>
+<li>A PR opens. Three Claude review passes evaluate it. A human reviewer checks for strategic risk, not implementation details.</li>
+<li>CI validates: typecheck, lint, unit tests, integration tests, end-to-end tests.</li>
+<li>Graphite's merge queue rebases, re-runs CI, merges if green.</li>
+<li>Six-phase deploy pipeline promotes through dev and prod with testing at each stage.</li>
+<li>Feature gate turns on for the team. Gradual percentage rollout. Metrics monitored.</li>
+<li>Kill switch available if anything degrades. Circuit-breaker auto-rollback for severe issues.</li>
+</ol>
+<p><strong>Bug Fix Path</strong></p>
+<ol>
+<li>CloudWatch and Sentry detect errors.</li>
+<li>Claude triage engine scores severity, creates a Linear issue with full investigation context.</li>
+<li>An engineer investigates. AI has already done the diagnosis. The engineer validates and pushes a fix.</li>
+<li>Same review, CI, deploy, and monitoring pipeline.</li>
+<li>Triage engine re-verifies. If resolved, ticket auto-closes.</li>
+</ol>
+<p>Both paths use the same pipeline. One system. One standard.</p>
+<hr />
+<h2>The Results</h2>
+<p>Over 14 days, we averaged three to eight production deployments per day. Under our old model, that entire period might have produced two releases.</p>
+<p>Bad features get pulled the same day they ship. New features go live the same day they're conceived.</p>
+<p>People assume we're trading quality for speed. User engagement went up. Payment conversion went up. Error rates went down.</p>
+<hr />
+<h2>The New Engineering Org</h2>
+<p>Two types of engineers will exist.</p>
+<p><strong>The Architect</strong></p>
+<p>One or two people. They design the standard operating procedures that teach AI how to work. They build the testing harness. They set constraints. They define the system.</p>
+<p>This role requires deep critical thinking. You criticize AI. You don't follow it. When the agent proposes a path, you evaluate whether it's right.</p>
+<p>I have a PhD in physics. The most useful thing my PhD taught me was how to question assumptions, stress-test reasoning, and find where logic breaks. That's what this role requires.</p>
+<p>This is also the hardest role to fill.</p>
+<p><strong>The Operator</strong></p>
+<p>Everyone else. The work matters. The structure is different.</p>
+<p>AI assigns tasks to humans. The triage system finds a bug, creates a ticket, surfaces the diagnosis, and points the engineer at the likely fix. The engineer validates. The engineer reviews the PR. The engineer confirms.</p>
+<p>The tasks are bug investigation, UI refinement, CSS improvements, PR review, verification. They require judgment, taste, and ownership. They do not require writing code from scratch.</p>
+<p><strong>Who Adapts Fastest</strong></p>
+<p>I noticed a pattern I didn't expect. Junior engineers adapted faster than senior engineers.</p>
+<p>Junior engineers with less traditional practice felt empowered. They had access to tools that amplified them far beyond what experience alone would have given.</p>
+<p>Senior engineers with strong traditional practice had the hardest time. Two months of their work could now be done in a day. The multiplier is also a threat.</p>
+<p>I'm not making a judgment. I'm describing what I observed. In this transition, adaptability matters more than seniority.</p>
+<hr />
+<h2>The Human Side</h2>
+<p><strong>Management Collapsed</strong></p>
+<p>Two months ago, I spent 60% of my time managing people. Aligning priorities. Running meetings. Giving feedback on implementation decisions.</p>
+<p>Today: below 10%.</p>
+<p>The traditional CTO model says to empower your team to do architecture work, train them, delegate. That model collapses when AI can do the architecture work.</p>
+<p>More stressful. But I'm enjoying building, not aligning.</p>
+<p><strong>Less Arguing, Better Relationships</strong></p>
+<p>My relationships with co-founders and engineers are better than before.</p>
+<p>Before the transition, most of my interaction with the team was alignment meetings. Discussing tradeoffs. Debating implementation. Negotiating priority.</p>
+<p>Now I still talk to my team. We talk about other things. Non-work topics. Casual conversations. Offsites. The relationship became human again because the work relationship became transactional in the best way: here is the task, here is the output.</p>
+<p><strong>Uncertainty Is Real</strong></p>
+<p>I won't pretend everyone is happy.</p>
+<p>When I stopped talking to people every day, some team members felt uncertain. What does the CTO not calling me mean? Am I being managed out?</p>
+<p>Some people spend more time debating whether AI can do their work than doing the work. The transition created anxiety for people who measured their value by implementation skill.</p>
+<p>I do have a principle: we don't fire an engineer because they introduced a production bug. We improve the system so that class of bug can't reach production. The same logic applies to the transition.</p>
+<hr />
+<h2>Beyond Engineering</h2>
+<p>I see other companies adopt AI-first engineering and leave everything else manual.</p>
+<p>If engineering ships features in hours but marketing takes a week to announce them, marketing is the bottleneck. If sales can't process leads at the speed of growth, sales is the bottleneck.</p>
+<p>At CREAO, we pushed AI-native operations into every function:</p>
+<ul>
+<li>Product release notes: AI-generated from changelogs and feature descriptions.</li>
+<li>Feature intro videos: AI-generated motion graphics.</li>
+<li>Daily posts on socials: AI-orchestrated and auto-published.</li>
+<li>Health reports and analytics summaries: AI-generated from CloudWatch and production databases.</li>
+</ul>
+<p>Engineering, product, marketing, and growth run in one AI-native workflow. If one function operates at traditional speed, that function becomes the ceiling.</p>
+<hr />
+<h2>What This Means</h2>
+<p><strong>For Engineers</strong></p>
+<p>Your value is moving from code output to decision quality. The ability to write code fast is worth less every month. The ability to evaluate whether something is right is worth more.</p>
+<p>Product sense or taste matters. Can you look at a generated UI and know it's wrong before the user tells you? Can you read an agent-proposed architecture and see where it will fail under load?</p>
+<p>I tell our 19-year-old interns: train critical thinking. Learn to evaluate arguments, find gaps, question assumptions. That skill compounds.</p>
+<p><strong>For CTOs and Founders</strong></p>
+<p>If your PM process takes longer than your build time, start there.</p>
+<p>Build the testing harness before you scale agents. Fast AI without fast validation is fast-moving technical debt.</p>
+<p>Start with one architect. One person who builds the system and proves it works. Onboard others into a working system, not an experiment.</p>
+<p>Push AI-native into every function.</p>
+<p>Expect resistance. Some people will push back.</p>
+<p><strong>For the Industry</strong></p>
+<p>OpenAI, Anthropic, and multiple independent teams converged on the same principles: structured context, harness engineering, agents with constraints and checkpoints.</p>
+<p>Model capability is the clock driving this. I attribute the entire shift at CREAO to the last two model generations. Without Claude Sonnet 4.6 and Opus 4.6, the self-healing loop doesn't work.</p>
+<p>I believe one-person companies will become common. If one architect with agents can do the work of 100 engineers, the economics of company formation change entirely.</p>
+<hr />
+<h2>We're Early</h2>
+<p>Most founders and engineers I talk to still operate the traditional way. Some think about making the transition. Very few have made it.</p>
+<p>A reporter friend told me she'd talked to about five people on this topic. She said we were further along than anyone else she'd spoken to.</p>
+<p>The tools exist for any team to do this. Nothing in our stack is proprietary.</p>
+<p>The competitive advantage is the decision to redesign everything around these tools, and the willingness to absorb the short-term disruption of a full process rebuild.</p>
+<p>We absorbed that cost. Two months later, the numbers speak.</p>
+<p>We build an agent platform. We built it with agents.</p></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">Supply chain</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">OpenAI</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @anorth_chen on <span class="num">2026-04-17</span>; its frontmatter is not shown. <a href="https://x.com/anorth_chen/status/2043694726764003817" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>

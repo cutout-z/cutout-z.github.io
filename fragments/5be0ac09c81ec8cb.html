@@ -1,0 +1,76 @@
+<dialog class="drawer drawer-wide" aria-labelledby="note-title-23"
+        onclose="this.remove()" onclick="if (event.target === this) this.close()">
+  <div class="flex h-full max-h-[inherit] flex-col">
+    <header class="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+      <div class="flex min-w-0 items-center gap-2 text-[12px]">
+        <span class="whitespace-nowrap font-mono text-muted">2026-08-30</span>
+        <span class="badge hidden sm:inline-flex">Personal investing</span>
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        <a href="https://x.com/bubbleboi/status/2063735227382677573?s=12" target="_blank" rel="noopener noreferrer nofollow" class="btn h-7 text-[12px]">Open original<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a>
+        <button class="btn btn-ghost btn-icon -mr-2" aria-label="Close note" onclick="this.closest('dialog').close()" autofocus><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/>
+</svg></button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-2 font-mono text-[12px] text-faint">@bubbleboi</div>
+      <h3 id="note-title-23" class="max-w-[60ch] text-[18px] font-semibold leading-snug text-ink">TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole… [datacenter, gpu, infrastructure]</h3>
+
+      
+      <div class="note-body prose mt-6 max-w-none text-[14px]"><h1>TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole…</h1>
+<p>TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole industry is limping towards NPO, and the pod bros who price the entire AI TAM off Nvidia’s BOM line items still can’t actually explain what the problem is. So let me do the engineering for you, since clearly nobody on here will.</p>
+<p>The bottleneck was never can you make light go through a waveguide. It’s all fucking thermals which is downstream of packaging. Specifically, how do you get a photonic engine onto the same substrate as a switch ASIC or XPU without your yield falling off a cliff and your reliability failing.</p>
+<p>TSMC’s answer is CoWoS where they bolt everything onto one big monolithic silicon interposer. Cute, until you hit the reticle limit and start duct-taping interposers together (CoWoS-S, then -R, then -L, soon -PleaseStop). Every chiplet and HBM stack you add to that single interposer compounds your defect probability and one bad die leads to a five-figure package going into the dumpster. CoWoS is thermally retarded and the whole industry knows this and it’s why capacity “can’t expand” and Jensen is acting like a bouncer in the front of a club choosing who gets pass the velvet rope.</p>
+<p>There is ONLY one company that will make copackaged optics work and expand in the rack… it’s not Lumentum, it’s not Coherent, it’s fucking INTELLLL.</p>
+<p>Intel’s EMIB gets rid of a giant reticle limited interposer and replaces it with a tiny silicon bridge that does the high-density coupling locally, exactly where you need it. You localize the hard part and the thermals in one area and your yield is ridiculously high. Comparing EMIB &amp; CoWoS is so funny cause EMIB is north of 95% yield with like 12 reticle size equivalent package while CoWoS falls off a cliff after 5.5 reticles it’s that bad…now imagine adding thermally sensitive photonics.</p>
+<p>People don’t know this but Intel has been doing silicon photonics in-house for ~25 years... In 2024 they showed an Optical I/O chiplet doing 2 Tbps bidirectionally at ~5 pJ/bit, with the PIC and EIC co-packaged right against the ASIC and it’s all because of EMIB. And even more critically than that, they’ve actually run the fiber-attach and reliability/test flow to JEDEC-grade standards already, which everyone hand-waves until their links flap in production.</p>
+<p>My prediction is clear: Intel will capture over 90% of the copackaged silicon photonics market in the next five years because there is NO ALTERNATIVE.</p>
+<p>TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole industry is limping towards NPO, and the pod bros who price the entire AI TAM off Nvidia’s BOM line items still can’t actually explain what the problem is. So let me do the engineering for you, since clearly nobody on here will.</p>
+<p>The bottleneck was never can you make light go through a waveguide. It’s all fucking thermals which is downstream of packaging. Specifically, how do you get a photonic engine onto the same substrate as a switch ASIC or XPU without your yield falling off a cliff and your reliability failing.</p>
+<p>TSMC’s answer is CoWoS where they bolt everything onto one big monolithic silicon interposer. Cute, until you hit the reticle limit and start duct-taping interposers together (CoWoS-S, then -R, then -L, soon -PleaseStop). Every chiplet and HBM stack you add to that single interposer compounds your defect probability and one bad die leads to a five-figure package going into the dumpster. CoWoS is thermally retarded and the whole industry knows this and it’s why capacity “can’t expand” and Jensen is acting like a bouncer in the front of a club choosing who gets pass the velvet rope.</p>
+<p>There is ONLY one company that will make copackaged optics work and expand in the rack… it’s not Lumentum, it’s not Coherent, it’s fucking INTELLLL.</p>
+<p>Intel’s EMIB gets rid of a giant reticle limited interposer and replaces it with a tiny silicon bridge that does the high-density coupling locally, exactly where you need it. You localize the hard part and the thermals in one area and your yield is ridiculously high. Comparing EMIB &amp; CoWoS is so funny cause EMIB is north of 95% yield with like 12 reticle size equivalent package while CoWoS falls off a cliff after 5.5 reticles it’s that bad…now imagine adding thermally sensitive photonics.</p>
+<p>People don’t know this but Intel has been doing silicon photonics in-house for ~25 years... In 2024 they showed an Optical I/O chiplet doing 2 Tbps bidirectionally at ~5 pJ/bit, with the PIC and EIC co-packaged right against the ASIC and it’s all because of EMIB. And even more critically than that, they’ve actually run the fiber-attach and reliability/test flow to JEDEC-grade standards already, which everyone hand-waves until their links flap in production.</p>
+<p>My prediction is clear: Intel will capture over 90% of the copackaged silicon photonics market in the next five years because there is NO ALTERNATIVE.</p>
+<p>TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole industry is limping towards NPO, and the pod bros who price the entire AI TAM off Nvidia’s BOM line items still can’t actually explain what the problem is. So let me do the engineering for you, since clearly nobody on here will.</p>
+<p>The bottleneck was never can you make light go through a waveguide. It’s all fucking thermals which is downstream of packaging. Specifically, how do you get a photonic engine onto the same substrate as a switch ASIC or XPU without your yield falling off a cliff and your reliability failing.</p>
+<p>TSMC’s answer is CoWoS where they bolt everything onto one big monolithic silicon interposer. Cute, until you hit the reticle limit and start duct-taping interposers together (CoWoS-S, then -R, then -L, soon -PleaseStop). Every chiplet and HBM stack you add to that single interposer compounds your defect probability and one bad die leads to a five-figure package going into the dumpster. CoWoS is thermally retarded and the whole industry knows this and it’s why capacity “can’t expand” and Jensen is acting like a bouncer in the front of a club choosing who gets pass the velvet rope.</p>
+<p>There is ONLY one company that will make copackaged optics work and expand in the rack… it’s not Lumentum, it’s not Coherent, it’s fucking INTELLLL.</p>
+<p>Intel’s EMIB gets rid of a giant reticle limited interposer and replaces it with a tiny silicon bridge that does the high-density coupling locally, exactly where you need it. You localize the hard part and the thermals in one area and your yield is ridiculously high. Comparing EMIB &amp; CoWoS is so funny cause EMIB is north of 95% yield with like 12 reticle size equivalent package while CoWoS falls off a cliff after 5.5 reticles it’s that bad…now imagine adding thermally sensitive photonics.</p>
+<p>People don’t know this but Intel has been doing silicon photonics in-house for ~25 years... In 2024 they showed an Optical I/O chiplet doing 2 Tbps bidirectionally at ~5 pJ/bit, with the PIC and EIC co-packaged right against the ASIC and it’s all because of EMIB. And even more critically than that, they’ve actually run the fiber-attach and reliability/test flow to JEDEC-grade standards already, which everyone hand-waves until their links flap in production.</p>
+<p>My prediction is clear: Intel will capture over 90% of the copackaged silicon photonics market in the next five years because there is NO ALTERNATIVE.</p>
+<p>TSMC fumbles Copackaged optics for the Nth time like some fucking donkeys and now the whole industry is limping towards NPO, and the pod bros who price the entire AI TAM off Nvidia’s BOM line items still can’t actually explain what the problem is. So let me do the engineering for you, since clearly nobody on here will.</p>
+<p>The bottleneck was never can you make light go through a waveguide. It’s all fucking thermals which is downstream of packaging. Specifically, how do you get a photonic engine onto the same substrate as a switch ASIC or XPU without your yield falling off a cliff and your reliability failing.</p>
+<p>TSMC’s answer is CoWoS where they bolt everything onto one big monolithic silicon interposer. Cute, until you hit the reticle limit and start duct-taping interposers together (CoWoS-S, then -R, then -L, soon -PleaseStop). Every chiplet and HBM stack you add to that single interposer compounds your defect probability and one bad die leads to a five-figure package going into the dumpster. CoWoS is thermally retarded and the whole industry knows this and it’s why capacity “can’t expand” and Jensen is acting like a bouncer in the front of a club choosing who gets pass the velvet rope.</p>
+<p>There is ONLY one company that will make copackaged optics work and expand in the rack… it’s not Lumentum, it’s not Coherent, it’s fucking INTELLLL.</p>
+<p>Intel’s EMIB gets rid of a giant reticle limited interposer and replaces it with a tiny silicon bridge that does the high-density coupling locally, exactly where you need it. You localize the hard part and the thermals in one area and your yield is ridiculously high. Comparing EMIB &amp; CoWoS is so funny cause EMIB is north of 95% yield with like 12 reticle size equivalent package while CoWoS falls off a cliff after 5.5 reticles it’s that bad…now imagine adding thermally sensitive photonics.</p>
+<p>People don’t know this but Intel has been doing silicon photonics in-house for ~25 years... In 2024 they showed an Optical I/O chiplet doing 2 Tbps bidirectionally at ~5 pJ/bit, with the PIC and EIC co-packaged right against the ASIC and it’s all because of EMIB. And even more critically than that, they’ve actually run the fiber-attach and reliability/test flow to JEDEC-grade standards already, which everyone hand-waves until their links flap in production.</p>
+<p>My prediction is clear: Intel will capture over 90% of the copackaged silicon photonics market in the next five years because there is NO ALTERNATIVE.</p></div>
+      
+
+      <dl class="mt-6 grid grid-cols-[88px_1fr] gap-x-4 gap-y-3 border-t border-line-soft pt-4 text-[13px]">
+        
+        <dt class="text-faint">Themes</dt>
+        <dd class="flex flex-wrap gap-1.5"><span class="badge">AI/DC</span><span class="badge">Supply chain</span><span class="badge">Macro</span><span class="badge">Market structure</span><span class="badge">Company / security</span></dd>
+        
+        <dt class="text-faint">Entities</dt>
+        <dd class="flex flex-wrap gap-1.5">
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">NVIDIA</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">TSMC</span>
+          <span class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink">Intel</span>
+          
+        </dd>
+      </dl>
+    </div>
+
+    <footer class="flex items-start gap-2 border-t border-line bg-surface-2 px-6 py-3 text-[12px] text-muted">
+      <svg class="mt-px size-3.5 shrink-0 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+</svg>
+      
+      <span>The note as clipped from @bubbleboi on <span class="num">2026-08-30</span>; its frontmatter is not shown. <a href="https://x.com/bubbleboi/status/2063735227382677573?s=12" target="_blank" rel="noopener noreferrer nofollow" class="text-ink underline decoration-line-strong underline-offset-2">Read the original post</a>.</span>
+      
+    </footer>
+  </div>
+</dialog>
