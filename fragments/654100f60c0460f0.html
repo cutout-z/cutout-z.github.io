@@ -1,0 +1,937 @@
+<div id="zh" class="space-y-8">
+
+  
+  <section aria-labelledby="zh-lead-h" class="space-y-4">
+    <h2 id="zh-lead-h" class="sr-only">Summary</h2>
+    <div class="card"><div class="card-body pt-4 space-y-2">
+      <p class="prose max-w-none text-[14px] leading-relaxed text-ink">Of 62 figures filings can test, 84% are confirmed and 90% are confirmed or within 10%. <span id="zh-excl">Excluding figures ZeroHedge reported within two days of the company&#39;s own release (33 remain): 73% are confirmed and 85% are confirmed or within 10%.</span> <span class="text-muted">154 figures from 59 free articles; 31 forward-looking and 61 not checkable are left out of those shares.</span></p>
+      <p class="prose max-w-none text-[12px] leading-relaxed text-muted">Many exact matches are ZeroHedge relaying the company&#39;s own release on the same day; the shares excluding those are shown separately. The shares are for the testable subset only; the figures no filing can test could be better or worse.</p>
+      <p class="prose max-w-none text-[13px] leading-relaxed text-muted">We took the free ZeroHedge articles on AI data-centre economics and pulled out the company figures they state (capex, backlog, funding, revenue, margins). Each is put in our own words and set against the company&#39;s own filings and earnings releases. A figure is called confirmed only if a filing says the same thing; where nothing held can test it, the page says so rather than guess. Articles behind the subscriber paywall are not shown, quoted or linked anywhere on this page.</p>
+    </div></div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6" aria-label="Verdicts">
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Differs</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">2</div><div class="mt-2 text-[11px] leading-snug text-faint">a filing states a different figure</div></div>
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Different scope</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">4</div><div class="mt-2 text-[11px] leading-snug text-faint">the number matches but measures something different (adjusted versus reported, commitment versus cash paid)</div></div>
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Close (within 10%)</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">4</div><div class="mt-2 text-[11px] leading-snug text-faint">a filing states a figure within about 10%</div></div>
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Confirmed</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">52</div><div class="mt-2 text-[11px] leading-snug text-faint">a filing states the same figure (within 2%)</div></div>
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Forward-looking</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">31</div><div class="mt-2 text-[11px] leading-snug text-faint">guidance or a forecast; compared with guidance on file where there is one</div></div>
+      
+      <div class="card px-4 py-3"><div class="text-[12px] text-muted">Not checkable</div><div class="num mt-1 text-[24px] font-semibold leading-none tracking-[-0.02em] text-ink">61</div><div class="mt-2 text-[11px] leading-snug text-faint">no filing held states it (a quarter, a contract term, a modelled industry figure)</div></div>
+      
+    </div>
+  </section>
+
+  <section aria-labelledby="zh-claims-h" class="space-y-3">
+    <form id="zh-filters" class="flex flex-wrap items-center justify-end gap-x-6 gap-y-3" hx-get="/partials/zerohedge-check" hx-target="#zh" hx-swap="outerHTML" hx-trigger="change" onsubmit="return false">
+      <h2 id="zh-claims-h" class="sr-only">Company figures from free ZeroHedge articles, against filings</h2>
+      <label class="flex items-center gap-2 text-[12px] text-muted">Verdict
+        <select name="verdict" class="input h-8 w-auto min-w-[190px]"><option value="" selected>All verdicts</option><option value="differs" >Differs (2)</option><option value="different_scope" >Different scope (4)</option><option value="close" >Close (within 10%) (4)</option><option value="confirmed" >Confirmed (52)</option><option value="forward_looking" >Forward-looking (31)</option><option value="not_checkable" >Not checkable (61)</option></select></label>
+      <label class="flex items-center gap-2 text-[12px] text-muted">Reporting
+        <select name="relay" class="input h-8 w-auto min-w-[190px]"><option value="" selected>All figures</option><option value="relay" >Same-day relay only</option><option value="other" >Excluding same-day relay</option></select></label>
+    </form>
+    <div class="card overflow-clip">
+  <form id="t-zh_claims-form" hx-get="/partials/t/zh_claims" hx-target="#t-zh_claims" hx-include="#zh-filters"
+        hx-trigger="input changed delay:200ms from:find input[type=search], search from:find input[type=search], change"
+        class="flex flex-wrap items-center justify-between gap-3 px-5 py-4" onsubmit="return false">
+    <div class="min-w-0">
+      <div class="card-title">Company figures from free ZeroHedge articles, against filings</div>
+      <div class="card-sub">Sorted with the disagreements first, then confirmed, forward-looking, then not checkable. Article text is not reproduced; the links go to free ZeroHedge articles. An accession number opens an EDGAR search for the filing.</div>
+    </div>
+    <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+    
+    <details class="relative" data-dropdown>
+      <summary class="btn list-none [&::-webkit-details-marker]:hidden"><svg class="size-3.5 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.5 4v16M14.5 4v16"/>
+</svg>Columns <span class="num text-faint">8/12</span></summary>
+      <div class="absolute right-0 top-full z-30 mt-1.5 max-h-[360px] w-[240px] overflow-y-auto rounded-xl border border-line bg-surface p-1.5 shadow-pop">
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="statement" class="accent-[color:var(--text)]" checked disabled>Figure, in our words
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="entity" class="accent-[color:var(--text)]" checked >Company
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="claimed" class="accent-[color:var(--text)]" checked >ZeroHedge states
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="held" class="accent-[color:var(--text)]" checked >Filed or on record
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="held_status" class="accent-[color:var(--text)]"  >Status of that figure
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="source" class="accent-[color:var(--text)]" checked >Source
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="accession" class="accent-[color:var(--text)]"  >Accession
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="verdict" class="accent-[color:var(--text)]" checked >Verdict
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="relay" class="accent-[color:var(--text)]" checked >Same-day relay
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="note" class="accent-[color:var(--text)]"  >Note
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="article" class="accent-[color:var(--text)]"  >Free article, date
+        </label>
+        
+        <label class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-[13px] text-muted hover:bg-surface-2 hover:text-ink">
+          <input type="checkbox" name="cols" value="url" class="accent-[color:var(--text)]" checked >Article
+        </label>
+        
+      </div>
+    </details>
+    
+    
+    <label class="relative w-full sm:w-[260px]">
+      <span class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-faint"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/>
+</svg></span>
+      <input class="input pl-8" type="search" name="q" value="" placeholder="Search figures…" aria-label="Search figures">
+    </label>
+    
+    </div>
+  </form>
+  <div id="t-zh_claims" class="border-t border-line"><input type="hidden" name="sort" value="" form="t-zh_claims-form">
+<input type="hidden" name="direction" value="asc" form="t-zh_claims-form"><div class="scroll-cue" data-scroll-cue>
+<div class="max-h-[640px] overflow-auto" data-scroll-x tabindex="0" role="region" aria-label="Company figures from free ZeroHedge articles, against filings, scrollable"><table class="w-full  border-collapse dt-stack ">
+  
+  <thead><tr>
+    
+    
+    
+    <th class="th left-0 z-[12]    pl-5 "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "statement", "direction": "asc", "page": "1"}'>
+        Figure, in our words<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "entity", "direction": "asc", "page": "1"}'>
+        Company<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "claimed", "direction": "asc", "page": "1"}'>
+        ZeroHedge states<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th    text-right  "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-right"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "held", "direction": "asc", "page": "1"}'>
+        Filed or on record<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "source", "direction": "asc", "page": "1"}'>
+        Source<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "verdict", "direction": "asc", "page": "1"}'>
+        Verdict<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      "
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "relay", "direction": "asc", "page": "1"}'>
+        Same-day relay<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+    
+    
+    <th class="th      pr-5"
+        aria-sort="none">
+      <button type="button" class="inline-flex items-center gap-1 hover:text-ink  text-left"
+              hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims"
+              hx-vals='{"sort": "url", "direction": "asc", "page": "1"}'>
+        Article<span class="w-2 text-[10px] opacity-0">↑</span>
+      </button>
+    </th>
+    
+  </tr></thead>
+
+  
+
+  
+  <tbody>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet purchase commitments: $811bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$811bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$707bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet 10-Q Q2 2026, contractual supply commitments</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Differs</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-26/what-ais-31-trillion-time-bomb-actually-buying" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft stake with OpenAI: 49%</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Microsoft</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">49%</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">27%</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft blog 28 Oct 2025, &#39;The next chapter of the Microsoft-OpenAI partnership&#39;: stake roughly 27% on an as-converted diluted basis (about $135bn), after the recapitalisation</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Differs</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-06-09/tokenomics-equals-panic" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Meta leases not yet commenced: $347bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Meta</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$347bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$279bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Meta 10-Q Q2 2026, Note &#39;Commitments and Contingencies&#39; (R17, R50)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Different scope</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/markets/wsj-catches-discovers-ais-balance-sheet-liabilities-are-3-trillion-and-growing-12-trillion" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft investment with OpenAI: $13bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Microsoft</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$13bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$11.6bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft 10-K FY2026, OpenAI note: cash funded at 30 Sep 2025; total funding commitment 13.0bn at 30 Jun 2026</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Different scope</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/visualizing-compute-cash-contracts-power-openai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft investment with OpenAI: over $13bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Microsoft</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">&gt; $13bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$11.8bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft 10-Q Q3 FY2026, OpenAI note: cash funded at 31 Mar 2026; total funding commitment 13.0bn at 30 Jun 2026</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Different scope</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/how-musk-victory-vs-altman-would-reset-americas-ai-roadmap" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Oracle operating income, Q1 FY2027: $8.15bn (Q1 FY2027)</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Oracle</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$8.15bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$6.73bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Oracle 10-Q filed 2026-09-11, us-gaap:OperatingIncomeLoss (SEC XBRL companyfacts)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Different scope</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-ink" aria-label="yes">✓</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/markets/oracle-rises-after-cloud-revenues-beat-thanks-massive-capex-soaring-debt" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet+Amazon+Meta+Microsoft+Oracle combined capex, FY2025: $412bn (FY2025)</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet+Amazon+Meta+Microsoft+Oracle</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$412bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$379bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">sum of FY2025 cash purchases of PP&amp;E: Alphabet 91.4bn; Amazon 132bn; Meta 69.7bn; Microsoft 64.6bn; Oracle 21.2bn (Microsoft fiscal year to June, Oracle to May)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Close (within 10%)</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/markets/ai-capex-depreciation-risk-catch-record-earnings" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet+Amazon+Meta+Microsoft+Oracle combined capex, FY2025: $360bn (FY2025)</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet+Amazon+Meta+Microsoft+Oracle</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$360bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$379bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">sum of FY2025 cash purchases of PP&amp;E: Amazon 132bn; Microsoft 64.6bn; Alphabet 91.4bn; Meta 69.7bn; Oracle 21.2bn (Microsoft fiscal year to June, Oracle to May)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Close (within 10%)</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-17/we-are-war-time-economy-thats-bullish" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft stake with OpenAI: 26%</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Microsoft</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">26%</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">27%</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Microsoft blog 28 Oct 2025, &#39;The next chapter of the Microsoft-OpenAI partnership&#39;: stake roughly 27% on an as-converted diluted basis (about $135bn), after the recapitalisation</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Close (within 10%)</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/openai-co-founder-greg-brockman-defends-companys-profit-pivot-and-his-own-30-billion-payday" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Oracle contract backlog: $600bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Oracle</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$600bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$638bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Oracle 10-K FY2026, remaining performance obligations (XBRL)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Close (within 10%)</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/steve-eisman-what-if-openai-actually-fails" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">AWS operating margin: about 39%</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">AWS</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">~ 39%</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">39.4%</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Note: Segment Information, AWS operating income (three months ended) / Amazon 10-Q Q2 2026, Note: Segment Information, AWS net sales (three months ended)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-26/growth-clouds-stock-market-and-sentiment-results" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet capex, Q2 2026: $44.9bn (Q2 2026)</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$44.9bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$44.92bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet 10-Q filed 2026-07-23 and 10-Q filed 2026-04-30, us-gaap:PaymentsToAcquirePropertyPlantAndEquipment (SEC XBRL companyfacts)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-ink" aria-label="yes">✓</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-07-23/it-safe-get-back-ai-stocks" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet leases not yet commenced: $85.2bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$85.2bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$85.2bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet 10-Q Q2 2026, Note &#39;Leases&#39; (R13, R55)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-26/what-ais-31-trillion-time-bomb-actually-buying" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet contract backlog: over $460bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Alphabet</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">&gt; $460bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$514bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Alphabet 10-Q Q2 2026, revenue backlog (Google Cloud part)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/forget-cdos-meet-ccos-isnt-tech-cycle-its-2008-silicon" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with OpenAI: $15bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$15bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$15bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, OpenAI Series C invested in Q1 2026</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/openai-secures-record-110-billion-funding-round-backed-nvidia-softbank-amazon" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with OpenAI: $35bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$35bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$35bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, OpenAI Commitment Amount</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/openai-secures-record-110-billion-funding-round-backed-nvidia-softbank-amazon" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with OpenAI: $50bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$50bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$50bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, OpenAI investment about $50.0bn in all, incl. $21.3bn after quarter end</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/openai-secures-record-110-billion-funding-round-backed-nvidia-softbank-amazon" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with Anthropic: $5bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$5bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$5bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic Series G and Series H, $5.0bn each, both Q2 2026</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/ai-circle-jerk-returns-anthropic-spend-100-billion-aws-amazon-deal" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with Anthropic: up to $20bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">&lt;= $20bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$20bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic unfunded financing facility not to exceed $20.0bn (15.0bn available after the Series H); as-of = April 2026 announcement</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/ai-circle-jerk-returns-anthropic-spend-100-billion-aws-amazon-deal" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with Anthropic: $20bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$20bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$20bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic unfunded financing facility not to exceed $20.0bn (15.0bn available after the Series H); as-of = April 2026 announcement</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/google-deepens-anthropic-bet-40-billion-investment" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon investment with Anthropic: $8bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$8bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$8bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic convertible notes invested Q3 2023 to Q4 2025</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/was-amazons-tokenmaxxing-fiasco-behind-claudes-500m-mystery-bill" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon contract value with Anthropic: $100bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$100bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$100bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic commitment of more than $100.0bn over 10 years (lower bound)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/technology/latest-ai-developments-60-seconds" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon contract value with Anthropic: over $100bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">&gt; $100bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$100bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, Anthropic commitment of more than $100.0bn over 10 years (lower bound)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/ai/ai-circle-jerk-returns-anthropic-spend-100-billion-aws-amazon-deal" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon purchase commitments: $130bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$130bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$130bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, unconditional purchase obligations</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-26/what-ais-31-trillion-time-bomb-actually-buying" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    <tr data-row class="transition-colors hover:bg-surface-2">
+    
+    
+    <td data-label="Figure, in our words" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px] pl-5  sticky left-0 z-[1] bg-surface shadow-[1px_0_0_var(--line-soft)] leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon contract backlog: $496bn</div></td>
+    
+    
+    <td data-label="Company" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Amazon</td>
+    
+    
+    <td data-label="ZeroHedge states" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$496bn</td>
+    
+    
+    <td data-label="Filed or on record" data-kind="num" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap num text-right text-ink">$496bn</td>
+    
+    
+    <td data-label="Source" data-kind="long" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   leading-relaxed text-muted"><div class="dt-long w-[400px]">Amazon 10-Q Q2 2026, remaining performance obligations (about)</div></td>
+    
+    
+    <td data-label="Verdict" data-kind="text" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink">Confirmed</td>
+    
+    
+    <td data-label="Same-day relay" data-kind="bool" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]   whitespace-nowrap text-ink"><span class="text-faint" aria-label="no">✗</span></td>
+    
+    
+    <td data-label="Article" data-kind="link" class="border-b border-line-soft px-3 align-top py-2.5 text-[13px]  pr-5 whitespace-nowrap text-ink"><a href="https://www.zerohedge.com/news/2026-08-26/what-ais-31-trillion-time-bomb-actually-buying" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink underline decoration-line-strong underline-offset-2 hover:decoration-accent">open<svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18V7.5A1.5 1.5 0 0 1 5.5 6H10"/>
+</svg></a></td>
+    
+  </tr>
+    
+  </tbody>
+  
+</table>
+</div>
+</div>
+
+<div class="flex flex-wrap items-center justify-between gap-2 border-t border-line px-5 py-2.5 text-[12px] text-faint">
+  <span class="num">154 figures · page 1 of 7<span data-scroll-hint hidden> · <span class="text-muted">scroll sideways for more columns →</span></span></span>
+  
+  <div class="flex items-center gap-1">
+    <button type="button" class="btn btn-icon h-7 w-7 disabled:opacity-40" aria-label="Previous page" disabled
+            hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims" hx-vals='{"page": "0"}'>
+      <span class="rotate-180"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></span></button>
+    <button type="button" class="btn btn-icon h-7 w-7 disabled:opacity-40" aria-label="Next page" 
+            hx-get="/partials/t/zh_claims" hx-include="#t-zh_claims-form, #zh-filters" hx-target="#t-zh_claims" hx-vals='{"page": "2"}'>
+      <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/>
+</svg></button>
+  </div>
+  
+</div></div>
+  
+</div>
+  </section>
+
+</div>
